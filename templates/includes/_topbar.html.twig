@@ -30,25 +30,6 @@
         </div>
     </li>
 
-            <!-- Nav Item - Alerts -->
-
-             {#   
-              {{
-                  render(controller(
-                    'App\\Controller\\PartialController::notification'
-                ))
-              }}
-
-    
-            <!-- Nav Item - Messages -->
-      
-              {{
-                  render(controller(
-                    'App\\Controller\\PartialController::message'
-                ))
-              }}
-#}
-
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->
@@ -58,6 +39,7 @@
                 {#{% if app.user.photo %}
                 <img class="img-profile rounded-circle" src="{{ vich_uploader_asset(app.user.photo, 'imageFile') }}" style="width: 40px;height:40px">
                 {% endif  %}#}
+                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
