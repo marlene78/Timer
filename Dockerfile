@@ -10,6 +10,10 @@ ARG NGINX_VERSION=1.17
 # "php" stage
 FROM php:${PHP_VERSION}-fpm-alpine AS symfony_php
 
+RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-install pdo_mysql
+
 # persistent / runtime deps
 RUN apk add --no-cache \
         acl \
@@ -140,3 +144,5 @@ FROM nginx:${NGINX_VERSION}-alpine AS symfony_h2-proxy
 RUN mkdir -p /etc/nginx/ssl/
 COPY --from=symfony_h2-proxy-cert server.key server.crt /etc/nginx/ssl/
 COPY ./docker/h2-proxy/default.conf /etc/nginx/conf.d/default.conf
+
+
