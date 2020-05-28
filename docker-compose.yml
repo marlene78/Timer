@@ -73,7 +73,9 @@ services:
     restart: always
     depends_on:
       - data
+    
     environment:
+      PMA_HOST: data
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root

@@ -59,9 +59,15 @@ class User implements UserInterface
      */
     private $groups;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Project::class, mappedBy="createur")
+     */
+    private $projetCree;
+
     public function __construct()
     {
         $this->groups = new ArrayCollection();
+        $this->projetCree = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -173,6 +179,42 @@ class User implements UserInterface
         if ($this->groups->contains($group)) {
             $this->groups->removeElement($group);
             $group->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nom; 
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getProjetCree(): Collection
+    {
+        return $this->projetCree;
+    }
+
+    public function addProjetCree(Project $projetCree): self
+    {
+        if (!$this->projetCree->contains($projetCree)) {
+            $this->projetCree[] = $projetCree;
+            $projetCree->setCreateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjetCree(Project $projetCree): self
+    {
+        if ($this->projetCree->contains($projetCree)) {
+            $this->projetCree->removeElement($projetCree);
+            // set the owning side to null (unless already changed)
+            if ($projetCree->getCreateur() === $this) {
+                $projetCree->setCreateur(null);
+            }
         }
 
         return $this;

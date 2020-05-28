@@ -3,32 +3,48 @@
 {% block title %}Liste des groupes{% endblock %}
 
 {% block body %}
-    <h1>Liste des groupes</h1>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Liste des groupes</h6>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered" id="dataTable"  width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Visualisation</th>
+                        <th>Éditer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for group in groups %}
+                    <tr>
+                        <td>{{ group.nom }}</td>
+                        <td>
+                            <a href="{{ path('group_show', {'id': group.id}) }}" class="btn btn-warning"><i class="fas fa-search"></i>Voir</a></td>
+                        <td>    
+                        <a href="{{ path('group_edit', {'id': group.id}) }}" class="btn btn-info"><i class="fas fa-edit"></i>Éditer</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Liste vide</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for group in groups %}
-            <tr>
-                <td>{{ group.id }}</td>
-                <td>{{ group.nom }}</td>
-                <td>
-                    <a href="{{ path('group_show', {'id': group.id}) }}">Voir</a>
-                    <a href="{{ path('group_edit', {'id': group.id}) }}">Éditer</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">Liste vide</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+
+
+    <a href="{{ path('home') }}" class="btn btn-secondary btn-icon-split">
+        <span class="icon text-gray-600">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span class="text">Retour</span>
+    </a>
+
 
 
 {% endblock %}
