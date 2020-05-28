@@ -2,10 +2,13 @@
 
 namespace App\Form;
 
+use App\Entity\User;
 use App\Entity\Group;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 
 class GroupType extends AbstractType
 {
@@ -13,7 +16,11 @@ class GroupType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('users')
+            ->add('users' , EntityType::class , [
+                'class' => User::class, 
+                'multiple' => true,
+                'attr' => ['class' => 'js-example-basic-single'],
+            ])
         ;
     }
 

@@ -30,9 +30,18 @@ class Group
      */
     private $users;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="groups")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $project;
+
+
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+       
     }
 
     public function getId(): ?int
@@ -74,6 +83,18 @@ class Group
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
         }
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): self
+    {
+        $this->project = $project;
 
         return $this;
     }

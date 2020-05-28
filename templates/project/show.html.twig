@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ project.nom }}{% endblock %}
+
+{% block body %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">{{ project.nom }}</h6>
+        </div>
+        <div class="card-body">
+            
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Nom</th>
+                <td>{{ project.nom }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Crée par</th>
+                <td>{{ project.createur.nom }} {{ project.createur.prenom }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ project.etat }}</td>
+                 <td></td>
+            </tr>
+            <tr>
+                <th>Date de debut</th>
+                <td>{{ project.dateDeDebut ? project.dateDeDebut|date('d-m-Y') : '' }}</td>
+                 <td></td>
+            </tr>
+            <tr>
+                <th>Date de fin</th>
+                <td>{{ project.DateDeFin ? project.DateDeFin|date('d-m-Y') : '' }}</td>
+                 <td></td>
+            </tr>
+            <tr>
+                <th>Groupe</th>
+                {% if project.groups is not empty %}
+                {% for group in project.groups %}
+                    <td>{{  group.nom }}</td>
+                    <td>
+                        <ul>
+                        {% for user in group.users %}
+                            <li>{{ user.nom }} {{ user.prenom }}</li>
+                        {% endfor %}
+                        </ul>
+                    </td>
+                {% endfor %}
+                {% else %}
+                    <td>Vous n'avez pas constitué votre équipe</td>
+                {% endif %}
+
+            {% if project.createur == app.user %}
+            <tr>
+                <td colspan="3">
+                    <a href="{{ path('project_edit', {'id': project.id}) }}" class="btn btn-info btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-edit"></i>
+                        </span>
+                        <span class="text">Mettre à jour</span>
+                    </a>
+                </td>
+            <tr>
+            {% endif %}
+            </tr>
+        </tbody>
+    </table>
+        </div>
+    </div>
+
+
+    <a href="{{ path('project_index') }}" class="btn btn-secondary btn-icon-split float-right">
+        <span class="icon text-gray-600">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span class="text">Retour</span>
+    </a>
+
+
+    {% if project.createur == app.user %}
+        {{ include('project/_delete_form.html.twig') }}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau projet{% endblock %}
+
+{% block body %}
+    <h1>Nouveau projet</h1>
+
+    {{ include('project/_form.html.twig') }}
+
+    <a href="{{ path('home') }}" class="btn btn-secondary btn-icon-split float-right">
+        <span class="icon text-gray-600">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span class="text">Retour</span>
+    </a>
+  
+{% endblock %}
+{% block javascripts %}
+<script>
+
+$(document).ready(function(){
+
+    /*CRÉER UN GROUPE*/
+    let $container = $('#project_groups');
+
+    let index = $container.find(':input').length;
+
+    $('#addGroup').click(function(e){
+        e.preventDefault();
+        addGroup($container);
+    })
+
+
+    function addGroup($container){
+
+        let tmp = $container.attr('data-prototype')
+        .replace(/__name__label/g, 'Groupe n° ' + (index + 1))
+        .replace(/__name/g, index);
+
+        let $prototype = $(tmp) ;
+        deleteGroup($prototype)
+
+        $container.append($prototype);
+
+        index++;
+
+    }
+
+    /*SUPPRIMER UN GROUPE*/
+    function deleteGroup($prototype){
+
+        let $deleteLink = $('<a href="#" class="btn btn-danger">Annuler</a>');
+
+        $prototype.append($deleteLink);
+
+        $deleteLink.click(function (e) {
+
+            $prototype.remove();
+
+            e.preventDefault(); // évite qu'un # apparaisse dans l'url
+
+            return false;
+        });
+
+    }
+
+
+
+      $('.js-example-basic-single').select2();
+
+
+
+
+
+
+
+
+
+
+});
+
+
+
+
+
+
+
+
+
+</script>
+
+
+{% endblock %}

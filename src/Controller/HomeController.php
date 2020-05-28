@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\GroupRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 class HomeController extends AbstractController
@@ -15,6 +16,7 @@ class HomeController extends AbstractController
      */
     public function index()
     {
+       
         return $this->render('home/index.html.twig');
     }
 }
