@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste de tâches{% endblock %}
+
+{% block body %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Liste des tâches</h6>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered" id="dataTable"  width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Date de debut</th>
+                        <th>Date de fin</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.nom }}</td>
+                        <td>{{ task.dateDeDebut ? task.dateDeDebut|date('d-m-Y') : '' }}</td>
+                        <td>{{ task.dateDeFin ? task.dateDeFin|date('d-m-Y') : '' }}</td>
+                        <td>
+                            {{ task.demarre ? 'En cours' : 'Non commencée' }}
+                        </td>
+                        {#<td>{{ task.cloture ? 'Yes' : 'No' }}</td>#}
+                        <td>
+                            <a href="{{ path('task_show', {'id': task.id}) }}" class="btn btn-warning"><i class="fas fa-search"></i> Voir</a>
+                            <a href="{{ path('task_edit', {'id': task.id}) }}"  class="btn btn-info"><i class="fas fa-edit"></i> Éditer</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        
+        <div>
+    </div>
+
+    <a href="{{ path('project_show' , {'id' : projet.id }) }}" class="btn btn-secondary btn-icon-split float-right">
+        <span class="icon text-gray-600">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span class="text">Retour</span>
+    </a>
+
+
+   
+{% endblock %}
