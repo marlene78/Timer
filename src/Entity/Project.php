@@ -53,9 +53,15 @@ class Project
      */
     private $groups;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="projet", orphanRemoval=true)
+     */
+    private $tasks;
+
     public function __construct()
     {
         $this->groups = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
     }
 
 
@@ -167,6 +173,43 @@ class Project
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): self
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks[] = $task;
+            $task->setProjet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): self
+    {
+        if ($this->tasks->contains($task)) {
+            $this->tasks->removeElement($task);
+            // set the owning side to null (unless already changed)
+            if ($task->getProjet() === $this) {
+                $task->setProjet(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    public function __toString()
+    {
+        return $this->nom; 
     }
 
 

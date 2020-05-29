@@ -9,25 +9,39 @@
 <div class="row">
 {% for group in app.user.groups %}
   
-      <div class="col-xl-3 col-md-6 mb-4">
-        <a href="{{ path('project_show' , {'id' : group.project.id })  }}" title="voir">
+      <div class="col-xl-6 col-md-6 mb-6">
+       
           <div class="card border-left-info shadow h-100 py-2">
             <div class="card-body">
               <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-info text-uppercase mb-1">{{ group.project.nom  }}</div>
-                  <div class="row no-gutters align-items-center">
-
-                    <div class="col-auto">
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">10%</div>
-                    </div>
-                    <div class="col">
-
-                        <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" style="width:19%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div> 
-                    </div>
+                  <div class="text-xl font-weight-bold text-info text-uppercase mb-1">
+                   <a href="{{ path('project_show' , {'id' : group.project.id })  }}" title="voir le projet">{{ group.project.nom  }}</a>
+                  
                   </div>
+                    Vous avez {{ group.project.tasks|length  }} {% if group.project.tasks|length > 1  %}tâches{% else %}tâche{% endif %} a effectuer
+               
+                  {% for task in   group.project.tasks %}
+                     <div class="row no-gutters align-items-center">
+               
+                    {% if task is not empty %}
+
+                      {% if task.demarre == 0 %}
+                        <div class="col-auto">
+                          <a href="{{ path('task_show' , {'id' : task.id }) }}" title="voir" class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ task.nom }} 0%</a>
+                        </div>
+                        <div class="col">
+
+                            <div class="progress progress-sm mr-2">
+                                <div class="progress-bar bg-info" role="progressbar" style="width:0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div> 
+                        </div>
+                      {% endif %}
+                    {% endif %}
+                      </div>
+                  {% endfor %}
+
+               
                 </div>
                 <div class="col-auto">
                   <i class="fas fa-hourglass-half fa-2x text-gray-300"></i>
@@ -35,7 +49,6 @@
               </div>
             </div>
           </div>
-        </a>
       </div>
   
 {% endfor %}
