@@ -1,13 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ project.nom }}{% endblock %}
-
 {% block body %}
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">{{ project.nom }}</h6>
         </div>
-        <div class="card-body">
+    <div class="card-body">
             
     <table class="table">
         <tbody>
@@ -35,6 +34,11 @@
                 <th>Date de fin</th>
                 <td>{{ project.DateDeFin ? project.DateDeFin|date('d-m-Y') : '' }}</td>
                  <td></td>
+            </tr>
+            <tr>
+                <th>Temps restant : </th>
+                <td id="projet"></td>
+                
             </tr>
             <tr>
                 <th>Groupe</th>
@@ -80,6 +84,7 @@
     </table>
         </div>
     </div>
+    
 
 
     <a href="{{ path('project_index') }}" class="btn btn-secondary btn-icon-split float-right">
@@ -93,4 +98,30 @@
     {% if project.createur == app.user %}
         {{ include('project/_delete_form.html.twig') }}
     {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        // date de debut et date de fin du projet 
+       
+        var fin = new Date("{{ project.DateDeFin ? project.DateDeFin|date('m-d-Y') : '' }}").getTime();
+        //Affichage du temps restant
+        var x = setInterval(function() {
+            var debut = new Date("{{ project.dateDeDebut ? project.dateDeDebut|date('m-d-Y') : '' }}").getTime();
+            
+            var interval = fin - debut;
+    
+            // Temps calculer pour  days, hours, minutes and seconds
+            var days = Math.floor(interval / (1000 * 60 * 60 * 24));
+            document.getElementById("projet").innerHTML = days + " jours ";
+                
+            // fin de l'interval temps 
+            if (interval < 0) {
+                clearInterval(x);
+                document.getElementById("projet").innerHTML = "Fini";
+            }
+            
+        }, 1000);
+    
+    </script>
 {% endblock %}
