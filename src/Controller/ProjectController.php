@@ -24,7 +24,7 @@ class ProjectController extends AbstractController
             'projects' => $projectRepository->findAll(),
         ]);
     }
-
+ 
     /**
      * @Route("/new", name="project_new", methods={"GET","POST"})
      */
