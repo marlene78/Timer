@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Repository\GroupRepository;
+use App\Repository\TaskRepository;
+
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,9 +15,13 @@ class HomeController extends AbstractController
      * @Route("/", name="home")
      * @IsGranted("ROLE_USER")
      */
-    public function index()
+    public function index(TaskRepository $repoTask)
     {
-       
-        return $this->render('home/index.html.twig');
+        
+        return $this->render('home/index.html.twig' , [
+            'user_tache' => $repoTask->findBy([
+                'user' => $this->getUser()
+            ])
+        ]);
     }
 }

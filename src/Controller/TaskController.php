@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Form\TaskType;
 use App\Entity\Project;
+use App\Form\EditTaskType;
 use App\Repository\TaskRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +42,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+          
             $entityManager = $this->getDoctrine()->getManager();
             $task->setProjet($project); 
             $entityManager->persist($task);
@@ -53,9 +55,11 @@ class TaskController extends AbstractController
             ]);
         }
 
+  
         return $this->render('task/new.html.twig', [
             'task' => $task,
             'form' => $form->createView(),
+            'projet' => $project, 
         ]);
     }
 
@@ -70,11 +74,11 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="task_edit", methods={"GET","POST"})
+     * @Route("/edit/{projet}/{id}", name="task_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Task $task): Response
     {
-        $form = $this->createForm(TaskType::class, $task);
+        $form = $this->createForm(EditTaskType::class, $task);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

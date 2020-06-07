@@ -30,18 +30,20 @@
                         {#<td>{{ task.cloture ? 'Yes' : 'No' }}</td>#}
                         <td>
                             <a href="{{ path('task_show', {'id': task.id}) }}" class="btn btn-warning"><i class="fas fa-search"></i> Voir</a>
-                            <a href="{{ path('task_edit', {'id': task.id}) }}"  class="btn btn-info"><i class="fas fa-edit"></i> Éditer</a>
+                            {% if task.projet.createur == app.user %}
+                            <a href="{{ path('task_edit', { 'projet' : task.projet.id  , 'id': task.id }) }}"  class="btn btn-info"><i class="fas fa-edit"></i> Éditer</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="7">no records found</td>
+                        <td colspan="7">Liste de vide</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         
-        <div>
+        </div>
     </div>
 
     <a href="{{ path('project_show' , {'id' : projet.id }) }}" class="btn btn-secondary btn-icon-split float-right">
