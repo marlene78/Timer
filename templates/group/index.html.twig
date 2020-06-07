@@ -21,10 +21,17 @@
                     <tr>
                         <td>{{ group.nom }}</td>
                         <td>
-                            <a href="{{ path('group_show', {'id': group.id}) }}" class="btn btn-warning"><i class="fas fa-search"></i>Voir</a></td>
-                        <td>    
-                        <a href="{{ path('group_edit', {'id': group.id}) }}" class="btn btn-info"><i class="fas fa-edit"></i>Éditer</a>
+                            <a href="{{ path('group_show', {'id': group.id}) }}" class="btn btn-warning"><i class="fas fa-search"></i>Voir</a>
                         </td>
+                        {% if group.project.createur == app.user %}
+                        <td>    
+                            <a href="{{ path('group_edit', {'id': group.id}) }}" class="btn btn-info"><i class="fas fa-edit"></i>Éditer</a>
+                        </td>
+                        {% else %}
+                        <td>
+                            Vous n'êtes pas autorisé(e) à modifier ce groupe
+                        </td>
+                        {% endif %}
                     </tr>
                 {% else %}
                     <tr>

@@ -88,11 +88,32 @@ class ProjectController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$project->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+
             $entityManager->remove($project);
+         
             $entityManager->flush();
             $this->addFlash("danger" , "Projet supprimé"); 
         }
 
         return $this->redirectToRoute('project_index');
     }
+
+
+    /**
+     * AFFICHE LES USER DU PROJET
+     * @Route("/getUsers" , name="get_users" , methods={"POST"} )
+     */
+    public function getUsers( Request $request , ProjectRepository $repo)
+    {
+
+        //normalize =>transforme un objet en tableau !aux références circulaire mettre un GROUPS
+        //serialize => transforme objet en tableau puis en json 
+
+        return $this->json($repo->find($request->request->get('id')), 200 , [] , ['groups' => 'get:info']); 
+
+
+    }
+
+
+    
 }

@@ -1,81 +1,83 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mes projets{% endblock %}
+{% block title %}Mes tâches{% endblock %}
 
 {% block body %}
-<h1 class="h3 mb-2 text-gray-800">Mes projets</h1>
+<h1 class="h3 mb-2 text-gray-800">Mes tâches</h1>
 
-{% if app.user.groups is not empty %}
-<div class="row">
-{% for group in app.user.groups %}
+  <a href="{{ path('project_new') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm float-right"><i class="fas fa-plus fa-sm text-white-50"></i> Créer un nouveau projet</a>
   
-      <div class="col-xl-6 col-md-6 mb-6">
-       
-          <div class="card border-left-info shadow h-100 py-2">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                  <div class="text-xl font-weight-bold text-info text-uppercase mb-1">
-                   <a href="{{ path('project_show' , {'id' : group.project.id })  }}" title="voir le projet">{{ group.project.nom  }}</a>
+
+{% if user_tache is not empty %}
+  <div class="row">
+
+  {% for tache in  user_tache  %}
+
+        <div class="col-xl-6 col-md-6 mb-6">
+        
+            <div class="card border-left-info shadow h-100 py-2">
+              <div class="card-body">
+                  <div class="float-right timer">Ici timer projet</div>
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xl font-weight-bold text-info text-uppercase mb-1">
+                      <a href="{{ path('project_show' , {'id' : tache.projet.id })  }}" title="voir le projet"> {{ tache.projet }}</a>    
+                    
+                    </div>
                   
+                        {# Vous avez  {% if loop.length > 1  %}tâches{% else %}tâche{% endif %} a effectuer #}
+                        <p class="mt-2">Tâche a éffectuer :<p>
+                        {% if tache.demarre == 0 %}
+                                  
+                          <a href="{{ path('task_show' , {'id' : tache.id }) }}" title="voir" class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ tache.nom }} 0%</a>
+                         
+                          <div class="progress progress-sm mr-2">
+                            <div class="progress-bar bg-info" role="progressbar" style="width:0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>  
+                          </div> 
+
+                          <div class="timer mt-4">
+                            Temps de travail : <br>
+                            (ici timer tâche)
+                          
+                          </div>
+              
+                       {% endif %}
                   </div>
-                    Vous avez {{ group.project.tasks|length  }} {% if group.project.tasks|length > 1  %}tâches{% else %}tâche{% endif %} a effectuer
-               
-                  {% for task in   group.project.tasks %}
-                     <div class="row no-gutters align-items-center">
-               
-                    {% if task is not empty %}
+                  
+                  <div class="col-auto">
+                    <i class="fas fa-hourglass-half fa-2x text-gray-300"></i>
+                  </div>
 
-                      {% if task.demarre == 0 %}
-                        <div class="col-auto">
-                          <a href="{{ path('task_show' , {'id' : task.id }) }}" title="voir" class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ task.nom }} 0%</a>
-                        </div>
-                        <div class="col">
-
-                            <div class="progress progress-sm mr-2">
-                                <div class="progress-bar bg-info" role="progressbar" style="width:0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div> 
-                        </div>
-                      {% endif %}
-                    {% endif %}
-                      </div>
-                  {% endfor %}
-
-               
-                </div>
-                <div class="col-auto">
-                  <i class="fas fa-hourglass-half fa-2x text-gray-300"></i>
                 </div>
               </div>
             </div>
-          </div>
-      </div>
-  
-{% endfor %}
+        </div>
+    
+  {% endfor %}
 
-</div>
+  </div>
 {% else %}
-<div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-      <h6 class="m-0 font-weight-bold text-primary">Projets</h6>
-      <div class="dropdown no-arrow">
-          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
-            <div class="dropdown-header">Découvrez les projets</div>
-              <a class="dropdown-item" href="{{ path('project_index')  }}">Voir</a>
-          </div>
+  <div class="card shadow mb-4">
+                  <!-- Card Header - Dropdown -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Projets</h6>
+        <div class="dropdown no-arrow">
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
+              <div class="dropdown-header">Découvrez les projets</div>
+                <a class="dropdown-item" href="{{ path('project_index')  }}">Voir</a>
+            </div>
+        </div>
       </div>
-    </div>
-    <div class="card-body">
-    
-        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 30rem;" src="{{ asset('images/43103.jpg') }}" alt="">
-    
-     Aucun projet ne vous a été attribué 
-    </div>
-</div>
+      <div class="card-body">
+      
+          <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 30rem;" src="{{ asset('images/43103.jpg') }}" alt="">
+      
+      Aucune tâche ne vous a été attribué 
+      </div>
+  </div>
 {% endif %}
 
 
