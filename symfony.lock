@@ -88,7 +88,7 @@
         "version": "2.2.3"
     },
     "php": {
-        "version": "7.4"
+        "version": "7.3"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -238,6 +238,9 @@
         "version": "v1.17.0"
     },
     "symfony/polyfill-php73": {
+        "version": "v1.17.0"
+    },
+    "symfony/polyfill-php80": {
         "version": "v1.17.0"
     },
     "symfony/property-access": {

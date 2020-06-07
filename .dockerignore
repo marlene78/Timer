@@ -15,7 +15,7 @@
 .php_cs.cache
 bin/*
 !bin/console
-docker/db/data/
+data/
 helm/
 public/bundles/
 var/
