@@ -53,12 +53,20 @@
       
                   {% endfor %}
 
+                  {% if erreur != null %}
+                    <div class="alert alert-danger">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                      <i class="fas fa-times"></i>
+                      {{ erreur }}   
+                    </div>
+                  {% endif %}
+
 
                     {{ include('user/_form.html.twig') }}
 
-                  <hr>
+                  <hr><hr>
                   <div class="text-center">
-                    <a class="small" href="">Mot de passe perdu</a>
+                    <a class="small" href="{{ path('login') }}">Se connecter</a>
                   </div>
            
                 </div>
