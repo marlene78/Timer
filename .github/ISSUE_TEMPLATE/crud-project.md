@@ -1,20 +1,16 @@
 ---
 name: Crud Project
-about: Suggest an idea for this project
+about: gestion d'un projet
 title: ''
 labels: ''
-assignees: ''
+assignees: 'marlene78'
 
 ---
 
 **Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+Permettre à un utilisateur d'administrer un projet; Création, Édition, Supression. 
+
 
 **Describe the solution you'd like**
-A clear and concise description of what you want to happen.
-
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
-
-**Additional context**
-Add any other context or screenshots about the feature request here.
+Le projet crée est visible par l'ensemble des utilisateurs. Seul l'administrateur du projet est 
+en mesure de modifier ou de supprimer le projet. 
