@@ -1,20 +1,18 @@
 ---
 name: Crud User
-about: Création compte utilisateur
+about: Création,gestion compte utilisateur
 title: ''
 labels: ''
-assignees: ''
+assignees: 'marlene78'
 
 ---
 
 **Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+Les fonctionnalités du site ne sont accessibles qu'aux utilisateurs inscrit afin de nous permettre 
+d'identifier l'identité de chacun. 
+
 
 **Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+Il est donc indispensables de leur permettre de créer un compte et de l'administrer. 
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
 
-**Additional context**
-Ce site est
