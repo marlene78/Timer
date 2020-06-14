@@ -1,20 +1,16 @@
 ---
 name: Crud Task
-about: Suggest an idea for this project
+about: Création et gestion d'une tâche
 title: ''
 labels: ''
-assignees: ''
+assignees: 'marlene78'
 
 ---
 
 **Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+Permettre à l'administrateur d'un projet , d'y ajouter une ou plusieurs tâches et de l'attribuer 
+à un utilisateur. 
 
 **Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+Interface d'administration d'une tâche
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
-
-**Additional context**
-Add any other context or screenshots about the feature request here.
