@@ -14,3 +14,5 @@ Permettre à un utilisateur d'administrer un projet; Création, Édition, Supres
 **Describe the solution you'd like**
 Le projet crée est visible par l'ensemble des utilisateurs. Seul l'administrateur du projet est 
 en mesure de modifier ou de supprimer le projet. 
+Un projet est composé d'un nom, d'une date de début et de fin , d'un ou plusieurs groupes , et une ou
+plusieurs tâches. 
