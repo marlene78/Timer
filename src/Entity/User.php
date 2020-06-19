@@ -50,7 +50,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\EqualTo(propertyPath="password" , message="Les deux mots de passe ne sont pas identiques")
+     * @Assert\NotBlank
      */
     private $confirmPassword;
 

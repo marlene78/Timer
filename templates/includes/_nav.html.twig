@@ -32,7 +32,7 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="{{ path('user_show' , {'id': app.user.id }) }}">Mes informations</a>
-            <a class="collapse-item" href="">Changer mon mot de passe</a>
+            <a class="collapse-item" href="{{ path('change_password' , {'id' : app.user.id }) }}">Changer mon mot de passe</a>
             <a class="collapse-item text-danger" href="{{ path('logout') }}">Déconnexion</a>
         
           </div>
