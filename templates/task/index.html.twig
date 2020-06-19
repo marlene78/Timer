@@ -3,6 +3,7 @@
 {% block title %}Liste de tâches{% endblock %}
 
 {% block body %}
+
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Liste des tâches</h6>
@@ -12,9 +13,10 @@
                 <thead>
                     <tr>
                         <th>Nom</th>
-                        <th>Date de debut</th>
-                        <th>Date de fin</th>
+                        {#<th>Date de création</th>#}
                         <th>Status</th>
+                        <th>priorité</th>
+                        <th>Temps estimé</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -22,12 +24,21 @@
                 {% for task in tasks %}
                     <tr>
                         <td>{{ task.nom }}</td>
-                        <td>{{ task.dateDeDebut ? task.dateDeDebut|date('d-m-Y') : '' }}</td>
-                        <td>{{ task.dateDeFin ? task.dateDeFin|date('d-m-Y') : '' }}</td>
+                        {#<td>{{ task.createdAt|date('d-m-Y h:m:s')}}</td>#}
                         <td>
                             {{ task.demarre ? 'En cours' : 'Non commencée' }}
                         </td>
                         {#<td>{{ task.cloture ? 'Yes' : 'No' }}</td>#}
+                        <td>
+                            {% if task.priorite == "Maximale" %}
+                                {{task.priorite}}   <i class="fas fa-exclamation" style="color: red;"></i>
+                            {% elseif task.priorite == "Elevé"%}
+                                {{task.priorite}}   <i class="fas fa-exclamation-circle" style="color: red;"></i>
+                            {% else %}
+                            {{task.priorite}} <i class="fas fa-exclamation" style="color: green;"></i>
+                            {% endif %}
+                        </td>
+                        <td>{{task.tempsEstime}}mn</td>
                         <td>
                             <a href="{{ path('task_show', {'id': task.id}) }}" class="btn btn-warning"><i class="fas fa-search"></i> Voir</a>
                             {% if task.projet.createur == app.user %}

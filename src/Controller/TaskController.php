@@ -3,13 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Entity\Timer;
 use App\Form\TaskType;
 use App\Entity\Project;
+use App\Service\Progress;
 use App\Form\EditTaskType;
 use App\Repository\TaskRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -40,6 +43,7 @@ class TaskController extends AbstractController
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
+        
 
         if ($form->isSubmitted() && $form->isValid()) {
           
@@ -64,13 +68,50 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="task_show", methods={"GET"})
+     * @Route("/show/{id}", name="task_show", methods={"GET","POST"})
      */
-    public function show(Task $task): Response
+    public function show(Task $task, Request $request, Progress $progressBar): Response
     {
+        $repoTache = $this->getDoctrine()->getRepository(Task::class)->findAll();
+
+        foreach($repoTache as $tache){
+            $TempsEstime = $tache->getTempsEstime();
+            $TE = $tache->getTimer();
+        }
+        
+        $TempsEcoule = $progressBar->formatValue(".$TE.") ;
         return $this->render('task/show.html.twig', [
             'task' => $task,
+            'timeProgresse' => $progressBar->progressBar($TempsEstime, $TempsEcoule),
         ]);
+    }
+    /**
+     * @Route("/set/timer/{id}", name="task_set_time", methods={"GET"})
+     */
+    public function setTimer(Request $request, Task $task): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        if($task->getTimer()==""){
+            $timer = new Timer();
+            $timer->setTime($request->query->get('time'));
+            $timer->setTask($task);
+            $task->setDemarre(1);
+            $entityManager->persist($timer);
+        }else{
+            $task->getTimer()->setTime($request->query->get('time'));
+        }
+            $entityManager->flush(); 
+        
+            return new JsonResponse("ok", 200);
+    }
+
+    /**
+    * @Route("/getTime_task", name="task_get_time", methods={"POST"})
+    */
+    public function getTimer(Request $request, TaskRepository $repo): Response
+    {
+       return $this->json($repo->find($request->request->get("id")), 200, [], ["groups"=>"get:info"]);
+        
     }
 
     /**

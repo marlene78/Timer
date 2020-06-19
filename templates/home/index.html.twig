@@ -4,8 +4,6 @@
 
 {% block body %}
 <h1 class="h3 mb-2 text-gray-800">Mes tâches</h1>
-
-
 {% if user_tache is not empty %}
 
   <div class="row">
@@ -16,29 +14,44 @@
         
             <div class="card border-left-info shadow h-100 py-2">
               <div class="card-body">
-                  <div class="float-right timer">Ici timer projet</div>
+                  <div class="float-right timer text-warning">Temps restant du projet : {{ tache.projet.timerProject}} </div>
                 <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
                     <div class="text-xl font-weight-bold text-info text-uppercase mb-1">
                       <a href="{{ path('project_show' , {'id' : tache.projet.id })  }}" title="voir le projet"> {{ tache.projet }}</a>    
                     
                     </div>
-                  
-                        {# Vous avez  {% if loop.length > 1  %}tâches{% else %}tâche{% endif %} a effectuer #}
                         <p class="mt-2">Tâche a éffectuer :<p>
                         {% if tache.demarre == 0 %}
                                   
                           <a href="{{ path('task_show' , {'id' : tache.id }) }}" title="voir" class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ tache.nom }} 0%</a>
-                         
+                          
                           <div class="progress progress-sm mr-2">
                             <div class="progress-bar bg-info" role="progressbar" style="width:0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>  
                           </div> 
 
                           <div class="timer mt-4">
                             Temps de travail : <br>
-                            (ici timer tâche)
+                            {{ tache.timer }}
                           
                           </div>
+                        {% else %}
+                          <a href="{{ path('task_show' , {'id' : tache.id }) }}" title="voir" class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ tache.nom }} {{ timeProgresse }}%</a>
+                          
+                          <div class="progress progress-sm mr-2">
+                            <div class="progress-bar bg-info" role="progressbar" style="width:{{ timeProgresse }}%" aria-valuenow="{{ timeProgresse }}" aria-valuemin="0" aria-valuemax="100"></div>  
+                          </div> 
+                          
+                          <div class="timer mt-4">
+                            {% if timeProgresse != 100 %}
+                            Temps de travail : <br>
+                            {{ tache.timer }}
+
+                            {% else %}
+                              <span class="text-danger">Tâche terminée.</span>
+                            {% endif %}
+                          </div>
+
               
                        {% endif %}
                   </div>

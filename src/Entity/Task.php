@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\TaskRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TaskRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -23,16 +25,6 @@ class Task
      * @ORM\Column(type="string", length=255)
      */
     private $nom;
-
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $dateDeDebut;
-
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $dateDeFin;
 
     /**
      * @ORM\Column(type="boolean")
@@ -56,6 +48,28 @@ class Task
      */
     private $projet;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Timer::class, mappedBy="task", cascade={"persist", "remove"})
+     * @Groups("get:info")
+     */
+    private $timer;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $priorite;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\Positive
+     */
+    private $tempsEstime;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,30 +83,6 @@ class Task
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getDateDeDebut(): ?\DateTimeInterface
-    {
-        return $this->dateDeDebut;
-    }
-
-    public function setDateDeDebut(\DateTimeInterface $dateDeDebut): self
-    {
-        $this->dateDeDebut = $dateDeDebut;
-
-        return $this;
-    }
-
-    public function getDateDeFin(): ?\DateTimeInterface
-    {
-        return $this->dateDeFin;
-    }
-
-    public function setDateDeFin(\DateTimeInterface $dateDeFin): self
-    {
-        $this->dateDeFin = $dateDeFin;
 
         return $this;
     }
@@ -154,6 +144,60 @@ class Task
     
         $this->demarre = 0; 
         $this->cloture = 0;
+        $this->createdAt = new \DateTime();
+    }
+
+    public function getTimer(): ?Timer
+    {
+        return $this->timer;
+    }
+
+    public function setTimer(Timer $timer): self
+    {
+        $this->timer = $timer;
+
+        // set the owning side of the relation if necessary
+        if ($timer->getTask() !== $this) {
+            $timer->setTask($this);
+        }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getPriorite(): ?string
+    {
+        return $this->priorite;
+    }
+
+    public function setPriorite(string $priorite): self
+    {
+        $this->priorite = $priorite;
+
+        return $this;
+    }
+
+    public function getTempsEstime(): ?int
+    {
+        return $this->tempsEstime;
+    }
+
+    public function setTempsEstime(int $tempsEstime): self
+    {
+        $this->tempsEstime = $tempsEstime;
+
+        return $this;
     }
 
 
