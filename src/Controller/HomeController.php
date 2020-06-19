@@ -23,7 +23,7 @@ class HomeController extends AbstractController
     {
         $projects = $this->getDoctrine()->getRepository(Project::class)->findAll();
         $repoTache = $this->getDoctrine()->getRepository(Task::class)->findAll();
-
+        $TE;
         foreach($repoTache as $tache){
             $TempsEstime = $tache->getTempsEstime();
             $TE = $tache->getTimer();

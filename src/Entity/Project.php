@@ -18,7 +18,7 @@ class Project
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer") 
      */
     private $id;
 
@@ -65,29 +65,6 @@ class Project
      * @ORM\PrePersist 
      * @ORM\PreUpdate
      */
-    public function timerProject(){
-        date_default_timezone_set('Europe/Paris');
-        $debut = strtotime($this->dateDeDebut->format('Y/m/d'));
-        $fin = strtotime($this->DateDeFin->format('Y/m/d'));
-        $diff = $fin - $debut;
-        ///$resultat = array();
-       // $resultat['second'] = $diff ;
-        $heures = $diff / 3600;
-        $jour = $heures /24;
-        //si le temps restant est 1jour on convertis en heure
-         if($jour == 0){
-            $heure = 24;
-            $resultat = $heure - date('h');
-
-            return $resultat. ' h';
-
-        }
-        else{ 
-            return $jour.' j';
-        }
-
-        
-    }
 
     public function __construct()
     {
