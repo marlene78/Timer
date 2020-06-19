@@ -3,6 +3,38 @@
     background-position: center;
     background-size: cover;
   }
+
+.chronometre{
+    margin: auto ;
+    width: 300px;
+    text-align: center;
+    
+  }
+
+.tim{
+      margin: auto;
+      width: 300px;
+      padding:5px 0;
+      text-align: center;
+      font-size: 1.5em;
+      font-family: digital;
+      margin-bottom: 10px;
+
+
+}
+.blinking{
+  animation:blinkingText 2s infinite;
+  font-weight: 90;
+
+}
+@keyframes blinkingText{
+  0%{     color:red;    }
+  49%{    color: red; }
+  60%{    color: transparent; }
+  99%{    color:transparent;  }
+  100%{   color: red;    }
+}
+
   
 .cacher{display: none;}
 .cacher.visible{display: block;}

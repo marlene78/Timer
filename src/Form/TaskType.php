@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
 class TaskType extends AbstractType
@@ -25,8 +26,16 @@ class TaskType extends AbstractType
         $builder
        
             ->add('nom')
-            ->add('dateDeDebut')
-            ->add('dateDeFin')
+            ->add('priorite',ChoiceType::class,[
+                'choices' => [
+                    "Normale"=>"Normale",
+                    "Maximale"=>"Maximale",
+                    "Elevé"=>"Elevé",
+                ]
+            ])  
+            ->add('tempsEstime', null,[
+                "label"=>"Temps estimé en heure"
+            ])  
             ->add('user' , EntityType::class,[
                 'class' => User::class,
                 'query_builder' => function (UserRepository $u) {
@@ -36,7 +45,6 @@ class TaskType extends AbstractType
                     ->leftJoin('g.project' , 'p')
                     ->where('p.id =:val')
                     ->setParameter('val', $tab_url[4])
-                  
                     ;
                 }
             ])

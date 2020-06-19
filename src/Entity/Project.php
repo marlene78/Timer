@@ -39,7 +39,7 @@ class Project
 
     /**
      * @ORM\Column(type="date")
-     * @Assert\GreaterThan(propertyPath="dateDeDebut" , message="La date de fin doit être supérieur à la date de début")
+     * @Assert\GreaterThanOrEqual(propertyPath="dateDeDebut" , message="La date de fin doit être supérieur à la date de début")
      * 
      */
     private $DateDeFin;
@@ -61,6 +61,33 @@ class Project
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="projet", orphanRemoval=true)
      */
     private $tasks;
+    /**
+     * @ORM\PrePersist 
+     * @ORM\PreUpdate
+     */
+    public function timerProject(){
+        date_default_timezone_set('Europe/Paris');
+        $debut = strtotime($this->dateDeDebut->format('Y/m/d'));
+        $fin = strtotime($this->DateDeFin->format('Y/m/d'));
+        $diff = $fin - $debut;
+        ///$resultat = array();
+       // $resultat['second'] = $diff ;
+        $heures = $diff / 3600;
+        $jour = $heures /24;
+        //si le temps restant est 1jour on convertis en heure
+         if($jour == 0){
+            $heure = 24;
+            $resultat = $heure - date('h');
+
+            return $resultat. ' h';
+
+        }
+        else{ 
+            return $jour.' j';
+        }
+
+        
+    }
 
     public function __construct()
     {

@@ -4,40 +4,77 @@
 
 {% block body %}
 
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-4">   
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">{{ task.nom }}</h6>
+            <div class="chronometre float-right ">
+                {% if timeProgresse != 100 %}
+                    <div class="tim shadow-sm float-right">
+                        {% if task.timer is not empty %}
+                            {{task.timer}}
+                        {% else %}
+                            <span class='sp'>0 h</span> :
+                            <span class='sp'>0 min</span> :
+                            <span class='sp'>0 s</span> 
+                        
+                        {% endif %}
+            
+                    </div>
+                <button id="start" class="btn btn-info" onclick="start()"><i class="fas fa-play"></i></button>
+                <button id="stop" class="btn btn-danger" onclick="stop()" ><i class="fas fa-stop"></i></button>
+                {% else %}
+                <div class="tim shadow-sm float-right">Temps fini</div>
+                <span class="blinking font-italic">Pour augmenter le temps cliquez sur le bouton <span style="font-weight: bold;">Mettre à jour</span></span>
+                {% endif %}
+            </div>
         </div>
         <div class="card-body">
+           
             <table class="table">
                 <tbody>
                     <tr>
                         <th>Nom</th>
                         <td>{{ task.nom }}</td>
+                        
                     </tr>
                     <tr>
-                        <th>Date de debut</th>
-                        <td>{{ task.dateDeDebut ? task.dateDeDebut|date('d-m-Y') : '' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Date de Fin</th>
-                        <td>{{ task.dateDeFin ? task.dateDeFin|date('d-m-Y') : '' }}</td>
+                        <th>Date de création</th>
+                        <td>{{task.createdAt|date('d-m-Y')}} à {{task.createdAt|date('h')}}h : {{task.createdAt|date('m')}}mn : {{task.createdAt|date('s')}}s</td>
+                        
                     </tr>
                     <tr>
                         <th>Attribué à</th>
                         <td>{{ task.user.nom  }} {{ task.user.prenom  }}</td>
                     </tr>
-                    {% if task.projet.createur == app.user %}
                     <tr>
-                        <td colspan="2">
-                            <a href="{{ path('task_edit', {'projet' : task.projet.id  , 'id': task.id }) }}" class="btn btn-info btn-icon-split">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-edit"></i>
-                                </span>
-                                <span class="text">Mettre à jour</span>
-                            </a>
+                        <th>Temps estimé</th>
+                        <td>{{task.tempsEstime}} minutes</td>
+                    </tr>
+                    <tr>
+                        <th>Priorité</th>
+                        <td>
+                            {% if task.priorite == "Maximale" %}
+                                {{task.priorite}}   <i class="fas fa-exclamation" style="color: red;"></i>
+                            {% elseif task.priorite == "Elevé"%}
+                                {{task.priorite}}   <i class="fas fa-exclamation-circle" style="color: red;"></i>
+                            {% else %}
+                            {{task.priorite}} <i class="fas fa-exclamation" style="color: green;"></i>
+                            {% endif %}
                         </td>
-                    <tr>
+                    </tr>
+
+                    {% if task.projet.createur == app.user %}
+                        <tr>
+                            <td colspan="2">
+                                <a href="{{ path('task_edit', {'projet' : task.projet.id  , 'id': task.id }) }}" class="btn btn-info btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                    <span class="text">Mettre à jour</span>
+                                </a>
+                            </td>
+                           
+                        <tr>
                     {% endif %}
                 </tbody>
             </table>
@@ -58,10 +95,127 @@
         </span>
         <span class="text">Voir le projet</span>
     </a>
-
+    <input type="hidden" id="id_task" value="{{ task.id }}">
+   
 
     <br><br><br>
     {% if task.projet.createur == app.user %}
         {{ include('task/_delete_form.html.twig') }}
     {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        var sp = document.getElementsByClassName("sp");
+        var btn_start=document.getElementById("start");
+        var btn_stop=document.getElementById("stop");
+        var s=0,mn=0,h=0;
+        var time;
+        var tempsRecupere;
+        var temps;
+        var t;
+
+        
+        //La fonction "start" démarre un appel répétitive de la fonction update_chrono 
+    
+        function start(){
+            //recupére la valeur depuis la base de donnée
+           $.ajax({
+                method:"post",
+                url:"/user/task/getTime_task",
+                data:"id="+$("#id_task").val(),
+                success:function(response){
+                    tempsRecupere = response.timer.time;
+                    if(tempsRecupere!=""){
+       
+                        var timeSpace = tempsRecupere.replace(/ /g,"");
+                        var timeH = timeSpace.replace('h',"");
+                        var timeMn = timeH.replace('mn',"");
+                        var timeClean = timeMn.replace('s',"");
+                       // var timeClean = timeSec.replace('ms',"");
+                        var delimiteur = ':';
+                        
+        
+                        time = timeClean.split(delimiteur);
+                        //ms = parseInt(time[3]);
+                        s = parseInt(time[2]);
+                        mn = parseInt(time[1]);
+                        h = parseInt(time[0]);
+
+                        sessionStorage.setItem("h",h );
+                        sessionStorage.setItem("mn",mn );
+                        sessionStorage.setItem("s", s);
+                        //sessionStorage.setItem("ms", ms);
+
+                   } 
+                },
+                error:function(){
+                    alert("erreur");
+                }
+            })
+            btn_start.disabled=true;
+           // sessionStorage.getItem("ms") != null ? ms = parseInt(sessionStorage.getItem("ms")) : ms = 0;
+            sessionStorage.getItem("s") != null ? s = parseInt(sessionStorage.getItem("s")) : s = 0;
+            sessionStorage.getItem("mn") != null ? mn = parseInt(sessionStorage.getItem("mn")) : mn = 0;
+            sessionStorage.getItem("h") != null ? h = parseInt(sessionStorage.getItem("h")) : mn = 0;
+           // setTimeout(update_chrono, 1000);
+            t = setInterval(update_chrono,1000);  
+        
+        }
+        
+         /*La fonction update_chrono incrémente le nombre de millisecondes par 1 <==> 1*cadence = 100 */
+        function update_chrono(){
+
+            //ms++;
+            s++ ;  
+
+           /*on teste si s=60 pour incrémenter le nombre de minute*/
+           if(s==60){
+               s=0;
+               mn+=1;
+           }
+           if(mn==60){
+               mn=0;
+               h+=1;
+           }
+            //afficher les nouvelle valeurs
+            let html="";
+            html+="<span id='heure' data-heure="+h+">"+h+ " h : </span>";
+            html+="<span id='min' data-min="+mn+">"+mn+ " mn : </span>";
+            html+="<span id='sec' data-sec="+s+">"+s+ " s  </span>";
+
+            $(".tim").empty();
+            $(".tim").append(html);
+
+        }
+        
+        
+        /*on arrête le "timer" par clearInterval ,on réactive le bouton start */
+        function stop(){
+            let temps = $("#heure").data("heure")+ " h : "+ $("#min").data("min") + " mn : "+ $("#sec").data("sec") + " s  ";
+            clearInterval(t);
+            btn_start.disabled=false;
+            //On envoie la valeur à notre contrôlleur pour l'enregistrer dans la base 
+            $.ajax({
+                method:"get",
+                url:"/user/task/set/timer/"+$("#id_task").val(),
+                data: "time="+temps,
+                success:function(response){
+                    if(response == "ok"){
+                        sessionStorage.removeItem("h");
+                        sessionStorage.removeItem("mn");
+                        sessionStorage.removeItem("s");
+                    }
+                },
+                error:function(){
+                    alert("erreur");
+                }
+            })
+        
+            
+        }
+    
+    </script>
+
+
 {% endblock %}
