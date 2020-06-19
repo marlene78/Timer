@@ -1,20 +1,18 @@
 ---
 name: Timer
-about: Suggest an idea for this project
+about: Gestion du temps de travail et des delais. 
 title: ''
 labels: ''
-assignees: ''
+assignees: '@Anta221'
 
 ---
 
 **Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+Permettre à l'utilisateur de gérer son temps de travail , tous en respectant les délais imposés. 
 
 **Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+Mettre en place un miniteur qui permet à l'utilisateur de voir le temps consacré à une tâche.
+Afficher le pourcentage d'accomplissement de la tâche en fonction du temps estimé. 
+Mettre en place un compteur pour chaque projet, affichant le temps restant avant la date de fin du projet. 
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
