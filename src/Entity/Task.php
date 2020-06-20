@@ -70,6 +70,11 @@ class Task
      */
     private $tempsEstime;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -196,6 +201,18 @@ class Task
     public function setTempsEstime(int $tempsEstime): self
     {
         $this->tempsEstime = $tempsEstime;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
