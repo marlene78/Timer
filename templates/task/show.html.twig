@@ -7,26 +7,28 @@
     <div class="card shadow mb-4">   
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">{{ task.nom }}</h6>
-            <div class="chronometre float-right ">
-                {% if timeProgresse != 100 %}
-                    <div class="tim shadow-sm float-right">
-                        {% if task.timer is not empty %}
-                            {{task.timer}}
-                        {% else %}
-                            <span class='sp'>0 h</span> :
-                            <span class='sp'>0 min</span> :
-                            <span class='sp'>0 s</span> 
-                        
-                        {% endif %}
-            
-                    </div>
-                <button id="start" class="btn btn-info" onclick="start()"><i class="fas fa-play"></i></button>
-                <button id="stop" class="btn btn-danger" onclick="stop()" ><i class="fas fa-stop"></i></button>
-                {% else %}
-                <div class="tim shadow-sm float-right">Temps fini</div>
-                <span class="blinking font-italic">Pour augmenter le temps cliquez sur le bouton <span style="font-weight: bold;">Mettre à jour</span></span>
-                {% endif %}
-            </div>
+            {% if task.user == app.user %}
+                <div class="chronometre float-right ">
+                    {% if timeProgresse != 100 %}
+                        <div class="tim shadow-sm float-right">
+                            {% if task.timer is not empty %}
+                                {{task.timer}}
+                            {% else %}
+                                <span class='sp'>0 h</span> :
+                                <span class='sp'>0 min</span> :
+                                <span class='sp'>0 s</span> 
+                            
+                            {% endif %}
+                
+                        </div>
+                    <button id="start" class="btn btn-info" onclick="start()"><i class="fas fa-play"></i></button>
+                    <button id="stop" class="btn btn-danger" onclick="stop()" ><i class="fas fa-stop"></i></button>
+                    {% else %}
+                    <div class="tim shadow-sm float-right">Temps fini</div>
+                    <span class="blinking font-italic">Pour augmenter le temps cliquez sur le bouton <span style="font-weight: bold;">Mettre à jour</span></span>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
         <div class="card-body">
            
@@ -48,7 +50,7 @@
                     </tr>
                     <tr>
                         <th>Temps estimé</th>
-                        <td>{{task.tempsEstime}} minutes</td>
+                        <td>{{task.tempsEstime}} heure(s)</td>
                     </tr>
                     <tr>
                         <th>Priorité</th>
@@ -61,6 +63,10 @@
                             {{task.priorite}} <i class="fas fa-exclamation" style="color: green;"></i>
                             {% endif %}
                         </td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{task.description}}</td>
                     </tr>
 
                     {% if task.projet.createur == app.user %}
