@@ -49,5 +49,5 @@ Liste de(s) auteur(s) du projet!
 
 ## License
 
-Ce projet est sous licence ``exemple: WTFTPL`` - voir le fichier [LICENSE.md](LICENSE.md) pour plus d'informations
+Ce projet est sous licence ``GNU GENERAL PUBLIC LICENSE`` - voir le fichier [LICENSE.md](LICENSE.md) pour plus d'informations
 
