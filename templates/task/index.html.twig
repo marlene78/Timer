@@ -38,7 +38,7 @@
                             {{task.priorite}} <i class="fas fa-exclamation" style="color: green;"></i>
                             {% endif %}
                         </td>
-                        <td>{{task.tempsEstime}}mn</td>
+                        <td>{{task.tempsEstime}} heure(s)</td>
                         <td>
                             <a href="{{ path('task_show', {'id': task.id}) }}" class="btn btn-warning"><i class="fas fa-search"></i> Voir</a>
                             {% if task.projet.createur == app.user %}

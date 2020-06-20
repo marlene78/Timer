@@ -48,6 +48,7 @@ class TaskType extends AbstractType
                     ;
                 }
             ])
+            ->add('description')
         ;
     }
 

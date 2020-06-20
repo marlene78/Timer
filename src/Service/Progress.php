@@ -44,7 +44,7 @@ class Progress{
             $sec = intval($tabtempsEcoule[2]);
             
             $tempsEcouleSeconds = $this->convertToSecond($heure, $mn, $sec);
-            $tempsEstimeSeconds = $tempsEstime * 60;
+            $tempsEstimeSeconds = $tempsEstime * 3600;
     
             
             $progressBar =  ($tempsEcouleSeconds * self::MAX) / $tempsEstimeSeconds;

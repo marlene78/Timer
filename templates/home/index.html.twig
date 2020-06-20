@@ -3,6 +3,7 @@
 {% block title %}Mes tâches{% endblock %}
 
 {% block body %}
+{{ timeProgresse }}
 
 <h1 class="h3 mb-2 text-gray-800">Mes tâches</h1>
 {% if user_tache is not empty %}
@@ -32,8 +33,8 @@
                           </div> 
 
                           <div class="timer mt-4">
-                            Temps de travail : <br>
-                            {{ tache.timer }}
+                            Temps de travail non initialisé <br>
+                            
                           
                           </div>
                         {% else %}

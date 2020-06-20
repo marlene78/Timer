@@ -50,6 +50,7 @@ class EditTaskType extends AbstractType
                     ;
                 }
             ])
+            ->add('description')
         ;
     }
 
