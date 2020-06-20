@@ -46,7 +46,7 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash("success" , "Félicitation ". $user->getPrenom() ." votre compte à été créer"); 
+            $this->addFlash("success" , "Félicitation ". $user->getPrenom() ." votre compte à été créer, vous pouvez vous connecter"); 
 
             return $this->redirectToRoute('home');
         }

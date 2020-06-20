@@ -4,12 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Form\ProjectType;
-use App\Service\TimerProject;
 use App\Repository\ProjectRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/user/project")
@@ -25,7 +24,7 @@ class ProjectController extends AbstractController
             'projects' => $projectRepository->findAll(),
         ]);
     }
-  
+ 
     /**
      * @Route("/new", name="project_new", methods={"GET","POST"})
      */
@@ -54,12 +53,10 @@ class ProjectController extends AbstractController
     /**
      * @Route("/{id}", name="project_show", methods={"GET"})
      */
-    public function show(Project $project, TimerProject $timeprojet): Response
+    public function show(Project $project): Response
     {
-        $timerProjet = $timeprojet->afficheTime();
         return $this->render('project/show.html.twig', [
             'project' => $project,
-            'timerProjet' => $timerProjet,
         ]);
     }
 

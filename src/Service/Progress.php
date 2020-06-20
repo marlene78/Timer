@@ -35,20 +35,25 @@ class Progress{
      */
     public function progressBar($tempsEstime, $tempsEcoule){
 
-        $delimiter = ":";
-        $tabtempsEcoule= explode($delimiter,$tempsEcoule );
-         
-        $heure = intval($tabtempsEcoule[0]);
-        $mn = intval($tabtempsEcoule[1]);
-        $sec = intval($tabtempsEcoule[2]);
-        
-        $tempsEcouleSeconds = $this->convertToSecond($heure, $mn, $sec);
-        $tempsEstimeSeconds = $tempsEstime * 60;
-
-        
-        $progressBar =  ($tempsEcouleSeconds * self::MAX) / $tempsEstimeSeconds;
-
-        return round($progressBar, 1);
+        if( $tempsEcoule != null){
+            $delimiter = ":";
+            $tabtempsEcoule= explode($delimiter,$tempsEcoule );
+             
+            $heure = intval($tabtempsEcoule[0]);
+            $mn = intval($tabtempsEcoule[1]);
+            $sec = intval($tabtempsEcoule[2]);
+            
+            $tempsEcouleSeconds = $this->convertToSecond($heure, $mn, $sec);
+            $tempsEstimeSeconds = $tempsEstime * 60;
+    
+            
+            $progressBar =  ($tempsEcouleSeconds * self::MAX) / $tempsEstimeSeconds;
+    
+            return round($progressBar, 1);
+        }else{
+            return null ; 
+        }
+     
     }
 
     /**

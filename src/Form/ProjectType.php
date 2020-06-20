@@ -25,6 +25,7 @@ class ProjectType extends AbstractType
                 'required' => false,
                 'label' => 'GROUPE'
             ])
+            ->add('description')
         ;
     }
 
