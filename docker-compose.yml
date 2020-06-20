@@ -42,5 +42,3 @@ services:
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root
-      
-
