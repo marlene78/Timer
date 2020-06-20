@@ -18,7 +18,7 @@ class Project
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer") 
      */
     private $id;
 
@@ -61,6 +61,11 @@ class Project
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="projet", orphanRemoval=true)
      */
     private $tasks;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
     /**
      * @ORM\PrePersist 
      * @ORM\PreUpdate
@@ -70,20 +75,35 @@ class Project
         $debut = strtotime($this->dateDeDebut->format('Y/m/d'));
         $fin = strtotime($this->DateDeFin->format('Y/m/d'));
         $diff = $fin - $debut;
-        ///$resultat = array();
-       // $resultat['second'] = $diff ;
+        $timeNow = strtotime('now');
         $heures = $diff / 3600;
         $jour = $heures /24;
-        //si le temps restant est 1jour on convertis en heure
-         if($jour == 0){
-            $heure = 24;
-            $resultat = $heure - date('h');
+        $interval =  $debut -$timeNow;
 
-            return $resultat. ' h';
+       
+       if($timeNow < $debut ){
+           
+           $days = round($interval*1000 / (1000 * 60 * 60 * 24));
+           //$t = date('d F Y', $diff);
+           $resultat = ($days!==0)? "Le projet débutera dans ". $days. " jours." :  "Le projet débutera dans quelques heures. ";
+           return $resultat;
+       }
+       else{
+            //si le temps restant est 1jour on convertis en heure
+            if($jour == 0){
+                $heure = 24;
+                $tempsRestant = $heure - date('h');
 
-        }
-        else{ 
-            return $jour.' j';
+                if($tempsRestant == 0){
+                    $resultat = "Projet terminé";
+                }
+                $resultat = $tempsRestant;
+                return "Le projet débutera dans ". $resultat. ' heures';
+
+            } 
+            else{ 
+                return 'Temps restant du projet :'.$jour.' j';
+            }
         }
 
         
@@ -241,6 +261,18 @@ class Project
     public function __toString()
     {
         return $this->nom; 
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
 

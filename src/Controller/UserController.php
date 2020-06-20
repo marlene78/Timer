@@ -55,8 +55,12 @@ class UserController extends AbstractController
                 $erreur = "Les deux mots de passe ne sont pas identiques"; 
             }
 
+            $entityManager->persist($user);
+            $entityManager->flush();
 
-     
+            $this->addFlash("success" , "Félicitation ". $user->getPrenom() ." votre compte à été créer, vous pouvez vous connecter"); 
+
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('user/new.html.twig', [

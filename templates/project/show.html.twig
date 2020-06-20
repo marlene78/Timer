@@ -36,16 +36,16 @@
                  <td></td>
             </tr>
             <tr>
-                <th>Temps restant : </th>
+                <th>Durée du projet </th>
                 <td id="projet"></td>
+                <td></td>
                 
             </tr>
             <tr>
                 <th>Groupe</th>
                 {% if project.groups is not empty %}
                 {% for group in project.groups %}
-                    <td>{{  group.nom }}</td>
-                    <td>
+                    <td>{{  group.nom }}
                         <ul>
                         {% for user in group.users %}
                             <li>{{ user.nom }} {{ user.prenom }}</li>
@@ -56,6 +56,11 @@
                 {% else %}
                     <td>Vous n'avez pas constitué votre équipe</td>
                 {% endif %}
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ project.description }}</td>
+                 <td></td>
             </tr>
             <tr>
                 <td colspan="3">
@@ -113,7 +118,7 @@
     
             // Temps calculer pour  days, hours, minutes and seconds
             var days = Math.floor(interval / (1000 * 60 * 60 * 24));
-            document.getElementById("projet").innerHTML = days + " jours ";
+            document.getElementById("projet").innerHTML = days + " jour(s) ";
                 
             // fin de l'interval temps 
             if (interval < 0) {
