@@ -1,79 +1,49 @@
 <?php
+
 namespace App\Service;
 
-
 class Progress{
-    
-    const MAX = 100;
-
-
-    /**
-     * @name convertToSecond()
-     * @param int $h, $m, $s 
-     * @return int la somme des secondes calculée à partir des paramétres 
+        /**
+     * pourcentage du temps de travail selon le temps estimé
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
      */
-    public function convertToSecond($h, $m, $s){
-        
-        $heures = $h * 3600; 
-        $minutes = $m *60;
-        $seconds = $s;
-
-        $tempsEnSeconds = $heures + $minutes + $seconds;
-
-        return $tempsEnSeconds;
-
-    }
-
-    /**
-     * @name progressBar()
-     * @param  int $tempsEstime, $tempsEcoule
-     * @return  int pourcentage du temps de travail selon le temps estimé
-     *  on delimite la chaine pour récuperer le tableau
-     *  on recupere chaque valeur de la chaine tempsEcoule h, mn , s; puis on convertis en entier
-     *  on convertis en seconde
-     * calcul du pourcentage
-     */
-    public function progressBar($tempsEstime, $tempsEcoule){
-
-        if( $tempsEcoule != null){
-            $delimiter = ":";
-            $tabtempsEcoule= explode($delimiter,$tempsEcoule );
-             
-            $heure = intval($tabtempsEcoule[0]);
-            $mn = intval($tabtempsEcoule[1]);
-            $sec = intval($tabtempsEcoule[2]);
+    public function progressBar($tempsEcoule, $tempsEstime){
+      
+         $max = 100;
+        //nettoie la chaine
+            $characterToDelete = array(' ' ,'h', 'mn', 's', '.', '""');
+            $tempsEcoule = ".$tempsEcoule." ;
             
-            $tempsEcouleSeconds = $this->convertToSecond($heure, $mn, $sec);
-            $tempsEstimeSeconds = $tempsEstime * 3600;
     
-            
-            $progressBar =  ($tempsEcouleSeconds * self::MAX) / $tempsEstimeSeconds;
-    
-            return round($progressBar, 1);
-        }else{
-            return null ; 
-        }
-     
-    }
-
-    /**
-     * @name formatValue()
-     * @param  string chaine
-     * @return  string chaine nettoie les characterToDelete de la chaine fournie en paramétre
-     * 
-     */
-    public function formatValue($chaine){
-        
-        
-        $characterToDelete = array(' ' ,'h', 'mn', 's', '.', '""');
-        $chaine = ".$chaine." ;
-
         foreach($characterToDelete as $findme){
-            $position = strpos($chaine, $findme);
+            $position = strpos($tempsEcoule, $findme);
             if($position !== false){
-                $chaine = str_replace($findme, '', $chaine);
-            }
+                $tempsEcoule = str_replace($findme, '', $tempsEcoule);
+                }
         }
-        return $chaine;
+        //on recupere chaque valeur de la chaine tempsEcoule h, mn , s; puis on convertis en entier
+        $delimiter = ":";
+        $tabtempsEcoule= explode($delimiter,$tempsEcoule ); 
+        $heure = intval($tabtempsEcoule[0]);
+        $mn = intval($tabtempsEcoule[1]);
+        $sec = intval($tabtempsEcoule[2]);
+
+        //convertir en seconde 
+        $heures = $heure * 3600; 
+        $minutes = $mn *60;
+        $seconds = $sec;
+        $tempsEcouleSeconds = $heures + $minutes + $seconds;
+        $tempsEstimeSeconds = $tempsEstime * 3600;
+
+        //calcul pourcentage
+        $progressBar =  ($tempsEcouleSeconds * $max) / $tempsEstimeSeconds;
+         
+        return round($progressBar, 1);
+     
+    
+   
+ 
     }
+
 }

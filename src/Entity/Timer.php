@@ -29,6 +29,13 @@ class Timer
      * @ORM\JoinColumn(nullable=false)
      */
     private $task;
+    
+    /**
+     * @ORM\Column(type="integer")
+     * 
+     */
+    private $progress;
+
     public function __toString()
     {
         return $this->time;
@@ -62,4 +69,18 @@ class Timer
 
         return $this;
     }
+
+    public function getprogress(): ?int
+    {
+        return $this->progress;
+    }
+
+    public function setprogress(int $progress): self
+    {
+        $this->progress = $progress;
+
+        return $this;
+    }
+
+
 }

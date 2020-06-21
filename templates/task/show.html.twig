@@ -9,7 +9,7 @@
             <h6 class="m-0 font-weight-bold text-primary">{{ task.nom }}</h6>
             {% if task.user == app.user %}
                 <div class="chronometre float-right ">
-                    {% if timeProgresse != 100 %}
+                    {#{% if timeProgresse != 100 %}#}
                         <div class="tim shadow-sm float-right">
                             {% if task.timer is not empty %}
                                 {{task.timer}}
@@ -23,10 +23,7 @@
                         </div>
                     <button id="start" class="btn btn-info" onclick="start()"><i class="fas fa-play"></i></button>
                     <button id="stop" class="btn btn-danger" onclick="stop()" ><i class="fas fa-stop"></i></button>
-                    {% else %}
-                    <div class="tim shadow-sm float-right">Temps fini</div>
-                    <span class="blinking font-italic">Pour augmenter le temps cliquez sur le bouton <span style="font-weight: bold;">Mettre à jour</span></span>
-                    {% endif %}
+                   {# {% endif %}#}
                 </div>
             {% endif %}
         </div>
@@ -124,7 +121,6 @@
         var tempsRecupere;
         var temps;
         var t;
-
         
         //La fonction "start" démarre un appel répétitive de la fonction update_chrono 
     
@@ -151,12 +147,10 @@
                         s = parseInt(time[2]);
                         mn = parseInt(time[1]);
                         h = parseInt(time[0]);
-
                         sessionStorage.setItem("h",h );
                         sessionStorage.setItem("mn",mn );
                         sessionStorage.setItem("s", s);
                         //sessionStorage.setItem("ms", ms);
-
                    } 
                 },
                 error:function(){
@@ -175,10 +169,8 @@
         
          /*La fonction update_chrono incrémente le nombre de millisecondes par 1 <==> 1*cadence = 100 */
         function update_chrono(){
-
             //ms++;
             s++ ;  
-
            /*on teste si s=60 pour incrémenter le nombre de minute*/
            if(s==60){
                s=0;
@@ -193,10 +185,8 @@
             html+="<span id='heure' data-heure="+h+">"+h+ " h : </span>";
             html+="<span id='min' data-min="+mn+">"+mn+ " mn : </span>";
             html+="<span id='sec' data-sec="+s+">"+s+ " s  </span>";
-
             $(".tim").empty();
             $(".tim").append(html);
-
         }
         
         

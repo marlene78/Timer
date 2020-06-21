@@ -6,7 +6,6 @@ use App\Entity\Task;
 use App\Entity\Timer;
 use App\Form\TaskType;
 use App\Entity\Project;
-use App\Service\Progress;
 use App\Form\EditTaskType;
 use App\Repository\TaskRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,19 +69,14 @@ class TaskController extends AbstractController
     /**
      * @Route("/show/{id}", name="task_show", methods={"GET","POST"})
      */
-    public function show(Task $task, Request $request, Progress $progressBar): Response
+    public function show(Task $task, Request $request): Response
     {
         $repoTache = $this->getDoctrine()->getRepository(Task::class)->findAll();
 
-        foreach($repoTache as $tache){
-            $TempsEstime = $tache->getTempsEstime();
-            $TE = $tache->getTimer();
-        }
-        
-        $TempsEcoule = $progressBar->formatValue(".$TE.") ;
+      
         return $this->render('task/show.html.twig', [
             'task' => $task,
-            'timeProgresse' => $progressBar->progressBar($TempsEstime, $TempsEcoule),
+            
         ]);
     }
     /**
