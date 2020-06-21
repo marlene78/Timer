@@ -4,26 +4,19 @@
 
 {% block body %}
 
+    <div id="alerte_success"></div>
     <div class="card shadow mb-4">   
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">{{ task.nom }}</h6>
             {% if task.user == app.user %}
                 <div class="chronometre float-right ">
-                    {#{% if timeProgresse != 100 %}#}
-                        <div class="tim shadow-sm float-right">
-                            {% if task.timer is not empty %}
-                                {{task.timer}}
-                            {% else %}
-                                <span class='sp'>0 h</span> :
-                                <span class='sp'>0 min</span> :
-                                <span class='sp'>0 s</span> 
-                            
-                            {% endif %}
                 
-                        </div>
+                    <div class="tim shadow-sm float-right">             
+                        {{task.timer}}      
+                    </div>
                     <button id="start" class="btn btn-info" onclick="start()"><i class="fas fa-play"></i></button>
                     <button id="stop" class="btn btn-danger" onclick="stop()" ><i class="fas fa-stop"></i></button>
-                   {# {% endif %}#}
+                   
                 </div>
             {% endif %}
         </div>
@@ -38,7 +31,7 @@
                     </tr>
                     <tr>
                         <th>Date de création</th>
-                        <td>{{task.createdAt|date('d-m-Y')}} à {{task.createdAt|date('h')}}h : {{task.createdAt|date('m')}}mn : {{task.createdAt|date('s')}}s</td>
+                        <td>{{task.createdAt|date('d-m-Y')}}</td>
                         
                     </tr>
                     <tr>
@@ -102,113 +95,147 @@
         </span>
         <span class="text">Voir le projet</span>
     </a>
-    <input type="hidden" id="id_task" value="{{ task.id }}">
-   
+
 
     <br><br><br>
     {% if task.projet.createur == app.user %}
         {{ include('task/_delete_form.html.twig') }}
     {% endif %}
+
+  <!-- Logout Erreur-->
+  <div class="modal fade" id="erreur" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="message_erreur"></h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Fermé</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 {% endblock %}
 
 {% block javascripts %}
     <script type="text/javascript">
-        var sp = document.getElementsByClassName("sp");
-        var btn_start=document.getElementById("start");
-        var btn_stop=document.getElementById("stop");
-        var s=0,mn=0,h=0;
-        var time;
-        var tempsRecupere;
-        var temps;
-        var t;
+        let  sp = document.getElementsByClassName("sp"),
+        btn_start=document.getElementById("start"),
+        btn_stop=document.getElementById("stop"),
+        time,
+        tempsRecupere,
+        temps,
+        t;
         
         //La fonction "start" démarre un appel répétitive de la fonction update_chrono 
     
         function start(){
+
             //recupére la valeur depuis la base de donnée
-           $.ajax({
+            
+            $.ajax({
                 method:"post",
-                url:"/user/task/getTime_task",
-                data:"id="+$("#id_task").val(),
+                url:"/user/task/getTime_task/"+{{ task.timer.id }},
                 success:function(response){
-                    tempsRecupere = response.timer.time;
-                    if(tempsRecupere!=""){
-       
-                        var timeSpace = tempsRecupere.replace(/ /g,"");
-                        var timeH = timeSpace.replace('h',"");
-                        var timeMn = timeH.replace('mn',"");
-                        var timeClean = timeMn.replace('s',"");
-                       // var timeClean = timeSec.replace('ms',"");
-                        var delimiteur = ':';
-                        
-        
-                        time = timeClean.split(delimiteur);
-                        //ms = parseInt(time[3]);
-                        s = parseInt(time[2]);
-                        mn = parseInt(time[1]);
-                        h = parseInt(time[0]);
-                        sessionStorage.setItem("h",h );
-                        sessionStorage.setItem("mn",mn );
-                        sessionStorage.setItem("s", s);
-                        //sessionStorage.setItem("ms", ms);
-                   } 
+
+                    if(response != null)
+                    {
+                        /*let timeSpace = response.replace(/ /g,"");
+                        let timeH = timeSpace.replace('h',"");
+                        let timeMn = timeH.replace('mn',"");
+                        let timeClean = timeMn.replace('s',"");*/
+
+                        let delimiteur = ':';
+                        time = response.split(delimiteur);
+                        let seconde = parseInt(time[2]);
+                        let minute = parseInt(time[1]);
+                        let heure = parseInt(time[0]);
+
+                
+                        sessionStorage.setItem("h",heure );
+                        sessionStorage.setItem("mn",minute );
+                        sessionStorage.setItem("s", seconde);    
+
+           
+
+                    }
+               
+             
+
                 },
                 error:function(){
-                    alert("erreur");
+                    $("#message_erreur").text("Une erreur s'est produite, veuillez essayer ultérieurment"); 
+                    $("erreur").modal("show"); 
                 }
-            })
+
+            }); 
+
             btn_start.disabled=true;
-           // sessionStorage.getItem("ms") != null ? ms = parseInt(sessionStorage.getItem("ms")) : ms = 0;
-            sessionStorage.getItem("s") != null ? s = parseInt(sessionStorage.getItem("s")) : s = 0;
-            sessionStorage.getItem("mn") != null ? mn = parseInt(sessionStorage.getItem("mn")) : mn = 0;
-            sessionStorage.getItem("h") != null ? h = parseInt(sessionStorage.getItem("h")) : mn = 0;
-           // setTimeout(update_chrono, 1000);
+            
+  
+       
             t = setInterval(update_chrono,1000);  
         
         }
         
-         /*La fonction update_chrono incrémente le nombre de millisecondes par 1 <==> 1*cadence = 100 */
+
+                
+        let h =  sessionStorage.getItem("h");
+        let mn = sessionStorage.getItem("mn");
+        let s =  sessionStorage.getItem("s");
+        
+    
+
+        /*
+        * La fonction update_chrono incrémente le nombre de millisecondes par 1 <==> 1*cadence = 100 
+        */
         function update_chrono(){
-            //ms++;
-            s++ ;  
+
+            s++ ;    
            /*on teste si s=60 pour incrémenter le nombre de minute*/
-           if(s==60){
-               s=0;
-               mn+=1;
-           }
-           if(mn==60){
-               mn=0;
-               h+=1;
-           }
+           if(s == 60){ s = 0 ; mn +=1 ;}
+           if(mn == 60){ mn = 0 ; h +=1 ;}
             //afficher les nouvelle valeurs
             let html="";
-            html+="<span id='heure' data-heure="+h+">"+h+ " h : </span>";
-            html+="<span id='min' data-min="+mn+">"+mn+ " mn : </span>";
-            html+="<span id='sec' data-sec="+s+">"+s+ " s  </span>";
+            html+="<span id='heure' data-heure="+h+">"+h+ " :</span>";
+            html+="<span id='min' data-min="+mn+">"+mn+ " : </span>";
+            html+="<span id='sec' data-sec="+s+">"+s+ "</span>";
             $(".tim").empty();
             $(".tim").append(html);
+           
+
         }
         
         
-        /*on arrête le "timer" par clearInterval ,on réactive le bouton start */
+       /**
+       * on arrête le "timer" par clearInterval ,on réactive le bouton start 
+       */
         function stop(){
-            let temps = $("#heure").data("heure")+ " h : "+ $("#min").data("min") + " mn : "+ $("#sec").data("sec") + " s  ";
+
+            let temps = $("#heure").data("heure")+ ":"+ $("#min").data("min") + ":"+ $("#sec").data("sec");
+       
             clearInterval(t);
             btn_start.disabled=false;
+
             //On envoie la valeur à notre contrôlleur pour l'enregistrer dans la base 
             $.ajax({
                 method:"get",
-                url:"/user/task/set/timer/"+$("#id_task").val(),
+                url:"/user/task/set/timer/"+{{ task.timer.id }},
                 data: "time="+temps,
                 success:function(response){
-                    if(response == "ok"){
-                        sessionStorage.removeItem("h");
-                        sessionStorage.removeItem("mn");
-                        sessionStorage.removeItem("s");
-                    }
+                     
+                    //sessionStorage.clear();
+                    //recharger la page
+                             
                 },
                 error:function(){
-                    alert("erreur");
+                    $("#message_erreur").text("Une erreur s'est produite, veuillez essayer ultérieurment"); 
+                    $("erreur").modal("show"); 
                 }
             })
         
