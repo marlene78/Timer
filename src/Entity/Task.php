@@ -141,16 +141,7 @@ class Task
     }
 
 
-    /**
-     * @ORM\PrePersist
-     */
-    public function Prepersist()
-    {
-    
-        $this->demarre = 0; 
-        $this->cloture = 0;
-        $this->createdAt = new \DateTime();
-    }
+
 
     public function getTimer(): ?Timer
     {
@@ -215,6 +206,18 @@ class Task
         $this->description = $description;
 
         return $this;
+    }
+
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function PrePersist()
+    {
+    
+        $this->demarre = 0; 
+        $this->cloture = 0;
+        $this->createdAt = new \DateTime();
     }
 
 

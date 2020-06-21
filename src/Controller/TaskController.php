@@ -53,8 +53,10 @@ class TaskController extends AbstractController
 
             //initalisation du timer 
             $timer = new Timer();
-            $timer->setTime("0:0:0"); 
             $timer->setprogress(0); 
+            $timer->setHeure(0); 
+            $timer->setMinute(0); 
+            $timer->setSeconde(0); 
             $timer->setTask($task);
 
             $entityManager->persist($task);
@@ -105,18 +107,20 @@ class TaskController extends AbstractController
         if($timer != null){
 
             $entityManager = $this->getDoctrine()->getManager();
-            $timer->setTime($request->query->get('time'));
+            $timer->setHeure($request->query->get('heure'));
+            $timer->setMinute($request->query->get('minute'));
+            $timer->setSeconde($request->query->get('seconde'));
             $timer->getTask()->getDemarre() == 0 ?  $timer->getTask()->setDemarre(1) : "" ; //tâche démarrer
 
             //enregistrement du temps 
-            $tempsProgress = $p->progressBar($request->query->get('time') , $timer->getTask()->getTempsEstime()); 
+            $tempsProgress = $p->progressBar($request->query->get('heure'),$request->query->get('minute'), $request->query->get('seconde') , $timer->getTask()->getTempsEstime()); 
             $timer->setprogress($tempsProgress); 
 
             $entityManager->flush(); 
             return new JsonResponse("Tâche démarré", 200);
 
         }else{
-            return new JsonResponse("Impossible de démarrer la tâche, veulliez essayer ultérieurement", 500);
+            return new JsonResponse("Impossible de démarrer la tâche, veuillez essayer ultérieurement", 500);
         }
         
            
@@ -130,7 +134,12 @@ class TaskController extends AbstractController
     */
     public function getTimer(Request $request, Timer $timer): Response
     {
-       return new JsonResponse($timer->getTime() , 200); 
+        $info = [
+            'heure' => $timer->getHeure(), 
+            'minute' => $timer->getMinute(), 
+            'seconde' => $timer->getSeconde()
+        ]; 
+       return new JsonResponse($info , 200); 
         
     }
 
