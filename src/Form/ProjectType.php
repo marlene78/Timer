@@ -18,14 +18,15 @@ class ProjectType extends AbstractType
             ->add('nom')
             ->add('dateDeDebut')
             ->add('DateDeFin')
+            ->add('description')
             ->add('groups' , CollectionType::class , [
                 'entry_type' => GroupType::class, 
                 'allow_add' => true,
                 'by_reference' => false,
                 'required' => false,
-                'label' => 'GROUPE'
+                'label' => 'Groupe de travail'
             ])
-            ->add('description')
+          
         ;
     }
 

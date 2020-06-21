@@ -6,8 +6,10 @@ use App\Entity\Task;
 use App\Entity\Timer;
 use App\Form\TaskType;
 use App\Entity\Project;
+use App\Service\Progress;
 use App\Form\EditTaskType;
 use App\Repository\TaskRepository;
+use App\Repository\TimerRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,7 +36,8 @@ class TaskController extends AbstractController
     }
 
     /**
-     * Création d'une tâche pour un projet
+     * Création d'une tâche pour un projet 
+     * Initialisation du timer 
      * @Route("/new/{id}", name="task_new", methods={"GET","POST"})
      */
     public function new(Request $request , Project $project): Response
@@ -43,12 +46,19 @@ class TaskController extends AbstractController
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
         
-
         if ($form->isSubmitted() && $form->isValid()) {
           
             $entityManager = $this->getDoctrine()->getManager();
             $task->setProjet($project); 
+
+            //initalisation du timer 
+            $timer = new Timer();
+            $timer->setTime("0:0:0"); 
+            $timer->setprogress(0); 
+            $timer->setTask($task);
+
             $entityManager->persist($task);
+            $entityManager->persist($timer);
             $entityManager->flush();
 
             $this->addFlash("success" , "Tâche ajoutée"); 
@@ -66,7 +76,10 @@ class TaskController extends AbstractController
         ]);
     }
 
+
+
     /**
+     * Affichage d'une tâche
      * @Route("/show/{id}", name="task_show", methods={"GET","POST"})
      */
     public function show(Task $task, Request $request): Response
@@ -79,36 +92,52 @@ class TaskController extends AbstractController
             
         ]);
     }
+
+
     /**
+     * Enregistrement du temps écouler
+     * Calcule du temps de progression
      * @Route("/set/timer/{id}", name="task_set_time", methods={"GET"})
      */
-    public function setTimer(Request $request, Task $task): Response
+    public function setTimer(Request $request, Timer $timer , Progress $p): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        if($task->getTimer()==""){
-            $timer = new Timer();
+       
+        if($timer != null){
+
+            $entityManager = $this->getDoctrine()->getManager();
             $timer->setTime($request->query->get('time'));
-            $timer->setTask($task);
-            $task->setDemarre(1);
-            $entityManager->persist($timer);
-        }else{
-            $task->getTimer()->setTime($request->query->get('time'));
-        }
+            $timer->getTask()->getDemarre() == 0 ?  $timer->getTask()->setDemarre(1) : "" ; //tâche démarrer
+
+            //enregistrement du temps 
+            $tempsProgress = $p->progressBar($request->query->get('time') , $timer->getTask()->getTempsEstime()); 
+            $timer->setprogress($tempsProgress); 
+
             $entityManager->flush(); 
+            return new JsonResponse("Tâche démarré", 200);
+
+        }else{
+            return new JsonResponse("Impossible de démarrer la tâche, veulliez essayer ultérieurement", 500);
+        }
         
-            return new JsonResponse("ok", 200);
+           
     }
 
+
+
     /**
-    * @Route("/getTime_task", name="task_get_time", methods={"POST"})
+    * Récupération de la valeur du timer
+    * @Route("/getTime_task/{id}", name="task_get_time", methods={"POST"})
     */
-    public function getTimer(Request $request, TaskRepository $repo): Response
+    public function getTimer(Request $request, Timer $timer): Response
     {
-       return $this->json($repo->find($request->request->get("id")), 200, [], ["groups"=>"get:info"]);
+       return new JsonResponse($timer->getTime() , 200); 
         
     }
 
+
+
     /**
+     * Édition d'une tâche
      * @Route("/edit/{projet}/{id}", name="task_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Task $task): Response
@@ -131,7 +160,10 @@ class TaskController extends AbstractController
         ]);
     }
 
+
+
     /**
+     * Suppression d'une tâche
      * @Route("/{id}", name="task_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Task $task): Response

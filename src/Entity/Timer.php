@@ -36,10 +36,7 @@ class Timer
      */
     private $progress;
 
-    public function __toString()
-    {
-        return $this->time;
-    }
+
 
     public function getId(): ?int
     {
@@ -80,6 +77,11 @@ class Timer
         $this->progress = $progress;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->time;
     }
 
 

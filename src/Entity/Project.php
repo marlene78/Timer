@@ -7,11 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity("nom", message="Ce projet existe déjà")
  */
 class Project
 {
@@ -66,48 +68,7 @@ class Project
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
-    /**
-     * @ORM\PrePersist 
-     * @ORM\PreUpdate
-     */
-    public function timerProject(){
-        date_default_timezone_set('Europe/Paris');
-        $debut = strtotime($this->dateDeDebut->format('Y/m/d'));
-        $fin = strtotime($this->DateDeFin->format('Y/m/d'));
-        $diff = $fin - $debut;
-        $timeNow = strtotime('now');
-        $heures = $diff / 3600;
-        $jour = $heures /24;
-        $interval =  $debut -$timeNow;
 
-       
-       if($timeNow < $debut ){
-           
-           $days = round($interval*1000 / (1000 * 60 * 60 * 24));
-           //$t = date('d F Y', $diff);
-           $resultat = ($days!==0)? "Le projet débutera dans ". $days. " jours." :  "Le projet débutera dans quelques heures. ";
-           return $resultat;
-       }
-       else{
-            //si le temps restant est 1jour on convertis en heure
-            if($jour == 0){
-                $heure = 24;
-                $tempsRestant = $heure - date('h');
-
-                if($tempsRestant == 0){
-                    $resultat = "Projet terminé";
-                }
-                $resultat = $tempsRestant;
-                return "Le projet débutera dans ". $resultat. ' heures';
-
-            } 
-            else{ 
-                return 'Temps restant du projet :'.$jour.' j';
-            }
-        }
-
-        
-    }
 
     public function __construct()
     {
@@ -172,16 +133,6 @@ class Project
 
 
 
-    /**
-     * @ORM\PrePersist
-     */
-    public function Prepersist()
-    {
-        $now = new \DateTime('now'); 
-        $day = $now->format('Y-m-d'); 
-        $day < $this->dateDeDebut ? $this->etat = "En cours" : $this->etat = "Démarre prochainement"; 
-   
-    }
 
     public function getCreateur(): ?User
     {
@@ -273,6 +224,64 @@ class Project
         $this->description = $description;
 
         return $this;
+    }
+
+
+
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function Prepersist()
+    {
+        $now = new \DateTime('now'); 
+        $day = $now->format('Y-m-d'); 
+        $day < $this->dateDeDebut ? $this->etat = "En cours" : $this->etat = "Démarre prochainement"; 
+   
+    }
+
+
+    /**
+     * @ORM\PrePersist 
+     * @ORM\PreUpdate
+     */
+    public function timerProject(){
+        date_default_timezone_set('Europe/Paris');
+        $debut = strtotime($this->dateDeDebut->format('Y/m/d'));
+        $fin = strtotime($this->DateDeFin->format('Y/m/d'));
+        $diff = $fin - $debut;
+        $timeNow = strtotime('now');
+        $heures = $diff / 3600;
+        $jour = $heures /24;
+        $interval =  $debut -$timeNow;
+
+       
+       if($timeNow < $debut ){
+           
+           $days = round($interval*1000 / (1000 * 60 * 60 * 24));
+           //$t = date('d F Y', $diff);
+           $resultat = ($days!==0)? "Le projet débutera dans ". $days. " jours." :  "Le projet débutera dans quelques heures. ";
+           return $resultat;
+       }
+       else{
+            //si le temps restant est 1jour on convertis en heure
+            if($jour == 0){
+                $heure = 24;
+                $tempsRestant = $heure - date('h');
+
+                if($tempsRestant == 0){
+                    $resultat = "Projet terminé";
+                }
+                $resultat = $tempsRestant;
+                return "Le projet débutera dans ". $resultat. ' heures';
+
+            } 
+            else{ 
+                return 'Temps restant du projet :'.$jour.' j';
+            }
+        }
+
+        
     }
 
 

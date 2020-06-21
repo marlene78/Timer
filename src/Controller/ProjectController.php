@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProjectController extends AbstractController
 {
     /**
+     * Liste des projets
      * @Route("/", name="project_index", methods={"GET"})
      */
     public function index(ProjectRepository $projectRepository): Response
@@ -26,6 +27,7 @@ class ProjectController extends AbstractController
     }
  
     /**
+     * Création d'un projet
      * @Route("/new", name="project_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
@@ -39,7 +41,7 @@ class ProjectController extends AbstractController
             $project->setCreateur($this->getUser()); 
             $entityManager->persist($project);
             $entityManager->flush();
-            $this->addFlash("success" , "Projet créer"); 
+            $this->addFlash("success" , "Félicitation Projet créer. Ajouter une nouvelle tâche ! "); 
 
             return $this->redirectToRoute('project_index');
         }
@@ -51,6 +53,7 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * Affichage d'un projet
      * @Route("/{id}", name="project_show", methods={"GET"})
      */
     public function show(Project $project): Response
@@ -60,7 +63,9 @@ class ProjectController extends AbstractController
         ]);
     }
 
+
     /**
+     * Édition d'un projet
      * @Route("/{id}/edit", name="project_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Project $project): Response
@@ -81,7 +86,9 @@ class ProjectController extends AbstractController
         ]);
     }
 
+
     /**
+     * Suppression d'un projet
      * @Route("/{id}", name="project_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Project $project): Response
@@ -100,14 +107,11 @@ class ProjectController extends AbstractController
 
 
     /**
-     * AFFICHE LES USER DU PROJET
+     * Renvois la liste utilisateurs participant au projet
      * @Route("/getUsers" , name="get_users" , methods={"POST"} )
      */
     public function getUsers( Request $request , ProjectRepository $repo)
     {
-
-        //normalize =>transforme un objet en tableau !aux références circulaire mettre un GROUPS
-        //serialize => transforme objet en tableau puis en json 
 
         return $this->json($repo->find($request->request->get('id')), 200 , [] , ['groups' => 'get:info']); 
 
