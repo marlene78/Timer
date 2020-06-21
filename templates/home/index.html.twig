@@ -36,19 +36,9 @@
                           
                           <div class="progress progress-sm mr-2">
                             <div class="progress-bar bg-info" role="progressbar" style="width:{{ tache.timer.progress }}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>  
+                           
                           </div> 
-                            {#
-                          <div class="timer mt-4">
-                          {% if timeProgresse != 100 %}
-                            Temps de travail : <br>
-                            {{ tache.timer }}
-
-                            {% else %}
-                              <span class="text-danger">Tâche terminée.</span>
-                            {% endif %}
-                          </div>
-                          #}
-              
+                          {% if tache.timer.progress == 100  %}Tâche terminée{% endif %}
                        {% endif %}
                   </div>
                   

@@ -18,11 +18,6 @@ class Timer
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups("get:info")
-     */
-    private $time;
 
     /**
      * @ORM\OneToOne(targetEntity=Task::class, inversedBy="timer", cascade={"persist", "remove"})
@@ -36,6 +31,24 @@ class Timer
      */
     private $progress;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups("get:info")
+     */
+    private $heure;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups("get:info")
+     */
+    private $minute;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups("get:info")
+     */
+    private $seconde;
+
 
 
     public function getId(): ?int
@@ -43,17 +56,7 @@ class Timer
         return $this->id;
     }
 
-    public function getTime(): ?string
-    {
-        return $this->time;
-    }
 
-    public function setTime(string $time): self
-    {
-        $this->time = $time;
-
-        return $this;
-    }
 
     public function getTask(): ?Task
     {
@@ -82,6 +85,55 @@ class Timer
     public function __toString()
     {
         return $this->time;
+    }
+
+    public function getHeure(): ?int
+    {
+        return $this->heure;
+    }
+
+    public function setHeure(int $heure): self
+    {
+        $this->heure = $heure;
+
+        return $this;
+    }
+
+    public function getMinute(): ?int
+    {
+        return $this->minute;
+    }
+
+    public function setMinute(int $minute): self
+    {
+        $this->minute = $minute;
+
+        return $this;
+    }
+
+    public function getSeconde(): ?int
+    {
+        return $this->seconde;
+    }
+
+    public function setSeconde(int $seconde): self
+    {
+        $this->seconde = $seconde;
+
+        return $this;
+    }
+
+
+    /**
+    * @ORM\PrePersist
+    */
+    public function PrePersist()
+    {
+    
+        $this->heure = 0; 
+        $this->minute = 0;
+        $this->seconde = 0;
+        
     }
 
 

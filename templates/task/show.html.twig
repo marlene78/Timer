@@ -12,7 +12,7 @@
                 <div class="chronometre float-right ">
                 
                     <div class="tim shadow-sm float-right">             
-                        {{task.timer}}      
+                        {{task.timer.heure }} h : {{task.timer.minute }} mn :  {{task.timer.seconde }} s  
                     </div>
                     <button id="start" class="btn btn-info" onclick="start()"><i class="fas fa-play"></i></button>
                     <button id="stop" class="btn btn-danger" onclick="stop()" ><i class="fas fa-stop"></i></button>
@@ -124,47 +124,30 @@
 
 {% block javascripts %}
     <script type="text/javascript">
-        let  sp = document.getElementsByClassName("sp"),
-        btn_start=document.getElementById("start"),
-        btn_stop=document.getElementById("stop"),
-        time,
-        tempsRecupere,
-        temps,
-        t;
+        let sp = document.getElementsByClassName("sp"),
+            btn_start=document.getElementById("start"),
+            btn_stop=document.getElementById("stop"),
+            time,
+            tempsRecupere,
+            temps,
+            t,
+            h ={{ task.timer.heure }}, 
+            mn = {{ task.timer.minute }}, 
+            s = {{ task.timer.seconde }}; 
+
         
         //La fonction "start" démarre un appel répétitive de la fonction update_chrono 
     
         function start(){
 
             //recupére la valeur depuis la base de donnée
-            
+           /* 
             $.ajax({
                 method:"post",
                 url:"/user/task/getTime_task/"+{{ task.timer.id }},
                 success:function(response){
-
-                    if(response != null)
-                    {
-                        /*let timeSpace = response.replace(/ /g,"");
-                        let timeH = timeSpace.replace('h',"");
-                        let timeMn = timeH.replace('mn',"");
-                        let timeClean = timeMn.replace('s',"");*/
-
-                        let delimiteur = ':';
-                        time = response.split(delimiteur);
-                        let seconde = parseInt(time[2]);
-                        let minute = parseInt(time[1]);
-                        let heure = parseInt(time[0]);
-
-                
-                        sessionStorage.setItem("h",heure );
-                        sessionStorage.setItem("mn",minute );
-                        sessionStorage.setItem("s", seconde);    
-
-           
-
-                    }
-               
+                    console.log(response); 
+                    
              
 
                 },
@@ -173,7 +156,7 @@
                     $("erreur").modal("show"); 
                 }
 
-            }); 
+            }); */
 
             btn_start.disabled=true;
             
@@ -185,9 +168,9 @@
         
 
                 
-        let h =  sessionStorage.getItem("h");
-        let mn = sessionStorage.getItem("mn");
-        let s =  sessionStorage.getItem("s");
+        //let h =  sessionStorage.getItem("h");
+        //let mn = sessionStorage.getItem("mn");
+        //let s =  sessionStorage.getItem("s");
         
     
 
@@ -202,9 +185,9 @@
            if(mn == 60){ mn = 0 ; h +=1 ;}
             //afficher les nouvelle valeurs
             let html="";
-            html+="<span id='heure' data-heure="+h+">"+h+ " :</span>";
-            html+="<span id='min' data-min="+mn+">"+mn+ " : </span>";
-            html+="<span id='sec' data-sec="+s+">"+s+ "</span>";
+            html+="<span id='heure' data-heure="+h+">" + h + " h : </span>";
+            html+="<span id='min' data-min="+mn+">"+ mn + " mn : </span>";
+            html+="<span id='sec' data-sec="+s+">"+ s + " s</span>";
             $(".tim").empty();
             $(".tim").append(html);
            
@@ -217,8 +200,12 @@
        */
         function stop(){
 
-            let temps = $("#heure").data("heure")+ ":"+ $("#min").data("min") + ":"+ $("#sec").data("sec");
-       
+            let donnee = {
+                'heure' : Number($("#heure").data("heure")), 
+                'minute' : Number($("#min").data("min")), 
+                'seconde' : Number($("#sec").data("sec"))
+            }
+           
             clearInterval(t);
             btn_start.disabled=false;
 
@@ -226,12 +213,8 @@
             $.ajax({
                 method:"get",
                 url:"/user/task/set/timer/"+{{ task.timer.id }},
-                data: "time="+temps,
-                success:function(response){
-                     
-                    //sessionStorage.clear();
-                    //recharger la page
-                             
+                data: donnee,
+                success:function(response){          
                 },
                 error:function(){
                     $("#message_erreur").text("Une erreur s'est produite, veuillez essayer ultérieurment"); 
