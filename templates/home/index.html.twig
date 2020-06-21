@@ -3,7 +3,6 @@
 {% block title %}Mes tâches{% endblock %}
 
 {% block body %}
-{{ timeProgresse }}
 
 <h1 class="h3 mb-2 text-gray-800">Mes tâches</h1>
 {% if user_tache is not empty %}
@@ -23,7 +22,7 @@
                       <a href="{{ path('project_show' , {'id' : tache.projet.id })  }}" title="voir le projet"> {{ tache.projet }}</a>    
                     
                     </div>
-                        <p class="mt-2">Tâche a éffectuer :<p>
+                        <p class="mt-2">Tâche a éffectuer :<p> 
                         {% if tache.demarre == 0 %}
                                   
                           <a href="{{ path('task_show' , {'id' : tache.id }) }}" title="voir" class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ tache.nom }} 0%</a>
@@ -38,20 +37,20 @@
                           
                           </div>
                         {% else %}
-                          <a href="{{ path('task_show' , {'id' : tache.id }) }}" title="voir" class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ tache.nom }} {{ timeProgresse }}%</a>
+                          <a href="{{ path('task_show' , {'id' : tache.id }) }}" title="voir" class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ tache.nom }} %</a>
                           
                           <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" style="width:{{ timeProgresse }}%" aria-valuenow="{{ timeProgresse }}" aria-valuemin="0" aria-valuemax="100"></div>  
+                            <div class="progress-bar bg-info" role="progressbar" style="width:0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>  
                           </div> 
                           
                           <div class="timer mt-4">
-                            {% if timeProgresse != 100 %}
+                            {#{% if timeProgresse != 100 %}
                             Temps de travail : <br>
                             {{ tache.timer }}
 
                             {% else %}
                               <span class="text-danger">Tâche terminée.</span>
-                            {% endif %}
+                            {% endif %}#}
                           </div>
 
               
