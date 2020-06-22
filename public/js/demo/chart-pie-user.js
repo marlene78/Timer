@@ -34,7 +34,6 @@ $.post({
         html +='<h4 class="small font-weight-bold"><a href="/user/task/show/'+ element.id +'">'+ element.nom +'</a><span class="float-right">'+element.timer.heure +"h : "+ element.timer.minute + "mn : " + element.timer.seconde +'s</span></h4><div class="progress mb-4"><div class="progress-bar" role="progressbar" style="width:'+element.timer.progress+'%;background-color:'+myColor+'" aria-valuenow="'+ element.timer.progress +'" aria-valuemin="0" aria-valuemax="100"></div></div>'; 
 
     });
-    console.log(time);
 
     $("#info_projet_avancement").append(html); 
 

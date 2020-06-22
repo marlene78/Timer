@@ -115,6 +115,7 @@ class TaskController extends AbstractController
             //enregistrement du temps 
             $tempsProgress = $p->progressBar($request->query->get('heure'),$request->query->get('minute'), $request->query->get('seconde') , $timer->getTask()->getTempsEstime()); 
             $timer->setprogress($tempsProgress); 
+            $tempsProgress == 100 ? $timer->getTask()->setCloture(1) : ""; 
 
             $entityManager->flush(); 
             return new JsonResponse("Tâche démarré", 200);
