@@ -20,6 +20,7 @@ git clone git@github.com:marlene78/Timer.git
 
 Executez la commande docker-compose up pour commencer 
 ensuite : 
+- composer install (*Permet de mettre à jour les dépendances*)
 - php bin/console doctrine:migrations:migrate (*migration des data dans la base de donnée*) 
 - modifier le fichier .env : 
 
