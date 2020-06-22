@@ -13,7 +13,6 @@
                 <thead>
                     <tr>
                         <th>Nom</th>
-                        {#<th>Date de création</th>#}
                         <th>Status</th>
                         <th>priorité</th>
                         <th>Temps estimé</th>
@@ -24,11 +23,13 @@
                 {% for task in tasks %}
                     <tr>
                         <td>{{ task.nom }}</td>
-                        {#<td>{{ task.createdAt|date('d-m-Y h:m:s')}}</td>#}
+                        {% if task.cloture == 0 %}
                         <td>
                             {{ task.demarre ? 'En cours' : 'Non commencée' }}
                         </td>
-                        {#<td>{{ task.cloture ? 'Yes' : 'No' }}</td>#}
+                        {% else %}
+                         <td>{{ task.cloture ? 'Termiée' : 'En cours' }}</td>
+                        {% endif %}
                         <td>
                             {% if task.priorite == "Maximale" %}
                                 {{task.priorite}}   <i class="fas fa-exclamation" style="color: red;"></i>
@@ -38,7 +39,7 @@
                             {{task.priorite}} <i class="fas fa-exclamation" style="color: green;"></i>
                             {% endif %}
                         </td>
-                        <td>{{task.tempsEstime}} heure(s)</td>
+                        <td>{{task.tempsEstime}}{% if  task.tempsEstime == 1 %} heure {% else %} heures{% endif %}</td>
                         <td>
                             <a href="{{ path('task_show', {'id': task.id}) }}" class="btn btn-warning"><i class="fas fa-search"></i> Voir</a>
                             {% if task.projet.createur == app.user %}

@@ -8,7 +8,8 @@
     <div class="card shadow mb-4">   
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">{{ task.nom }}</h6>
-            {% if task.user == app.user %}
+            {% if task.user == app.user and task.cloture != 1 %}
+
                 <div class="chronometre float-right ">
                 
                     <div class="tim shadow-sm float-right">             
@@ -35,12 +36,24 @@
                         
                     </tr>
                     <tr>
+                        <th>Statut</th> 
+                        {% if task.cloture == 0 %}
+                        <td>
+                            {{ task.demarre ? 'En cours' : 'Non commencée' }}
+                        </td>
+                        {% else %}
+                        
+                         <td class="text-danger">{{ task.cloture ? 'Termiée' : 'En cours' }}</td>
+                        {% endif %}
+                    </tr>
+                   
+                    <tr>
                         <th>Attribué à</th>
                         <td>{{ task.user.nom  }} {{ task.user.prenom  }}</td>
                     </tr>
                     <tr>
                         <th>Temps estimé</th>
-                        <td>{{task.tempsEstime}} heure(s)</td>
+                        <td>{{task.tempsEstime}}{% if task.tempsEstime == 1 %} heure {% else %} heures {% endif %}</td>
                     </tr>
                     <tr>
                         <th>Priorité</th>
@@ -61,9 +74,9 @@
                         {% else %}
                         <td>{{task.description}}</td>
                         {% endif %}
-                    </tr>
-                    <tr>
-                    {% if task.projet.createur == app.user %}           
+                    </tr> 
+              
+                    {% if task.projet.createur == app.user and task.cloture != 1 %}           
                         <td colspan="3">
                             <a href="{{ path('task_edit', {'projet' : task.projet.id  , 'id': task.id }) }}" class="btn btn-info btn-icon-split">
                                 <span class="icon text-white-50">
