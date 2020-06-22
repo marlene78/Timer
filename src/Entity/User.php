@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -32,6 +33,8 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Groups("get:info")
+     * @Groups("get:user")
      */
     private $prenom;
 
@@ -61,11 +64,13 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Project::class, mappedBy="createur")
+     * @Groups("get:user")
      */
     private $projetCree;
 
     /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="user")
+     *  @Groups("get:user")
      */
     private $tasks;
 

@@ -27,25 +27,29 @@ class Timer
     
     /**
      * @ORM\Column(type="integer")
-     * 
+     * @Groups("get:info")
+     * @Groups("get:user")
      */
     private $progress;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups("get:info")
+     * @Groups("get:user")
      */
     private $heure;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups("get:info")
+     * @Groups("get:user")
      */
     private $minute;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups("get:info")
+     * @Groups("get:user")
      */
     private $seconde;
 

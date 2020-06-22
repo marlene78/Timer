@@ -18,11 +18,14 @@ class Task
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("get:user")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("get:info")
+     * @Groups("get:user")
      */
     private $nom;
 
@@ -39,28 +42,33 @@ class Task
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tasks")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("get:info")
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="tasks")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("get:user")
      */
     private $projet;
 
     /**
      * @ORM\OneToOne(targetEntity=Timer::class, mappedBy="task", cascade={"persist", "remove"})
      * @Groups("get:info")
+     * @Groups("get:user")
      */
     private $timer;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("get:info")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("get:info")
      */
     private $priorite;
 

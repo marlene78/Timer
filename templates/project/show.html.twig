@@ -44,15 +44,17 @@
             <tr>
                 <th>Groupe</th>
                 {% if project.groups is not empty %}
+                <td>
                 {% for group in project.groups %}
-                    <td>{{  group.nom }}
+                    <strong>{{  group.nom }}</strong>
                         <ul>
                         {% for user in group.users %}
                             <li>{{ user.nom }} {{ user.prenom }}</li>
                         {% endfor %}
                         </ul>
-                    </td>
+                   
                 {% endfor %}
+                 </td>
                 {% else %}
                     <td>Vous n'avez pas constitué votre équipe</td>
                 {% endif %}
@@ -63,7 +65,7 @@
                  <td></td>
             </tr>
             <tr>
-                <td colspan="3">
+                <td>
                     <a href="{{ path('task_index', {'id': project.id}) }}" class="btn btn-dark btn-icon-split">
                         <span class="icon text-white-50">
                             <i class="fas fa-search"></i>
@@ -71,10 +73,16 @@
                         <span class="text">Voir la liste des tâches</span>
                     </a>
                 </td>
-            <tr>
-            {% if project.createur == app.user %}
-            <tr>
-                <td colspan="3">
+                <td>
+                    <a href="{{ path('statistique_projet', {'id': project.id}) }}" class="btn btn-warning btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <span class="text">Voir les statistiques</span>
+                    </a>
+                </td>
+                {% if project.createur == app.user %}
+                <td>
                     <a href="{{ path('project_edit', {'id': project.id}) }}" class="btn btn-info btn-icon-split">
                         <span class="icon text-white-50">
                             <i class="fas fa-edit"></i>
@@ -82,8 +90,7 @@
                         <span class="text">Mettre à jour</span>
                     </a>
                 </td>
-            <tr>
-            {% endif %}
+                {% endif %}
             </tr>
         </tbody>
     </table>
@@ -92,7 +99,7 @@
     
 
 
-    <a href="{{ path('project_index') }}" class="btn btn-secondary btn-icon-split float-right">
+    <a href="{{ path('project_index') }}" class="btn btn-secondary btn-icon-split float-left">
         <span class="icon text-gray-600">
             <i class="fas fa-arrow-left"></i>
         </span>
@@ -103,6 +110,7 @@
     {% if project.createur == app.user %}
         {{ include('project/_delete_form.html.twig') }}
     {% endif %}
+
 {% endblock %}
 
 {% block javascripts %}
