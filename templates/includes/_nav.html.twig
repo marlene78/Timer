@@ -19,6 +19,25 @@
           <span>Accueil</span></a>
       </li>
 
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Actions -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStat" aria-expanded="true" aria-controls="collapsePages">
+          <i class="fas fa-chart-pie"></i>
+          <span>Mes statistiques</span>
+        </a>
+        <div id="collapseStat" class="collapse" aria-labelledby="headingStat" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{{ path('statistique_user', {'id': app.user.id}) }}">voir</a>
+  
+          </div>
+        </div>
+      </li>
+
+
       <!-- Divider -->
       <hr class="sidebar-divider">
 

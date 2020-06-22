@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
@@ -26,22 +27,27 @@ class Project
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("get:info")
+     * @Groups("get:user")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("get:info")
      */
     private $etat;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("get:info")
      */
     private $dateDeDebut;
 
     /**
      * @ORM\Column(type="date")
      * @Assert\GreaterThanOrEqual(propertyPath="dateDeDebut" , message="La date de fin doit être supérieur à la date de début")
+     * @Groups("get:info")
      * 
      */
     private $DateDeFin;
@@ -61,6 +67,7 @@ class Project
 
     /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="projet", orphanRemoval=true)
+     * @Groups("get:info")
      */
     private $tasks;
 
@@ -230,8 +237,8 @@ class Project
 
 
     /**
-     * @ORM\PrePersist
-     */
+    * @ORM\PrePersist
+    */
     public function Prepersist()
     {
         $now = new \DateTime('now'); 

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistique{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h2 mb-2 text-gray-800 text-center">Statistique</h1>
+    <h2 class="h3 mb-2 text-gray-800 text-center">{{ project.nom }}</h2>
+     
+
+    <!-- Area Chart -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Nombre de tâches crées</h6>
+        </div>
+        <div class="card-body">
+            <div class="chart-area">
+                <div id='loader' class="loader_tache_create"></div>
+                <canvas id="myAreaChart" class="cacher"></canvas>
+            </div>
+            <hr>
+                 
+        </div>
+    </div>
+       
+
+    <!-- Donut Chart -->
+    <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Pourcentage réalisation des tâches</h6>
+        </div>
+       
+        <div class="card-body">
+            <div class="chart-pie">
+                <div id='loader' class="loader_pourcentage"></div>
+                <canvas id="myPieChart" class="cacher"></canvas>
+                
+            </div>
+            <hr>
+        </div>
+    </div>
+
+
+    <!-- Bar Chart -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Progression des utilisateurs</h6>
+        </div>
+        <div class="card-body">
+            <div class="chart-bar">
+                <div id='loader' class="loader_user"></div>
+                <canvas id="myBarChart" class="cacher"></canvas>
+            </div>
+            <hr>
+                 
+        </div>
+    </div>
+
+
+       
+
+</div>
+{% endblock %}
+    
+{% block javascripts %}
+<script src="{{ asset('js/demo/chart-area-demo.js')  }}"></script>
+<script src="{{ asset('js/demo/chart-pie-demo.js')  }}"></script>
+<script src="{{ asset('js/demo/chart-bar-demo.js')  }}"></script>
+{% endblock %}

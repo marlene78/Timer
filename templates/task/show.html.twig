@@ -62,20 +62,19 @@
                         <td>{{task.description}}</td>
                         {% endif %}
                     </tr>
-
-                    {% if task.projet.createur == app.user %}
-                        <tr>
-                            <td colspan="2">
-                                <a href="{{ path('task_edit', {'projet' : task.projet.id  , 'id': task.id }) }}" class="btn btn-info btn-icon-split">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-edit"></i>
-                                    </span>
-                                    <span class="text">Mettre à jour</span>
-                                </a>
-                            </td>
-                           
-                        <tr>
+                    <tr>
+                    {% if task.projet.createur == app.user %}           
+                        <td colspan="3">
+                            <a href="{{ path('task_edit', {'projet' : task.projet.id  , 'id': task.id }) }}" class="btn btn-info btn-icon-split">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                                <span class="text">Mettre à jour</span>
+                            </a>
+                        </td>                         
                     {% endif %}
+               
+                    <tr>
                 </tbody>
             </table>
         </div>
@@ -123,56 +122,29 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript">
-        let sp = document.getElementsByClassName("sp"),
-            btn_start=document.getElementById("start"),
-            btn_stop=document.getElementById("stop"),
-            time,
-            tempsRecupere,
-            temps,
-            t,
-            h ={{ task.timer.heure }}, 
-            mn = {{ task.timer.minute }}, 
-            s = {{ task.timer.seconde }}; 
+<script type="text/javascript">
+    
+    let sp = document.getElementsByClassName("sp"),
+        btn_start=document.getElementById("start"),
+        btn_stop=document.getElementById("stop"),
+        time,
+        tempsRecupere,
+        temps,
+        t,
+        h ={{ task.timer.heure }}, 
+        mn = {{ task.timer.minute }}, 
+        s = {{ task.timer.seconde }}; 
 
         
-        //La fonction "start" démarre un appel répétitive de la fonction update_chrono 
-    
+        /*
+        * La fonction "start" démarre un appel répétitive de la fonction update_chrono 
+        */
         function start(){
-
-            //recupére la valeur depuis la base de donnée
-           /* 
-            $.ajax({
-                method:"post",
-                url:"/user/task/getTime_task/"+{{ task.timer.id }},
-                success:function(response){
-                    console.log(response); 
-                    
-             
-
-                },
-                error:function(){
-                    $("#message_erreur").text("Une erreur s'est produite, veuillez essayer ultérieurment"); 
-                    $("erreur").modal("show"); 
-                }
-
-            }); */
-
             btn_start.disabled=true;
-            
-  
-       
             t = setInterval(update_chrono,1000);  
         
         }
         
-
-                
-        //let h =  sessionStorage.getItem("h");
-        //let mn = sessionStorage.getItem("mn");
-        //let s =  sessionStorage.getItem("s");
-        
-    
 
         /*
         * La fonction update_chrono incrémente le nombre de millisecondes par 1 <==> 1*cadence = 100 
@@ -214,8 +186,6 @@
                 method:"get",
                 url:"/user/task/set/timer/"+{{ task.timer.id }},
                 data: donnee,
-                success:function(response){          
-                },
                 error:function(){
                     $("#message_erreur").text("Une erreur s'est produite, veuillez essayer ultérieurment"); 
                     $("erreur").modal("show"); 

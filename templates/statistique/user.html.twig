@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistique{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h2 mb-2 text-gray-800 text-center">Vos statistiques</h1>
+
+    {% if user.tasks is not empty %}
+    <div class="d-flex justify-content-around">
+    <!-- Bar Chart -->
+        <div class="card shadow mb-4 col-md-5">
+            <div class="card-header">
+                <h6 class="m-0 font-weight-bold text-primary">Pourcentage de progression de vos tâches</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-bar">
+                    <div id='loader' class="loader_pourcentage_user"></div>
+                    <canvas id="pieChartUser" class="cacher"></canvas>
+                </div>
+                <hr>
+                    
+            </div>
+        </div>
+
+        <div class="card shadow mb-4 col-md-5">
+            <div class="card-header">
+                <h6 class="m-0 font-weight-bold text-primary">Temps de connexion</h6>
+            </div>
+            <div  class="card-body">
+                <div id="info_projet_avancement" class="cacher"></div>
+                <div id='myLoader' class="loader_pourcentage_user"></div>
+            </div>
+            <hr>
+        </div>
+
+    </div>
+    {% else %}
+        <h2 class="h1 text-danger-800 text-center">Non disponible</h2>
+    {% endif %}
+
+
+       
+
+</div>
+{% endblock %}
+    
+{% block javascripts %}
+<script src="{{ asset('js/demo/chart-pie-user.js')  }}"></script>
+{% endblock %}

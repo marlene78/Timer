@@ -1,4 +1,17 @@
-
+#myLoader{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    width:100px;
+    height: 100px;
+    border-radius: 50%;
+    border:10px solid rgba(54, 185, 204, .3); 
+    border-top: 10px solid #36b9cc;
+    animation: loading 1.8s infinite linear;
+    background-color: white;
+    z-index: 1;
+}
 #loader{
     position: absolute;
     top:50%;
