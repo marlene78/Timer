@@ -74,11 +74,17 @@ class User implements UserInterface
      */
     private $tasks;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Roles::class, mappedBy="user")
+     */
+    private $userRoles;
+
     public function __construct()
     {
         $this->groups = new ArrayCollection();
         $this->projetCree = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        $this->userRoles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -257,6 +263,34 @@ class User implements UserInterface
             if ($task->getUser() === $this) {
                 $task->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Roles[]
+     */
+    public function getUserRoles(): Collection
+    {
+        return $this->userRoles;
+    }
+
+    public function addUserRole(Roles $userRole): self
+    {
+        if (!$this->userRoles->contains($userRole)) {
+            $this->userRoles[] = $userRole;
+            $userRole->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserRole(Roles $userRole): self
+    {
+        if ($this->userRoles->contains($userRole)) {
+            $this->userRoles->removeElement($userRole);
+            $userRole->removeUser($this);
         }
 
         return $this;
