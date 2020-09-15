@@ -19,7 +19,7 @@ class GroupType extends AbstractType
             ->add('users' , EntityType::class , [
                 'class' => User::class, 
                 'multiple' => true,
-                'attr' => ['class' => 'js-example-basic-single'],
+                
             ])
         ;
     }
