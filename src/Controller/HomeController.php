@@ -7,6 +7,8 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Entity\Timer;
 use App\Entity\Project;
+
+
 use App\Repository\TaskRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,7 +25,6 @@ class HomeController extends AbstractController
     {
         //$projects = $this->getDoctrine()->getRepository(Project::class)->findAll();
       
-
         return $this->render('home/index.html.twig' , [
             'user_tache' => $repoTask->findBy([
                 'user' => $this->getUser(),
