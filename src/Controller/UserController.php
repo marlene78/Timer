@@ -4,15 +4,18 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Service\ConfigEmail;
 use App\Form\EditionUserType;
 use App\Entity\ChangePassword;
 use App\Form\ChangePasswordType;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 
 class UserController extends AbstractController
@@ -23,7 +26,7 @@ class UserController extends AbstractController
      * Inscription d'un utilisateur
      * @Route("/inscription", name="user_new", methods={"GET","POST"})
      */
-    public function new(Request $request ,  UserPasswordEncoderInterface $passwordEncoder): Response
+    public function new(Request $request ,  UserPasswordEncoderInterface $passwordEncoder ,  MailerInterface $mailer): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -46,21 +49,32 @@ class UserController extends AbstractController
 
                 $entityManager->persist($user);
                 $entityManager->flush();
-    
-                $this->addFlash("success" , "Félicitation ". $user->getPrenom() ." votre compte à été créer"); 
-    
+
+                //ENVOIS EMAIL
+                $configEmail = new ConfigEmail($user->getEmail() , $user->getPrenom() , "Votre compte a été créé" , "votre compte vient d'être créé, connectez-vous pour y accéder ! " );
+                $mailer->send($configEmail->sendMail());
+                     
+
+                //connexion de l'utilisateur , activation de la session
+                $token = new UsernamePasswordToken(
+                    $user,
+                    $hash,
+                    'main',
+                    $user->getRoles()
+                );
+
+                $this->get('security.token_storage')->setToken($token);
+                $this->get('session')->set('_security_main', serialize($token));
+
+                $this->addFlash("success" , "Félicitation ". $user->getPrenom() ." votre compte a été créé");
+
+
                 return $this->redirectToRoute('home');
     
             }else{
                 $erreur = "Les deux mots de passe ne sont pas identiques"; 
             }
 
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            $this->addFlash("success" , "Félicitation ". $user->getPrenom() ." votre compte à été créer, vous pouvez vous connecter"); 
-
-            return $this->redirectToRoute('home');
         }
 
         return $this->render('user/new.html.twig', [
@@ -119,10 +133,12 @@ class UserController extends AbstractController
             $entityManager->remove($user);
             $entityManager->flush();
 
+            //suppression de la session
+            $this->get('security.token_storage')->setToken(null);
+            $request->getSession()->invalidate();
+
             $this->addFlash("danger" , "Votre compte a été supprimé"); 
         }
-
-
         return $this->redirectToRoute('login');
     }
 

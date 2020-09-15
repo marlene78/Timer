@@ -63,7 +63,7 @@ class User implements UserInterface
     private $groups;
 
     /**
-     * @ORM\OneToMany(targetEntity=Project::class, mappedBy="createur")
+     * @ORM\OneToMany(targetEntity=Project::class, mappedBy="createur" , cascade={"persist", "remove"})
      * @Groups("get:user")
      */
     private $projetCree;
