@@ -148,7 +148,17 @@
         <script src="{{ asset('js/demo/datatables-demo.js')  }}"></script>        
         <!-- Modal -->
         <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+
     
+          $('.js-datepicker').datepicker({
+            dateFormat: 'dd/mm/yy',
+            dayNamesMin: [ "Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa" ],
+            monthNames: [ "Janvier", "Février", "Mars", "April", "Mai", "Juin", "Julliet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" ],         
+           	minDate: 0,
+          });
+        </script>
+
 {% block javascripts %}{% endblock %}
 
 
