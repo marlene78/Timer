@@ -107,7 +107,7 @@ class Project
         return $this->etat;
     }
 
-    public function setEtat(string $etat): self
+    public function setEtat(string $etat)
     {
         $this->etat = $etat;
 
@@ -243,7 +243,7 @@ class Project
     {
         $now = new \DateTime('now'); 
         $day = $now->format('Y-m-d'); 
-        $day < $this->dateDeDebut ? $this->etat = "En cours" : $this->etat = "Démarre prochainement"; 
+        $day < $this->dateDeDebut ? $this->etat = "Démarre prochainement" : $this->etat = "cours"; 
    
     }
 

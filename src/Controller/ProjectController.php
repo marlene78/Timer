@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Form\ProjectType;
+use App\Service\EtatProject;
 use App\Repository\ProjectRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/user/project")
@@ -19,8 +20,16 @@ class ProjectController extends AbstractController
      * Liste des projets
      * @Route("/", name="project_index", methods={"GET"})
      */
-    public function index(ProjectRepository $projectRepository): Response
+    public function index(ProjectRepository $projectRepository, EtatProject $e): Response
     {
+        //on determine l'etat du projet
+        foreach($projectRepository->findAll() as $projet){
+            $dateDeDebut = strtotime($projet->getDateDeDebut()->format('Y-m-d'));
+            $dateDeFin = strtotime($projet->getDateDeFin()->format('Y-m-d'));
+
+            $etat = $e->EtatDuProjet($dateDeDebut, $dateDeFin);
+            $projet->setEtat($etat);
+        }
         return $this->render('project/index.html.twig', [
             'projects' => $projectRepository->findAll(),
         ]);
@@ -57,8 +66,18 @@ class ProjectController extends AbstractController
      * Affichage d'un projet
      * @Route("/{id}", name="project_show", methods={"GET"})
      */
-    public function show(Project $project): Response
+    public function show(Project $project, EtatProject $e ): Response
     {
+        $repoProject = $this->getDoctrine()->getRepository(Project::class)->findAll();
+        //Ici on determine l'etat du projet
+        foreach($repoProject as $projet){
+            $dateDeDebut = strtotime($projet->getDateDeDebut()->format('Y-m-d'));
+            $dateDeFin = strtotime($projet->getDateDeFin()->format('Y-m-d'));
+
+            $etat = $e->EtatDuProjet($dateDeDebut, $dateDeFin);
+            $projet->setEtat($etat);
+        }
+        
         return $this->render('project/show.html.twig', [
             'project' => $project,
         ]);
