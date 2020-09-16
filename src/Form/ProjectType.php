@@ -21,11 +21,15 @@ class ProjectType extends AbstractType
                 'widget' => 'single_text',
                 'html5' => false,
                 'attr' => ['class' => 'js-datepicker'],
+                'format' => 'dd/MM/yyyy',
+                'input_format' => 'Y-m-d'
             ])
             ->add('DateDeFin' , DateTimeType::class,[
                 'widget' => 'single_text',
                 'html5' => false,
-                'attr' => ['class' => 'js-datepicker']
+                'attr' => ['class' => 'js-datepicker'],
+                'format' => 'dd/MM/yyyy',
+                'input_format' => 'Y-m-d'
             ])
             ->add('description')
             ->add('groups' , CollectionType::class , [

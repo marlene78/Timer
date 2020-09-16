@@ -35,8 +35,9 @@ class ProjectController extends AbstractController
         $project = new Project();
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
-
+     
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $project->setCreateur($this->getUser()); 
             $entityManager->persist($project);
