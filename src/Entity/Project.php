@@ -265,9 +265,9 @@ class Project
        
        if($timeNow < $debut ){
            
-           $days = round($interval*1000 / (1000 * 60 * 60 * 24));
+           $days =round($interval*1000 / (1000 * 60 * 60 * 24));
            //$t = date('d F Y', $diff);
-           $resultat = ($days!==0)? "Le projet débutera dans ". $days. " jours." :  "Le projet débutera dans quelques heures. ";
+           $resultat = ($days!==0)? "Le projet débutera dans ". $days. " jour(s)." :  "Le projet débutera dans quelques heures. ";
            return $resultat;
        }
        else{
@@ -290,7 +290,17 @@ class Project
 
         
     }
+    /**
+     * @ORM\PrePersist 
+     * @ORM\PreUpdate
+     */
+    public function StartProjet(){
+        $diff =  strtotime($this->dateDeDebut->format('Y/m/d')) - strtotime('now');
+        $days = round($diff*1000 / (1000 * 60 * 60 * 24));
+        $start = ($days >= 1)?'false': 'true';  
 
+        return $start;
+    }
 
 
 }

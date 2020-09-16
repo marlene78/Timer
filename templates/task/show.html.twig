@@ -15,9 +15,13 @@
                     <div class="tim shadow-sm float-right">             
                         {{task.timer.heure }} h : {{task.timer.minute }} mn :  {{task.timer.seconde }} s  
                     </div>
-                    <button id="start" class="btn btn-info" onclick="start()"><i class="fas fa-play"></i></button>
-                    <button id="stop" class="btn btn-danger" onclick="stop()" ><i class="fas fa-stop"></i></button>
-                   
+                    {% if task.projet.StartProjet == 'true' %}
+                        <button id="start" class="btn btn-info" onclick="start()"><i class="fas fa-play"></i></button>
+                        <button id="stop" class="btn btn-danger" onclick="stop()" ><i class="fas fa-stop"></i></button>
+                    {% elseif task.projet.StartProjet == 'false' %}
+                        <span class="messageTimer blinking">{{ task.projet.timerProject}}</span> 
+                    {% endif %}
+                    
                 </div>
             {% endif %}
         </div>
