@@ -68,15 +68,13 @@ class ProjectController extends AbstractController
      */
     public function show(Project $project, EtatProject $e ): Response
     {
-        $repoProject = $this->getDoctrine()->getRepository(Project::class)->findAll();
+    
         //Ici on determine l'etat du projet
-        foreach($repoProject as $projet){
-            $dateDeDebut = strtotime($projet->getDateDeDebut()->format('Y-m-d'));
-            $dateDeFin = strtotime($projet->getDateDeFin()->format('Y-m-d'));
-
-            $etat = $e->EtatDuProjet($dateDeDebut, $dateDeFin);
-            $projet->setEtat($etat);
-        }
+        $dateDeDebut = strtotime($project->getDateDeDebut()->format('Y-m-d'));
+        $dateDeFin = strtotime($project->getDateDeFin()->format('Y-m-d'));
+        $etat = $e->EtatDuProjet($dateDeDebut, $dateDeFin);
+        $project->setEtat($etat);
+        
         
         return $this->render('project/show.html.twig', [
             'project' => $project,
