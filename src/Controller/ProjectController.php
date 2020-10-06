@@ -68,9 +68,6 @@ class ProjectController extends AbstractController
      */
     public function show(Project $project, EtatProject $e ): Response
     {
-<<<<<<< HEAD
-       
-=======
     
         //Ici on determine l'etat du projet
         $dateDeDebut = strtotime($project->getDateDeDebut()->format('Y-m-d'));
@@ -79,7 +76,6 @@ class ProjectController extends AbstractController
         $project->setEtat($etat);
         
         
->>>>>>> 767ad3b3bb3b93d1316cb3adc5dacbf7a3e9b78e
         return $this->render('project/show.html.twig', [
             'project' => $project,
         ]);

@@ -7,4 +7,5 @@
 /data
 /var/
 /vendor/
+/nginx/
 ###< symfony/framework-bundle ###
