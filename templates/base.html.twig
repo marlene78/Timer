@@ -18,6 +18,8 @@
         <script src="https://cdn.tiny.cloud/1/z8prk9090hyncsy4saa9bdhguqb1ownzqvv9m4sn3mb3idum/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
      
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+
         {% block stylesheets %}{% endblock %}
     </head>
 <body id="page-top">
@@ -130,7 +132,7 @@
           <!-- Bootstrap core JavaScript-->
         <script src="{{ asset('jquery/jquery.min.js')  }}"></script>
         <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js')  }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
         <!-- Core plugin JavaScript-->
         <script src="{{ asset('jquery-easing/jquery.easing.min.js')  }}"></script>
 
@@ -148,7 +150,20 @@
         <script src="{{ asset('js/demo/datatables-demo.js')  }}"></script>        
         <!-- Modal -->
         <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+        
+        <script>
+          $('select').select2();
+       
+
+          $('.js-datepicker').datepicker({
+            dateFormat: 'dd/mm/yy',
+            dayNamesMin: [ "Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa" ],
+            monthNames: [ "Janvier", "Février", "Mars", "April", "Mai", "Juin", "Julliet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" ],         
+           	minDate: 0,
+          });
+        </script>
+
 {% block javascripts %}{% endblock %}
 
 

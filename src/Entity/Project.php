@@ -46,7 +46,7 @@ class Project
 
     /**
      * @ORM\Column(type="date")
-     * @Assert\GreaterThanOrEqual(propertyPath="dateDeDebut" , message="La date de fin doit être supérieur à la date de début")
+     * @Assert\GreaterThan(propertyPath="dateDeDebut" , message="La date de fin doit être supérieur à la date de début")
      * @Groups("get:info")
      * 
      */
@@ -107,7 +107,7 @@ class Project
         return $this->etat;
     }
 
-    public function setEtat(string $etat): self
+    public function setEtat(string $etat)
     {
         $this->etat = $etat;
 
@@ -243,7 +243,7 @@ class Project
     {
         $now = new \DateTime('now'); 
         $day = $now->format('Y-m-d'); 
-        $day < $this->dateDeDebut ? $this->etat = "En cours" : $this->etat = "Démarre prochainement"; 
+        $day < $this->dateDeDebut ? $this->etat = "Démarre prochainement" : $this->etat = "cours"; 
    
     }
 
@@ -265,9 +265,9 @@ class Project
        
        if($timeNow < $debut ){
            
-           $days = round($interval*1000 / (1000 * 60 * 60 * 24));
+           $days =round($interval*1000 / (1000 * 60 * 60 * 24));
            //$t = date('d F Y', $diff);
-           $resultat = ($days!==0)? "Le projet débutera dans ". $days. " jours." :  "Le projet débutera dans quelques heures. ";
+           $resultat = ($days!==0)? "Le projet débutera dans ". $days. " jour(s)." :  "Le projet débutera dans quelques heures. ";
            return $resultat;
        }
        else{
@@ -288,6 +288,47 @@ class Project
             }
         }
 
+        
+    }
+    /**
+     * On vérifie si le projet a débuté ou pas 
+     * @ORM\PrePersist 
+     * @ORM\PreUpdate
+     */
+    public function StartProjet(){
+        $diff =  strtotime($this->dateDeDebut->format('Y/m/d')) - strtotime('now');
+        $days = round($diff*1000 / (1000 * 60 * 60 * 24));
+        $start = ($days >= 1)?'false': 'true';  
+
+        return $start;
+    }
+    /**
+     * Calcule de la durée du projet entre sa date de début et la date de fin,
+     * indique aussi si le projet est fini ou pas 
+     * @ORM\PrePersist 
+     * @ORM\PreUpdate
+     */
+    public function DureeProjet(){
+        $dateDeDebut = date_create($this->dateDeDebut->format('Y/m/d')); 
+        $DateDeFin = date_create($this->DateDeFin->format('Y/m/d')); 
+        $dateDuJour = date_create();
+        $interval = date_diff($dateDeDebut, $DateDeFin);
+        $diff = date_diff($dateDuJour, $DateDeFin) ;
+
+        //Traitement du cas ou la date de fin est égale à la date de début 
+        if($interval->format('%d')==='0'){
+            $message  = 'Erreur';
+        }
+        //Traitement du cas ou la date du jour est égale à la date de fin du projet
+        elseif($diff->format('%d')==='0'){
+            $message = 'Temps écoulé';
+
+        }
+        else {
+            $message = $interval->format('%d  jour(s)');
+        }
+        
+        return $message;
         
     }
 

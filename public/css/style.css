@@ -22,17 +22,20 @@
 
 
 }
+.messageTimer{
+  font-style: italic !important;
+}
 .blinking{
-  animation:blinkingText 2s infinite;
+  animation:blinkingText 3s infinite;
   font-weight: 90;
 
 }
 @keyframes blinkingText{
-  0%{     color:red;    }
-  49%{    color: red; }
-  60%{    color: transparent; }
+  0%{     color:#858796;    }
+  49%{    color: #858796; }
+  60%{    color:#858796; }
   99%{    color:transparent;  }
-  100%{   color: red;    }
+  100%{   color: #858796;    }
 }
 
   

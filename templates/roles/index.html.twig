@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+    <a href="{{ path('roles_new') }}" class="btn btn-sm btn-primary shadow-sm my-5"><i class="fas fa-plus fa-sm text-white-50"></i> Ajouter un rôle</a>
+  
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Gestion des rôles</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Utilisateur</th>
+                            <th>Édition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for role in roles %}
+                        <tr>
+                            <td>{{ role.nom }}</td>
+                            <td>
+                                <ul>
+                                {% for user in role.user %}
+                                    <li>{{ user.prenom }}</li>
+                                {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <a href="{{ path('roles_edit', {'id': role.id}) }}">Éditer</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">Liste vide</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+  
+
+
+
+
+ 
+{% endblock %}

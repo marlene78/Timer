@@ -8,6 +8,7 @@ use App\Form\GroupType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ProjectType extends AbstractType
@@ -16,8 +17,20 @@ class ProjectType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('dateDeDebut')
-            ->add('DateDeFin')
+            ->add('dateDeDebut' , DateTimeType::class, [
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => ['class' => 'js-datepicker'],
+                'format' => 'dd/MM/yyyy',
+                'input_format' => 'Y-m-d'
+            ])
+            ->add('DateDeFin' , DateTimeType::class,[
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => ['class' => 'js-datepicker'],
+                'format' => 'dd/MM/yyyy',
+                'input_format' => 'Y-m-d'
+            ])
             ->add('description')
             ->add('groups' , CollectionType::class , [
                 'entry_type' => GroupType::class, 

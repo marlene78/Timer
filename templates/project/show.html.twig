@@ -37,7 +37,8 @@
             </tr>
             <tr>
                 <th>Durée du projet </th>
-                <td id="projet"></td>
+                <td id="projet">{{project.DureeProjet}}
+                </td>
                 <td></td>
                 
             </tr>
@@ -111,32 +112,4 @@
         {{ include('project/_delete_form.html.twig') }}
     {% endif %}
 
-{% endblock %}
-
-{% block javascripts %}
-    <script>
-        // date de debut et date de fin du projet 
-       
-        var fin = new Date("{{ project.DateDeFin ? project.DateDeFin|date('m-d-Y') : '' }}").getTime();
-
-    
-        //Affichage du temps restant
-        var x = setInterval(function() {
-            var debut = new Date("{{ project.dateDeDebut ? project.dateDeDebut|date('m-d-Y') : '' }}").getTime();
-            
-            var interval = fin - debut;
-           
-            // Temps calculer pour  days, hours, minutes and seconds
-            var days = Math.floor(interval / (1000 * 60 * 60 * 24));
-            document.getElementById("projet").innerHTML = days + " jour(s) ";
-                
-            // fin de l'interval temps 
-            if (interval < 0) {
-                clearInterval(x);
-                document.getElementById("projet").innerHTML = "Fini";
-            }
-            
-        }, 1000);
-    
-    </script>
 {% endblock %}
