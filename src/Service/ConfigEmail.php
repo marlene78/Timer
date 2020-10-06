@@ -37,6 +37,7 @@ class ConfigEmail
             'url' =>"http://localhost/login" //url du site
         ]);
         
+        
         return $mail;
 
     }
