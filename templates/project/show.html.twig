@@ -5,6 +5,9 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">{{ project.nom }}</h6>
+            <a href="{{ path('message_project' , {'id' : project.id }) }}" class="float-right btn btn-success btn-circle btn-lg" title="Accédez au Chatte">  
+                <i class="far fa-comments"></i>
+            </a>
         </div>
     <div class="card-body">
             
@@ -67,28 +70,28 @@
             </tr>
             <tr>
                 <td>
-                    <a href="{{ path('task_index', {'id': project.id}) }}" class="btn btn-dark btn-icon-split">
+                    <a href="{{ path('task_index', {'id': project.id}) }}" class="btn btn-dark btn-icon-split" title="liste des tâches">
                         <span class="icon text-white-50">
                             <i class="fas fa-search"></i>
                         </span>
-                        <span class="text">Voir la liste des tâches</span>
+                        <span class="text mobile">Voir la liste des tâches</span>
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('statistique_projet', {'id': project.id}) }}" class="btn btn-warning btn-icon-split">
+                    <a href="{{ path('statistique_projet', {'id': project.id}) }}" class="btn btn-warning btn-icon-split" title="Statistiques du projet">
                         <span class="icon text-white-50">
-                            <i class="fas fa-search"></i>
+                           <i class="fas fa-chart-pie"></i>
                         </span>
-                        <span class="text">Voir les statistiques</span>
+                        <span class="text mobile">Statistiques du projet</span>
                     </a>
                 </td>
                 {% if project.createur == app.user %}
                 <td>
-                    <a href="{{ path('project_edit', {'id': project.id}) }}" class="btn btn-info btn-icon-split">
+                    <a href="{{ path('project_edit', {'id': project.id}) }}" class="btn btn-info btn-icon-split" title="Mettre à jour">
                         <span class="icon text-white-50">
                             <i class="fas fa-edit"></i>
                         </span>
-                        <span class="text">Mettre à jour</span>
+                        <span class="text mobile">Mettre à jour</span>
                     </a>
                 </td>
                 {% endif %}
@@ -100,11 +103,11 @@
     
 
 
-    <a href="{{ path('project_index') }}" class="btn btn-secondary btn-icon-split float-left">
+    <a href="{{ path('project_index') }}" class="btn btn-secondary btn-icon-split float-left" title="Retour">
         <span class="icon text-gray-600">
             <i class="fas fa-arrow-left"></i>
         </span>
-        <span class="text">Retour</span>
+        <span class="text mobile">Retour</span>
     </a>
 
 

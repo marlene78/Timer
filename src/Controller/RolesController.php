@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/roles")
+ * @Route("/user/roles")
  */
 class RolesController extends AbstractController
 {
