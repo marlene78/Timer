@@ -6,6 +6,7 @@ use App\Entity\User;
 
 use App\Service\Uri;
 use App\Form\UserType;
+use App\Service\Color;
 use App\Form\EditionUserType;
 use App\Entity\ChangePassword;
 use App\Form\ChangePasswordType;
@@ -28,8 +29,9 @@ class UserController extends AbstractController
      * Inscription d'un utilisateur
      * @Route("/inscription", name="user_new", methods={"GET","POST"})
      */
-    public function new(Request $request ,  UserPasswordEncoderInterface $passwordEncoder ,  MailerInterface $mailer , Uri $url): Response
+    public function new(Request $request ,  UserPasswordEncoderInterface $passwordEncoder ,  MailerInterface $mailer , Uri $url , Color $color): Response
     {
+        
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -37,7 +39,9 @@ class UserController extends AbstractController
         $erreur = null; 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $entityManager = $this->getDoctrine()->getManager();
+
 
 
             //Encodage du mot de passe
@@ -48,8 +52,12 @@ class UserController extends AbstractController
 
                 $confirmHash = $passwordEncoder->encodePassword($user , $user->getConfirmPassword()); 
                 $user->setConfirmPassword($confirmHash); 
+                $user->setColor($color->generateRandomColor()); 
 
                 $entityManager->persist($user);
+
+
+
                 $entityManager->flush();
 
                 //ENVOIS EMAIL
@@ -61,7 +69,7 @@ class UserController extends AbstractController
                 ->htmlTemplate("mail/index.html.twig")
                 ->context([
                     'prenom' => $user->getPrenom(),
-                    'message' => "votre compte vient d'être créé, connectez-vous pour y accéder ! ",
+                    'message' => "votre compte vient d'être créé.<br>Connectez-vous pour y accéder ! ",
                     'url' => $url->getUrl() //url du site
                 ]);
                 $mailer->send($mail);

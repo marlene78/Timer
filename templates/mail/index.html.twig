@@ -111,7 +111,7 @@
 												</tr>
 												<tr>
 													<td data-color="text" data-size="size text" data-min="10" data-max="26" data-link-color="link text color" data-link-style="text-decoration:underline; color:#40aceb;" align="center" style="font:16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
-														{{ prenom }} , votre compte vient d'être créé, connectez-vous pour y accéder !  
+														{{ prenom|capitalize }} , {{ message|raw('html') }} 
 													</td>
 												</tr>
 												<tr>

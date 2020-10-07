@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MessageRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Message
 {
@@ -14,11 +16,13 @@ class Message
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("get:info")
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("get:info")
      */
     private $content;
 
@@ -31,8 +35,21 @@ class Message
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("get:info")
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *  @Groups("get:info")
+     */
+    private $createAt;
+
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getContent(): ?string
     {
@@ -69,6 +86,30 @@ class Message
 
         return $this;
     }
+
+    public function getCreateAt(): ?\DateTimeInterface
+    {
+        return $this->createAt;
+    }
+
+    public function setCreateAt(\DateTimeInterface $createAt): self
+    {
+        $this->createAt = $createAt;
+
+        return $this;
+    }
+
+
+
+    /**
+    * Initalisation de la date 
+    * @ORM\PrePersist
+    */
+    public function Prepersist()
+    {
+        $this->createAt = new \DateTime('now');  
+    }
+
 
    
 }

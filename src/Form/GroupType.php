@@ -19,6 +19,7 @@ class GroupType extends AbstractType
             ->add('users' , EntityType::class , [
                 'class' => User::class, 
                 'multiple' => true,
+                'label' => 'Membres'
                 
             ])
         ;
