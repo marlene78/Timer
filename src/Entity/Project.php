@@ -76,11 +76,17 @@ class Project
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Token::class, mappedBy="project")
+     */
+    private $tokenInvitation;
+
 
     public function __construct()
     {
         $this->groups = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        $this->tokenInvitation = new ArrayCollection();
     }
 
 
@@ -331,6 +337,7 @@ class Project
         return $message;
         
     }
+
 
 
 

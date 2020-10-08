@@ -9,10 +9,12 @@ use App\Form\EditionUserType;
 use App\Entity\ChangePassword;
 use App\Form\ChangePasswordType;
 use App\Repository\UserRepository;
+use App\Repository\GroupRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -26,17 +28,26 @@ class UserController extends AbstractController
      * Inscription d'un utilisateur
      * @Route("/inscription", name="user_new", methods={"GET","POST"})
      */
-    public function new(Request $request ,  UserPasswordEncoderInterface $passwordEncoder ,  MailerInterface $mailer): Response
+    public function new(Request $request ,  UserPasswordEncoderInterface $passwordEncoder, GroupRepository $repoGroupe): Response
     {
+        $session = new Session();
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
+        $tabInvite = $session->get('invite');
         $erreur = null; 
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
+            // On vérifie si le mail de l'invitation est le même que celui renseingné par l'utilisateur
+            if ($tabInvite != NULL and $user->getEmail() != $tabInvite['mail']){
+                $erreur = true;
+                 return $this->render('token/invitation.html.twig', [
+                     'erreur' => $erreur,
+                 ]);
+                 
+            }
 
             //Encodage du mot de passe
             if($user->getConfirmPassword() == $user->getPassword()){
@@ -47,12 +58,20 @@ class UserController extends AbstractController
                 $confirmHash = $passwordEncoder->encodePassword($user , $user->getConfirmPassword()); 
                 $user->setConfirmPassword($confirmHash); 
 
+                //on affecte l'invité dans son groupe
+                foreach (array_slice($tabInvite,3) as $idGroup){
+                    $groupe = $repoGroupe->find($idGroup);
+                    $groupe->addUser($user);
+                }
+              
+
+
                 $entityManager->persist($user);
                 $entityManager->flush();
 
                 //ENVOIS EMAIL
-                $configEmail = new ConfigEmail($user->getEmail() , $user->getPrenom() , "Votre compte a été créé" , "votre compte vient d'être créé, connectez-vous pour y accéder ! " );
-                $mailer->send($configEmail->sendMail());
+                //$configEmail = new ConfigEmail($user->getEmail() , $user->getPrenom() , "Votre compte a été créé" , "votre compte vient d'être créé, connectez-vous pour y accéder ! " );
+                //$mailer->send($configEmail->sendMail());
                      
 
                 //connexion de l'utilisateur , activation de la session

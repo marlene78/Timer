@@ -2,13 +2,16 @@
 
 namespace App\Controller;
 
+use App\Service\Token;
 use App\Entity\Project;
 use App\Form\ProjectType;
 use App\Service\EtatProject;
+use App\Service\GenerateToken;
 use App\Repository\ProjectRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -22,6 +25,19 @@ class ProjectController extends AbstractController
      */
     public function index(ProjectRepository $projectRepository, EtatProject $e): Response
     {
+        //on recupére le projet qui est lié à la personne invitée
+        $session = new Session();
+        $tabInvite = $session->get('invite');
+        if($session->has('invite') == true){
+            $project = $projectRepository->findBy(array('id' => $tabInvite['project']),
+            null,
+            null,
+            0);
+        }
+        else {
+            $project = $projectRepository->findAll();
+        }
+
         //on determine l'etat du projet
         foreach($projectRepository->findAll() as $projet){
             $dateDeDebut = strtotime($projet->getDateDeDebut()->format('Y-m-d'));
@@ -30,8 +46,9 @@ class ProjectController extends AbstractController
             $etat = $e->EtatDuProjet($dateDeDebut, $dateDeFin);
             $projet->setEtat($etat);
         }
+
         return $this->render('project/index.html.twig', [
-            'projects' => $projectRepository->findAll(),
+            'projects' => $project,
         ]);
     }
  
@@ -39,7 +56,7 @@ class ProjectController extends AbstractController
      * Création d'un projet
      * @Route("/new", name="project_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, GenerateToken $t): Response
     {
         $project = new Project();
         $form = $this->createForm(ProjectType::class, $project);
@@ -49,6 +66,8 @@ class ProjectController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $project->setCreateur($this->getUser()); 
+
+            
             $entityManager->persist($project);
             $entityManager->flush();
             $this->addFlash("success" , "Félicitation Projet créer. Ajouter une nouvelle tâche ! "); 
@@ -59,6 +78,7 @@ class ProjectController extends AbstractController
         return $this->render('project/new.html.twig', [
             'project' => $project,
             'form' => $form->createView(),
+            'token' => $t->generateToken()
         ]);
     }
 
@@ -73,7 +93,7 @@ class ProjectController extends AbstractController
         $dateDeDebut = strtotime($project->getDateDeDebut()->format('Y-m-d'));
         $dateDeFin = strtotime($project->getDateDeFin()->format('Y-m-d'));
         $etat = $e->EtatDuProjet($dateDeDebut, $dateDeFin);
-        $project->setEtat($etat);
+        $project->setEtat($etat); 
         
         
         return $this->render('project/show.html.twig', [

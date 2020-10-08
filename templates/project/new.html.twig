@@ -13,12 +13,18 @@
         </span>
         <span class="text">Retour</span>
     </a>
+
+
   
 {% endblock %}
 {% block javascripts %}
 <script>
 
 $(document).ready(function(){
+    
+    let $containerInvitation = $('#project_tokenInvitation');
+
+
 
     /*CRÉER UN GROUPE*/
     let $container = $('#project_groups');
@@ -29,7 +35,6 @@ $(document).ready(function(){
         e.preventDefault();
         addGroup($container);
     })
-
 
     function addGroup($container){
 
@@ -67,14 +72,6 @@ $(document).ready(function(){
 
 
       $('.js-example-basic-single').select2();
-
-
-
-
-
-
-
-
 
 
 });

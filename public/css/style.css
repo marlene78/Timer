@@ -3,6 +3,12 @@
     background-position: center;
     background-size: cover;
   }
+.bg-error-image-2 {
+    background: url("../images/30316.jpg");
+    background-position: center;
+    background-size: cover;
+  }
+
 
 .chronometre{
     margin: auto ;
