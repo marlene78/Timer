@@ -44,7 +44,8 @@
 .card-toggle{cursor: pointer;}
 
 .name{color:white;}
-.delete_message{float: right;cursor: pointer;}
+.delete_message{float: right;color:white;cursor: pointer;}
+.delete_message:hover{color:whitesmoke;}
 
 .contain {margin: 0 auto;background: black;border-radius: 5px;}
 .fa-circle{font-size: 10px;}
@@ -70,6 +71,8 @@
   width: 90%;
   position: relative;
 }
+
+/*
 .message:after {
   bottom: 100%;
   left: 7%;
@@ -82,7 +85,7 @@
   border-width: 10px;
   margin-left: -10px;
   border-bottom-color: red;
-}
+}*/
 .chat-history ul{list-style: none;}
 .other-message {      
   color: white;
@@ -94,6 +97,7 @@
   width: 90%;
   position: relative;
 }
+/*
 .other-message:after {
   bottom: 100%;
   border: solid transparent;
@@ -106,6 +110,7 @@
   margin-left: -10px;
   border-bottom-color: red;
 }
+*/
 .chat-message {padding: 30px;}
 .chat-message textarea {
   width: 100%;

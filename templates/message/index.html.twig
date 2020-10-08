@@ -92,6 +92,33 @@
                     }
                   
                 });
+
+
+                let btnDelete = document.getElementsByClassName("delete_message"); 
+              
+                for(let i = 0 ; i < btnDelete.length ; i ++){
+                  btnDelete[i].addEventListener("click" , function(){
+                    let id = $(this)[0].dataset.id;
+                    $.ajax({
+                      url: "/user/message/delete/"+id, 
+                      type: "DELETE",
+                      success:function(response){
+                         
+                          $(".val_message").html('<i class="fas fa-thumbs-up"></i> '+response.responseText+''); 
+                          setTimeout(() => {
+                              $(".val_message").html(""); 
+                          }, 2000);
+                      },
+                      error:function(erreur){
+                         
+                          $(".erreur_message").html('<i class="far fa-frown"></i> '+erreur.responseText+''); 
+                          setTimeout(() => {
+                              $(".erreur_message").html(""); 
+                          }, 2000);
+                      }
+                    })
+                  })
+                }
             },
             error:function(){
                  $("#loader").addClass("cacher");
@@ -100,5 +127,6 @@
             }
         })
     }
+
   </script>
 {% endblock %}
