@@ -8,24 +8,37 @@
     <div class="people-list contain" id="people-list">
 
       <ul class="list row">
-          <li class="clearfix">
-            {#<img src="https://source.unsplash.com/QAB-WJcbgJk/60x60" alt="avatar"  class="rounded-circle" style="height:2rem;width:2rem;"/>#}
-            <div class="about">
-              <div class="name">Vous <i class="fa fa-circle" style="color:{{ app.user.color }}"></i></div>
-            </div>
-          </li>
-        {% for groupe in project.groups %}
-            {% for user in groupe.users %}  
-           
-              {% if user.id != app.user.id %}
-                <li class="clearfix">
-                  <div class="about">
-                      <div class="name">{{ user.nom }} {{ user.prenom }} <i class="fa fa-circle" style="color:{{ user.color }}"></i></div>
-                  </div>
-                </li>    
+     
+          {% set  newArray = [] %}
+          {% set color = [] %}
+          
+          {% for groupe in project.groups %}
+            {% for user in groupe.users %}
+              {% if user not in  newArray %}
+                {% set newArray = newArray|merge([ user]) %}
+                {% set color = color|merge([ user.color ]) %}
               {% endif %}
-
             {% endfor %}
+          {% endfor %}  
+
+
+        {% for item in newArray %} 
+    
+            {% if app.user == item %}
+            <li class="clearfix">
+              <div class="about">
+                <div class="name">Vous <i class="fa fa-circle" style="color:{{ color[loop.index0] }}"></i></div>
+              </div>
+            </li>
+            {% else %}
+            <li class="clearfix">
+              <div class="about">
+                <div class="name">{{ item }} <i class="fa fa-circle" style="color:{{ color[loop.index0] }}"></i></div>
+              </div>
+            </li>
+          
+            {% endif %}
+          
         {% endfor %}        
       </ul>
     </div>
