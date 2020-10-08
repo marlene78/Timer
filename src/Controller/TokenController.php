@@ -2,13 +2,16 @@
 
 namespace App\Controller;
 
+use App\Service\Uri;
 use App\Entity\Token;
 use App\Entity\Project;
 use App\Form\TokenType;
 use App\Service\GenerateToken;
 use App\Repository\TokenRepository;
 use App\Repository\ProjectRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -82,7 +85,7 @@ class TokenController extends AbstractController
      * Evoie de l'invitation
      * @Route("/new/{id}", name="token_new", methods={"GET","POST"})
      */
-    public function new(Request $request, GenerateToken $t, Project $project): Response
+    public function new(Request $request, GenerateToken $t, Project $project, MailerInterface $mailer , Uri $url): Response
     {
         $token = new Token();
         $form = $this->createForm(TokenType::class, $token);
@@ -90,13 +93,30 @@ class TokenController extends AbstractController
         $id = $project->getId();
 
 
+
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $token->setToken($t->generateToken());
             $token->setCReatedAt(new \DateTime());
             $token->setProject($id);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($token);
             $entityManager->flush();
+
+            //Envoi email à l'invité
+            $mail = (new TemplatedEmail())
+                ->from('ne-pas-repondre@timer.com')
+                ->to($token->getEmailInvite())
+                ->subject("Timer invitation from ".$project->getCreateur()->getNom()." ". $project->getCreateur()->getPrenom())
+                ->htmlTemplate("mail/invite.html.twig")
+                ->context([
+                    'prenom' => $token->getEmailInvite(),
+                    'message' => "</br> ".$project->getCreateur()->getNom()." ". $project->getCreateur()->getPrenom(). " vous a invité à rejoindre le projet "."<b>".$project->getNom()."</b>."." </br> Cliquez sur ce bouton pour accepter l'invitation.</br>",
+                    'url' => $url->getUrlInvite($token->getToken()) //url du site
+                ]);
+
+            $mailer->send($mail);
+
             $this->addFlash("success" , "Félicitation votre invitation a bien été envoyé! "); 
             return $this->redirectToRoute('token_index', array('id' => $id));
         }

@@ -99,19 +99,19 @@
 							<td data-bgcolor="bg-module" bgcolor="#eaeced">
 								<table class="flexible" width="600" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
 									<tr>
-										<td class="img-flex"><h1>Timer<h1></td>
+										<td class="img-flex"><h1>Invitation<h1></td>
 									</tr>
 									<tr>
 										<td data-bgcolor="bg-block" class="holder" style="padding:58px 60px 52px;" bgcolor="#f9f9f9">
 											<table width="100%" cellpadding="0" cellspacing="0">
 												<tr>
-													<td data-color="title" data-size="size title" data-min="25" data-max="45" data-link-color="link title color" data-link-style="text-decoration:none; color:#292c34;" class="title" align="center" style="font:35px/38px Arial, Helvetica, sans-serif; color:#292c34; padding:0 0 24px;">
-														Félicitation
+													<td data-color="title" data-size="size title" data-min="25" data-max="45" data-link-color="link title color" data-link-style="text-decoration:none; color:#292c34;" class="title" align="center" style="font:20px/38px Arial, Helvetica, sans-serif; color:#292c34; padding:0 0 24px;">
+														Cher {{ prenom|capitalize }} , 
 													</td>
 												</tr>
 												<tr>
 													<td data-color="text" data-size="size text" data-min="10" data-max="26" data-link-color="link text color" data-link-style="text-decoration:underline; color:#40aceb;" align="center" style="font:16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
-														{{ prenom|capitalize }} , {{ message|raw('html') }} 
+														 {{ message|raw('html') }} 
 													</td>
 												</tr>
 												<tr>
@@ -119,7 +119,7 @@
 														<table width="134" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
 															<tr>
 																<td data-bgcolor="bg-button" data-size="size button" data-min="10" data-max="16" class="btn" align="center" style="font:bold 16px/18px Arial, Helvetica, sans-serif; color:#f9f9f9;mso-padding-alt:22px 10px; border-radius:3px;" bgcolor="#7bb84f">
-																	<a target="_blank" style="text-decoration:none; color:#f8f9fb; display:block; padding:12px 10px 10px;" href="{{ url }}">J'accède à mon compte</a>
+																	<a target="_blank" style="text-decoration:none; color:#f8f9fb; display:block; padding:12px 10px 10px;" href="{{ url }}">Accepter</a>
 																</td>
 															</tr>
 														</table>
