@@ -5,9 +5,15 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">{{ project.nom }}</h6>
-            <a href="{{ path('message_project' , {'id' : project.id }) }}" class="float-right btn btn-success btn-circle btn-lg" title="Accédez au Chatte">  
-                <i class="far fa-comments"></i>
-            </a>
+            {% for groupe in project.groups %}
+                {% for user in groupe.users %}
+                    {% if user.id == app.user.id %}
+                        <a href="{{ path('message_project' , {'id' : project.id }) }}" class="float-right btn btn-success btn-circle btn-lg" title="Accédez au Chatte">  
+                            <i class="far fa-comments"></i>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
         </div>
     <div class="card-body">
             

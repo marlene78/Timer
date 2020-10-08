@@ -31,7 +31,8 @@ class TaskType extends AbstractType
                     "Normale"=>"Normale",
                     "Maximale"=>"Maximale",
                     "Elevé"=>"Elevé",
-                ]
+                ], 
+                'label' => "Priorité"
             ])  
             ->add('tempsEstime', null,[
                 "label"=>"Temps estimé en heure"
@@ -46,7 +47,8 @@ class TaskType extends AbstractType
                     ->where('p.id =:val')
                     ->setParameter('val', $tab_url[4])
                     ;
-                }
+                }, 
+                'label' => "Attribuer à"
             ])
             ->add('description')
         ;

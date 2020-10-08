@@ -296,6 +296,10 @@ class Project
 
         
     }
+
+
+
+    
     /**
      * On vérifie si le projet a débuté ou pas 
      * @ORM\PrePersist 

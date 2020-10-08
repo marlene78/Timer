@@ -27,6 +27,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     *  @Groups("get:info")
      */
     private $nom;
 
@@ -83,6 +84,12 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="user", orphanRemoval=true)
      */
     private $messages;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("get:info")
+     */
+    private $color;
 
     public function __construct()
     {
@@ -209,7 +216,7 @@ class User implements UserInterface
 
     public function __toString()
     {
-        return $this->nom; 
+        return $this->nom.' '.$this->prenom; 
     }
 
     /**
@@ -329,6 +336,18 @@ class User implements UserInterface
                 $message->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): self
+    {
+        $this->color = $color;
 
         return $this;
     }
