@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Service\Uri;
 use App\Entity\Timer;
 use App\Form\TaskType;
 use App\Entity\Project;
@@ -10,7 +11,9 @@ use App\Service\Progress;
 use App\Form\EditTaskType;
 use App\Repository\TaskRepository;
 use App\Repository\TimerRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,7 +43,7 @@ class TaskController extends AbstractController
      * Initialisation du timer 
      * @Route("/new/{id}", name="task_new", methods={"GET","POST"})
      */
-    public function new(Request $request , Project $project): Response
+    public function new(Request $request , Project $project ,  MailerInterface $mailer , Uri $url): Response
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
@@ -58,6 +61,19 @@ class TaskController extends AbstractController
             $timer->setMinute(0); 
             $timer->setSeconde(0); 
             $timer->setTask($task);
+
+            //Envoi email à l'utilisateur
+            $mail = (new TemplatedEmail())
+            ->from('ne-pas-repondre@timer.com')
+            ->to($task->getUser()->getEmail())
+            ->subject("Une nouvelle tâche")
+            ->htmlTemplate("mail/index.html.twig")
+            ->context([
+                'prenom' => $task->getUser()->getPrenom(),
+                'message' => "Une nouvelle tâche vient de vous être attribué(e).<br> Connectez-vous pour la consulter ! ",
+                'url' => $url->getUrl() //url du site
+            ]);
+            $mailer->send($mail);
 
             $entityManager->persist($task);
             $entityManager->persist($timer);

@@ -77,9 +77,15 @@ class Project
     private $description;
 
     /**
+
      * @ORM\OneToMany(targetEntity=Token::class, mappedBy="project")
      */
     private $tokenInvitation;
+
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="project", orphanRemoval=true)
+     */
+    private $messages;
+
 
 
     public function __construct()
@@ -87,6 +93,8 @@ class Project
         $this->groups = new ArrayCollection();
         $this->tasks = new ArrayCollection();
         $this->tokenInvitation = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+
     }
 
 
@@ -296,6 +304,10 @@ class Project
 
         
     }
+
+
+
+    
     /**
      * On vérifie si le projet a débuté ou pas 
      * @ORM\PrePersist 
@@ -336,6 +348,37 @@ class Project
         
         return $message;
         
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getProject() === $this) {
+                $message->setProject(null);
+            }
+        }
+
+        return $this;
     }
 
 

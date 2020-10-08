@@ -3,13 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\User;
+
+use App\Service\Uri;
 use App\Form\UserType;
-use App\Service\ConfigEmail;
+use App\Service\Color;
 use App\Form\EditionUserType;
 use App\Entity\ChangePassword;
 use App\Form\ChangePasswordType;
 use App\Repository\UserRepository;
 use App\Repository\GroupRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,9 +31,10 @@ class UserController extends AbstractController
      * Inscription d'un utilisateur
      * @Route("/inscription", name="user_new", methods={"GET","POST"})
      */
-    public function new(Request $request ,  UserPasswordEncoderInterface $passwordEncoder, GroupRepository $repoGroupe): Response
+    public function new(Request $request ,  UserPasswordEncoderInterface $passwordEncoder, GroupRepository $repoGroupe ,  MailerInterface $mailer , Uri $url , Color $color): Response
     {
-        $session = new Session();
+        $session = new Session();   
+
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -38,6 +42,7 @@ class UserController extends AbstractController
         $erreur = null; 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $entityManager = $this->getDoctrine()->getManager();
 
             // On vérifie si le mail de l'invitation est le même que celui renseingné par l'utilisateur
@@ -49,6 +54,7 @@ class UserController extends AbstractController
                  
             }
 
+
             //Encodage du mot de passe
             if($user->getConfirmPassword() == $user->getPassword()){
             
@@ -57,6 +63,7 @@ class UserController extends AbstractController
 
                 $confirmHash = $passwordEncoder->encodePassword($user , $user->getConfirmPassword()); 
                 $user->setConfirmPassword($confirmHash); 
+                $user->setColor($color->generateRandomColor()); 
 
                 //on affecte l'invité dans son groupe
                 foreach (array_slice($tabInvite,3) as $idGroup){
@@ -67,13 +74,25 @@ class UserController extends AbstractController
 
 
                 $entityManager->persist($user);
+
+
+
                 $entityManager->flush();
 
                 //ENVOIS EMAIL
-                //$configEmail = new ConfigEmail($user->getEmail() , $user->getPrenom() , "Votre compte a été créé" , "votre compte vient d'être créé, connectez-vous pour y accéder ! " );
-                //$mailer->send($configEmail->sendMail());
-                     
-
+    
+                $mail = (new TemplatedEmail())
+                ->from('ne-pas-repondre@timer.com')
+                ->to($user->getEmail())
+                ->subject("Votre compte a été créé")
+                ->htmlTemplate("mail/index.html.twig")
+                ->context([
+                    'prenom' => $user->getPrenom(),
+                    'message' => "votre compte vient d'être créé.<br>Connectez-vous pour y accéder ! ",
+                    'url' => $url->getUrl() //url du site
+                ]);
+                $mailer->send($mail);
+               
                 //connexion de l'utilisateur , activation de la session
                 $token = new UsernamePasswordToken(
                     $user,

@@ -27,6 +27,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     *  @Groups("get:info")
      */
     private $nom;
 
@@ -79,12 +80,24 @@ class User implements UserInterface
      */
     private $userRoles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $messages;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("get:info")
+     */
+    private $color;
+
     public function __construct()
     {
         $this->groups = new ArrayCollection();
         $this->projetCree = new ArrayCollection();
         $this->tasks = new ArrayCollection();
         $this->userRoles = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -203,7 +216,7 @@ class User implements UserInterface
 
     public function __toString()
     {
-        return $this->nom; 
+        return $this->nom.' '.$this->prenom; 
     }
 
     /**
@@ -296,6 +309,48 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getUser() === $this) {
+                $message->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): self
+    {
+        $this->color = $color;
+
+        return $this;
+    }
 
   
 }

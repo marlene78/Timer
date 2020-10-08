@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ project.nom }}{% endblock %}
+
+{% block body %}
+<div class="clearfix">
+
+    <div class="people-list contain" id="people-list">
+
+      <ul class="list row">
+          <li class="clearfix">
+            {#<img src="https://source.unsplash.com/QAB-WJcbgJk/60x60" alt="avatar"  class="rounded-circle" style="height:2rem;width:2rem;"/>#}
+            <div class="about">
+              <div class="name">Vous <i class="fa fa-circle" style="color:{{ app.user.color }}"></i></div>
+            </div>
+          </li>
+        {% for groupe in project.groups %}
+            {% for user in groupe.users %}  
+           
+              {% if user.id != app.user.id %}
+                <li class="clearfix">
+                  <div class="about">
+                      <div class="name">{{ user.nom }} {{ user.prenom }} <i class="fa fa-circle" style="color:{{ user.color }}"></i></div>
+                  </div>
+                </li>    
+              {% endif %}
+
+            {% endfor %}
+        {% endfor %}        
+      </ul>
+    </div>
+    
+    <div class="chat">
+      
+      <div class="chat-history">
+         <div id='loader'></div>
+        <ul>       
+        </ul>
+        
+      </div> <!-- end chat-history -->
+      
+      <div class="chat-message clearfix">
+        <small class="val_message text-success"></small>
+        <small class="erreur_message text-danger"></small>
+        <form id="form_message">
+          <textarea name="message-to-send" id="message-to-send" placeholder ="Votre message" rows="5"></textarea>
+          <input type="hidden" name="projet_id" value="{{ project.id }}">
+          <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
+          <i class="fa fa-file-image-o"></i>
+          
+          <button class="send btn btn-primary" id="send_message">Envoyer</button>
+        </form>
+
+      </div> <!-- end chat-message -->
+      
+    </div> <!-- end chat -->
+    
+</div> <!-- end container -->
+
+
+
+
+
+{% endblock %}
+{% block javascripts %}
+  <script src="{{ asset('js/message.js')  }}"></script>
+  <script> 
+    
+    /**
+    * Affichage de tous les messages du projet
+    */
+    if({{ project.id }}){
+
+        
+        $.get({
+            url:"/user/project/get/message",
+            data:"id="+{{ project.id }},
+            success:function(response){
+              
+              $("#loader").addClass("cacher");
+                let html ="";
+                response.forEach(element => {
+
+                  let date = new Date(element.createAt);
+                   
+                    if(element.user.prenom == "{{ app.user.prenom }}" ){
+                        html +='<li class="clearfix"><div class="message-data align-right"><span class="message-data-time" >'+ date.toLocaleDateString()+" "+ date.toLocaleTimeString() +'</span> &nbsp; &nbsp;<span class="message-data-name">Vous</span> <i class="fa fa-circle" style="color:'+ element.user.color +'"></i></div><div class="message float-right" style="background-color:'+ element.user.color +';">'+ element.content +'<span id="delete" class="delete_message" data-id="'+ element.id +'">X</span></div></li>';
+                        $(".chat-history ul").html(html);
+                    }else{
+                        html +='<li class="clearfix"><div class="message-data  align-left"><span class="message-data-time" >'+ date.toLocaleDateString()+" "+ date.toLocaleTimeString()  +'</span> &nbsp; &nbsp;<span class="message-data-name" >'+ element.user.prenom+'</span> <i class="fa fa-circle" style="color:'+ element.user.color +'"></i></div><div class="float-left other-message" style="background-color:'+ element.user.color +';">'+ element.content +'</div></li>';
+                        $(".chat-history ul").html(html);
+                    }
+                  
+                });
+            },
+            error:function(){
+                 $("#loader").addClass("cacher");
+                 $(".chat-history").text("Indisponible")
+              
+            }
+        })
+    }
+  </script>
+{% endblock %}

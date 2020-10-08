@@ -24,7 +24,7 @@ class AuthentificationController extends AbstractController
             'username' => $username
         ]);
         
- 
+        
 
       
     }
