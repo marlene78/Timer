@@ -299,7 +299,7 @@ class Project
 
             } 
             else{ 
-                return 'Temps restant du projet :'.$jour.' j';
+                return 'Temps restant du projet : '.round($jour).' j';
             }
         }
 
@@ -344,7 +344,7 @@ class Project
 
         }
         else {
-            $message = $interval->format('%d  jour(s)');
+            $message = $interval->format('%a jour(s)');
         }
         
         return $message;
