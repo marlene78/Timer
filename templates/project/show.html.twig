@@ -65,6 +65,19 @@
                    
                 {% endfor %}
                  </td>
+                <td>  
+                    {% if project.createur == app.user %}
+                        <a href="{{ path('token_new', {'id': project.id}) }}" class="btn btn-warning btn-icon-split btn-sm">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-user-plus prefix grey-text"></i>
+                                        
+                                </span>
+                                <span class="text">Inviter des membres
+                                </span>
+                        </a>
+                    {% endif %}
+                </td>
+                 
                 {% else %}
                     <td>Vous n'avez pas constitué votre équipe</td>
                 {% endif %}
@@ -99,7 +112,10 @@
                         </span>
                         <span class="text mobile">Mettre à jour</span>
                     </a>
+                    
                 </td>
+
+                
                 {% endif %}
             </tr>
         </tbody>
@@ -115,6 +131,7 @@
         </span>
         <span class="text mobile">Retour</span>
     </a>
+    
 
 
     {% if project.createur == app.user %}

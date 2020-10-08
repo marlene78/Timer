@@ -38,11 +38,17 @@ class Group
      */
     private $project;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Token::class, mappedBy="groupInvite")
+     */
+    private $tokens;
+
 
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->tokens = new ArrayCollection();
        
     }
 
@@ -106,6 +112,34 @@ class Group
     public function __toString()
     {
         return $this->nom;
+    }
+
+    /**
+     * @return Collection|Token[]
+     */
+    public function getTokens(): Collection
+    {
+        return $this->tokens;
+    }
+
+    public function addToken(Token $token): self
+    {
+        if (!$this->tokens->contains($token)) {
+            $this->tokens[] = $token;
+            $token->addGroupInvite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeToken(Token $token): self
+    {
+        if ($this->tokens->contains($token)) {
+            $this->tokens->removeElement($token);
+            $token->removeGroupInvite($this);
+        }
+
+        return $this;
     }
 
 

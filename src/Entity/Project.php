@@ -77,16 +77,24 @@ class Project
     private $description;
 
     /**
+
+     * @ORM\OneToMany(targetEntity=Token::class, mappedBy="project")
+     */
+    private $tokenInvitation;
+
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="project", orphanRemoval=true)
      */
     private $messages;
+
 
 
     public function __construct()
     {
         $this->groups = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        $this->tokenInvitation = new ArrayCollection();
         $this->messages = new ArrayCollection();
+
     }
 
 
@@ -372,6 +380,7 @@ class Project
 
         return $this;
     }
+
 
 
 
