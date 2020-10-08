@@ -81,7 +81,8 @@ class Project
      * @ORM\OneToMany(targetEntity=Token::class, mappedBy="project")
      */
     private $tokenInvitation;
-
+    
+    /** 
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="project", orphanRemoval=true)
      */
     private $messages;
