@@ -16,7 +16,7 @@ class MessageController extends AbstractController
 {
 
     /**
-     * Affiche les messages du projet
+     * Page d'accueil du chatt
      * @Route("/user/message/{id}", name="message_project")
      */
     public function index(Project $project)
@@ -49,9 +49,9 @@ class MessageController extends AbstractController
             $em->persist($message);
             $em->flush(); 
     
-            return new Response("ok"); 
+            return new Response("ok" , 200); 
         }else{
-            return new Response("Impossible d'envoyer votre message."); 
+            return new Response("Impossible d'envoyer votre message." , 500); 
         }
 
 
@@ -62,11 +62,33 @@ class MessageController extends AbstractController
 
 
     /**
+     * Affiche les messages du projet
      * @Route("/user/project/get/message" , name="project_get_messages" , methods={"GET"})
      */
     public function getMessages(MessageRepository $repo , Request $request){
 
         return $this->json($repo->findBy(["project" => $request->get('id') ]) , 200 , [] , ['groups' => 'get:info']); 
+    }
+
+
+    /**
+     * Supprimer un message
+     * @Route("/user/message/delete/{id}" , name="message_delete" , methods={"DELETE"} )
+     */
+    public function delete(Message $message)
+    {
+        //vérification de l'user 
+        $user = $message->getUser(); 
+        if($user == $this->getUser()){
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($message); 
+            $em->flush(); 
+            return new Response("Message supprimé" , 200); 
+
+        }else{
+            return new Response("Une erreur s'est produite" , 500); 
+        }
+
     }
 
 
