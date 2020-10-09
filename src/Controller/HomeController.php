@@ -23,18 +23,26 @@ class HomeController extends AbstractController
      */
     public function index(TaskRepository $repoTask)
     {
-        //$projects = $this->getDoctrine()->getRepository(Project::class)->findAll();
       
         return $this->render('home/index.html.twig' , [
             'user_tache' => $repoTask->findBy([
                 'user' => $this->getUser(),
                 'cloture' => 0
             ]),
-        
-             
-            
-            
-             
+     
+        ]);
+    }
+    
+    /**
+     * @Route("/documentation", name="aide")
+     * 
+     */
+    public function documentation()
+    {
+      
+        return $this->render('documentation/index.html.twig' , [
+            'user_tache' => "coucou"
+     
         ]);
     }
 }
