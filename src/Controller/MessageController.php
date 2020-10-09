@@ -6,8 +6,10 @@ use App\Entity\Message;
 use App\Entity\Project;
 use App\Repository\MessageRepository;
 use App\Repository\ProjectRepository;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mercure\Update;
 
+use Symfony\Component\Mercure\Publisher;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,13 +35,13 @@ class MessageController extends AbstractController
      * Création d'un message
      * @Route("/user/message-new/" , name="message_new" , methods={"POST"})
      */
-    public function new(Request $request , ProjectRepository $repo):Response
+    public function new(Request $request , ProjectRepository $repo )
     {
 
         $project = $repo->find($request->request->get('projet_id')); 
         if($project){
+           
             $message = new Message();
-
 
             $message->setContent($request->request->get('message-to-send')); 
             $message->setProject($project); 
@@ -48,8 +50,11 @@ class MessageController extends AbstractController
             $em = $this->getDoctrine()->getManager(); 
             $em->persist($message);
             $em->flush(); 
-    
-            return new Response("ok" , 200); 
+
+            /* //Envoi ping
+            $update = new Update("http://localhost/user/message/1" , "[]");
+            $publisher($update);*/
+            return new Response("ok"); 
         }else{
             return new Response("Impossible d'envoyer votre message." , 500); 
         }
@@ -70,6 +75,12 @@ class MessageController extends AbstractController
         return $this->json($repo->findBy(["project" => $request->get('id') ]) , 200 , [] , ['groups' => 'get:info']); 
     }
 
+
+
+
+
+
+    
 
     /**
      * Supprimer un message
