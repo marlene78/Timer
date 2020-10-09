@@ -1,1 +1,1 @@
-echo 'web: heroku-php-apache2 public/'
+web: $(composer bin-dir)/heroku-php-apache2 public/
