@@ -8,21 +8,11 @@ $("#form_message").on("submit" , function(e){
 
     if($("#message-to-send").val() != ""){
        
-/*
-        const u = new URL('http://localhost:3000');
-        u.searchParams.append('topic', 'http://localhost/user/message-new/');
-       const evtSource = new EventSource(u);
-       evtSource .onmessage = e =>{
-         console.log(e + "ok"); 
-       }
-      
-*/
-
         $.post({
             url:"/user/message-new/", 
             data: $data,
             success:function(response){
-                console.log(response);
+
                 $("#message-to-send").val(""); 
                 $(".val_message").html('<i class="fas fa-thumbs-up"></i> '+response+''); 
                 setTimeout(() => {
@@ -49,3 +39,10 @@ $("#form_message").on("submit" , function(e){
 
 }); 
 
+
+const u = new URL('http://localhost:3000/.well-known/mercure');
+u.searchParams.append('topic', 'http://localhost/user/ping');
+const evtSource = new EventSource(u);
+evtSource .onmessage = e =>{
+    console.log(e.data); 
+}

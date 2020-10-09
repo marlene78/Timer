@@ -7,11 +7,10 @@ use App\Entity\Project;
 use App\Repository\MessageRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Component\Mercure\Update;
-
-use Symfony\Component\Mercure\Publisher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MessageController extends AbstractController
@@ -41,7 +40,7 @@ class MessageController extends AbstractController
         $project = $repo->find($request->request->get('projet_id')); 
         if($project){
            
-            $message = new Message();
+             /* $message = new Message();
 
             $message->setContent($request->request->get('message-to-send')); 
             $message->setProject($project); 
@@ -51,9 +50,8 @@ class MessageController extends AbstractController
             $em->persist($message);
             $em->flush(); 
 
-            /* //Envoi ping
-            $update = new Update("http://localhost/user/message/1" , "[]");
-            $publisher($update);*/
+           //Envoi ping*/
+      
             return new Response("ok"); 
         }else{
             return new Response("Impossible d'envoyer votre message." , 500); 
@@ -67,6 +65,20 @@ class MessageController extends AbstractController
 
 
     /**
+     * @Route("/user/ping" , name="ping" ,  methods={"POST"})
+     */
+    public function ping(MessageBusInterface $bus)
+    {
+
+        $update = new Update("/user/message-new/" , ["message" => "ok"] );
+        $bus->dispatch($update);
+        return new Response("ok"); 
+    }
+
+
+
+
+    /**
      * Affiche les messages du projet
      * @Route("/user/project/get/message" , name="project_get_messages" , methods={"GET"})
      */
@@ -74,8 +86,6 @@ class MessageController extends AbstractController
 
         return $this->json($repo->findBy(["project" => $request->get('id') ]) , 200 , [] , ['groups' => 'get:info']); 
     }
-
-
 
 
 
