@@ -17,30 +17,47 @@ class MessageController extends AbstractController
 {
 
     /**
-     * Page d'accueil du chatt
+     * Page d'accueil tchat d'un projet
      * @Route("/user/message/{id}", name="message_project")
      */
     public function index(Project $project)
     {
+        //vérification si l'utilisateur connecté est autorisé accéder au tchat
+        $erreur = "Accès non autorisé" ;  
+       foreach($project->getGroups() as $groupe){
+           foreach($groupe->getUsers() as $user){
+                $user->getNom() === $this->getUser()->getNom() ? $erreur = null :"" ; 
+            }     
+        }
 
         return $this->render('message/index.html.twig' , [
-            'project' => $project
+            'project' => $project, 
+            "erreur" => $erreur != null
         ]);
     }
 
 
 
     /**
-     * Création d'un message
+     * Ajout d'un message dans le tchat
      * @Route("/user/message-new/" , name="message_new" , methods={"POST"})
      */
     public function new(Request $request , ProjectRepository $repo )
     {
 
-        $project = $repo->find($request->request->get('projet_id')); 
-        if($project){
+        //$project = $repo->find($request->request->get('projet_id')); 
+        //if($project){
            
-             /* $message = new Message();
+
+           //Envoi ping*/
+           function ping(MessageBusInterface $bus){
+                $data = \json_encode($request->request->get('message-to-send'));
+                $update = new Update('http://localhost/user/message/1' , "[]" );
+                $bus->dispatch($update);
+            }
+
+            /*
+            $message = new Message();
 
             $message->setContent($request->request->get('message-to-send')); 
             $message->setProject($project); 
@@ -48,14 +65,13 @@ class MessageController extends AbstractController
     
             $em = $this->getDoctrine()->getManager(); 
             $em->persist($message);
-            $em->flush(); 
+            $em->flush(); */
 
-           //Envoi ping*/
-      
             return new Response("ok"); 
-        }else{
+
+       /* }else{
             return new Response("Impossible d'envoyer votre message." , 500); 
-        }
+        }*/
 
 
 
