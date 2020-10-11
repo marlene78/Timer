@@ -78,13 +78,12 @@
 {% block javascripts %}
   <script src="{{ asset('js/message.js')  }}"></script>
   <script> 
-    
+
     /**
     * Affichage de tous les messages du projet
     */
     if({{ project.id }}){
-
-        
+ 
         $.get({
             url:"/user/project/get/message",
             data:"id="+{{ project.id }},
@@ -140,6 +139,6 @@
             }
         })
     }
-
+  
   </script>
 {% endblock %}

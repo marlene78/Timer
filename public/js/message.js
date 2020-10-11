@@ -3,14 +3,26 @@
  */
 $("#form_message").on("submit" , function(e){
     e.preventDefault();
+
     $data = $(this).serialize(); 
+
     if($("#message-to-send").val() != ""){
        
+/*
+        const u = new URL('http://localhost:3000');
+        u.searchParams.append('topic', 'http://localhost/user/message-new/');
+       const evtSource = new EventSource(u);
+       evtSource .onmessage = e =>{
+         console.log(e + "ok"); 
+       }
+      
+*/
+
         $.post({
             url:"/user/message-new/", 
             data: $data,
             success:function(response){
-                
+                console.log(response);
                 $("#message-to-send").val(""); 
                 $(".val_message").html('<i class="fas fa-thumbs-up"></i> '+response+''); 
                 setTimeout(() => {
