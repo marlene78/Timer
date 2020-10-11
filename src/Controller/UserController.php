@@ -66,11 +66,13 @@ class UserController extends AbstractController
                 $user->setColor($color->generateRandomColor()); 
 
                 //on affecte l'invité dans son groupe
-                foreach (array_slice($tabInvite,3) as $idGroup){
-                    $groupe = $repoGroupe->find($idGroup);
-                    $groupe->addUser($user);
+                if($tabInvite != NULL ){
+                    foreach (array_slice($tabInvite,3) as $idGroup){
+                        $groupe = $repoGroupe->find($idGroup);
+                        $groupe->addUser($user);
+                    }
                 }
-              
+                
 
 
                 $entityManager->persist($user);
