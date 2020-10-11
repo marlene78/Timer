@@ -27,68 +27,75 @@
   }; 
 
 
-  let html = "";
   //récupère les informations du projet
   $.post({
     url:"/user/info/projet/"+id, 
     data:"id="+id,
     success:function(response){
-       
-      let nameTask = [];
-      let etatTask = [];
+
+      let nonCommenceTab  = [];
       let clotureTab = [];
-      let tabEnCours = [];
-      console.log(response.tasks)
+      let EnCoursTab = [];
+
       //information concernant les tâches
       response.tasks.forEach(element => {
 
-        //nom de la tâche
-        //nameTask.push(element.nom); 
+        if(element.demarre == 0 && element.cloture == 0){
+          let tab = {
+            'nom':element.nom,
+            'demarre' : element.demarre,
+            'cloture' : element.cloture
+          };
 
-        //cloture de la tâche
-        //etatTask.push(element.cloture)
-        
+          nonCommenceTab.push(tab);
+        }
+        else if(element.demarre == 1 && element.cloture == 0){
+          let tab = {
+            'nom':element.nom,
+            'demarre' : element.demarre,
+            'cloture' : element.cloture
+          };
+
+          EnCoursTab.push(tab);
+        }
+        else if(element.cloture == 1){
+          let tab = {
+            'nom':element.nom,
+            'demarre' : element.demarre,
+            'cloture' : element.cloture
+          };
+
+          clotureTab.push(tab);
+        }
 
 
-       /* for(let j= 0; j < nameTask.length; j++){
-            
-            html +='<ul class="list-group list-group-flush"> <li class="list-group-item">'+ nameTask[j]+'</li> </ul>'
+      });
+
+      nonCommenceTab.forEach(element => {
+        let html = "";
+        html +='<ul class="list-group list-group-flush"> <li class="list-group-item">'+element.nom +'</li> </ul>'
+
+        $("#myAreaTab").append(html);
+      });
+
+      EnCoursTab.forEach(element => {
+        let html = "";
+        html +='<ul class="list-group list-group-flush"> <li class="list-group-item">'+element.nom +'</li> </ul>'
         
-        }*/
+        $("#myAreaTabEnCours").append(html);
         
-          
-   /*      for(let j= 0; j < etatTask.length; j++){
-          if(etatTask[j] == false ){
-            clotureTab.push(etatTask[j]);
-          }
-          else{
-            tabEnCours.push(etatTask[j]);
-          }
-          
-        } */
-        //console.log('cloture'+clotureTab)
-        //console.log('encours'+tabEnCours)
+      });
+      clotureTab.forEach(element => {
+        let html = "";
+        html +='<ul class="list-group list-group-flush"> <li class="list-group-item">'+element.nom +'</li> </ul>'
+        
+        $("#myAreaTabEnCloture").append(html);
         
       });
 
+      let nbTasks = nonCommenceTab.length + clotureTab.length + EnCoursTab.length;
 
-      //$("#myAreaTab").append(html); 
-      //console.log(nameTask)
-
-      /***********************
-      *  NB TACHE CRÉE/JOUR
-      ***********************/
-      //trie le tableau
-     // let sort = mois.sort(); 
-
-      //retire doublons (mois)
-      //let newTab = sort.filter((item,index) => {return sort.indexOf(item) === index}); 
-        
-      //Nombre de tâche crée 
-      /*let occurrences = { };//trie
-      let nbTask = []; //tableau nb tâche
-      for (var i = 0, j = sort.length; i < j; i++) {occurrences[sort[i]] = (occurrences[sort[i]] || 0) + 1;}
-      for (index in occurrences){nbTask.push(occurrences[index]); }*/
+      $("#nbTasks").append('Nombre de tâches crées : '+ nbTasks);
       
 
 
