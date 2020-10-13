@@ -7554,7 +7554,7 @@ button.bg-dark:focus {
 
 .mt-5,
 .my-5 {
-  margin-top: 3rem !important;
+  margin-top: 4rem !important;
 }
 
 .mr-5,
@@ -9557,6 +9557,7 @@ html {
 
 body {
   height: 100%;
+  background-color: #161040;
 }
 
 a:focus {
