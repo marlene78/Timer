@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Invités{% endblock %}
+
+{% block body %}
+    <h1>Liste des invités</h1>
+    
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>E-mail</th>
+                <th>Groupe(s)</th>
+                <th>Date d'invitation</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+        {% for token in tokens %}
+            <tr>
+
+                <td>{{ token.emailInvite }}</td>
+                <td>
+                    <ul>
+                    {% for group in token.getGroupInvite %}
+                        
+                            <li>{{ group.nom}}</li>
+                    {% endfor %}
+                    </ul>
+                    
+                </td>
+                <td>{{ token.createdAt ? token.createdAt|date('Y-m-d') : '' }}</td>
+                
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Votre liste d'invités est vide !!</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('token_new', {'id': idProject}) }}" class="btn btn-warning btn-icon-split btn-sm">
+        <span class="icon text-white-50">
+            <i class="fas fa-user-plus prefix grey-text"></i>
+                
+        </span>
+        <span class="text">Envoyer une nouvelle invitation
+        </span>
+    </a>
+    <a href="{{ path('project_show', {'id': idProject}) }}" class="btn btn-info"><i class="fas fa-search"></i>Voir le projet</a>
+{% endblock %}

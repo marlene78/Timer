@@ -10,6 +10,11 @@ class Uri
         return $URL; 
 
     }
+    public function getUrlInvite($jeton){
+        $URL = "http://localhost/token/control/".$jeton;
+        return $URL; 
+
+    }
 
 
 }

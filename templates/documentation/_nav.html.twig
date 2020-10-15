@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta charset="UTF-8">
+          <!-- Custom fonts for this template-->
+        <link href="{{ asset('fontawesome-free/css/all.min.css')  }}" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+        <!-- Custom styles for this template-->
+        <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/loader.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://cdn.tiny.cloud/1/z8prk9090hyncsy4saa9bdhguqb1ownzqvv9m4sn3mb3idum/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+     
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+
+        {% block stylesheets %}{% endblock %}
+    </head>
+<body id="page-top">
+    <style>
+        .nav-doc{
+            color : rgba(255,255,255,.8) !important;
+            text-decoration: none !important;
+            font-size: .85rem;
+            list-style: none !important;
+        }
+        .nav-doc:hover{
+            background-color:#555;
+        }
+
+    </style>
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+          
+    <!-- navbar -->
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
+              <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-laugh-wink"></i>
+              </div>
+              <div class="sidebar-brand-text mx-3">Timer projet</div>
+            </a>
+      
+           
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+              <a class="nav-link" href="#introduction">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Introduction</span></a>
+            </li>
+      
+ 
+      
+            <!-- Actions -->
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="#statistique">
+                <i class="fas fa-chart-pie"></i>
+                <span>Mes statistiques</span>
+              </a>
+
+            </li>
+      
+      
+  
+      
+      
+            <!--Mon compte -->
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="#">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Mon compte</span>
+              </a>
+                <ul >
+                    <li class="nav-item" ><a class="nav-doc" href="">Mes informations</a></li>
+                    <li class="nav-item"><a class="nav-doc" href="">Changer mon mot de passe</a></li>
+                    <li class="nav-item"><a class="nav-doc" href="">Déconnexion</a></li>
+                </ul>
+            </li>
+      
+
+            <!-- Actions -->
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="#" >
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Projet</span>
+              </a>
+                <ul>
+                    <li class="nav-item" ><a class="nav-doc" href="">Liste des projets</a></li>
+                    <li class="nav-item" ><a class="nav-doc" href="">Créer un projet</a></li>
+                    <li class="nav-item" ><a class="nav-doc" href="">Gestion des droits d'accès</a></li>
+                </ul>
+                
+              
+            </li>
+
+
+            <!-- Actions -->
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="#">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Tâche</span>
+              </a>
+              
+              <ul>
+                <li class="nav-item" ><a class="nav-doc" href="">Créer ou Modifier une Tâche</a></li>
+                <li class="nav-item" ><a class="nav-doc" href="">Supprimer une täche </a></li>
+                <li class="nav-item" ><a class="nav-doc" href="">Démarrer une tâche</a></li>
+              </ul>
+                
+              
+            </li>
+      
+
+            
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+              <a class="nav-link" href="">
+                <i class="fas fa-question-circle"></i>
+                <span>groupe</span></a>
+                <ul>
+                    <li class="nav-item" ><a class="nav-doc" href="">Liste des groupes</a></li>
+                    <li class="nav-item" ><a class="nav-doc" href="">Créer des groupes</a></li>
+                </ul>
+            </li>
+            
+            
+
+
+            
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+              <a class="nav-link" href="">
+                <i class="fas fa-question-circle"></i>
+                <span>Invitation</span></a>
+                
+            </li>
+            
+  
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+              <a class="nav-link" href="">
+                <i class="fas fa-question-circle"></i>
+                <span>Chat</span></a>
+                
+            </li>
+
+            <a href="{{ path('home') }}" class="btn  btn-icon-split" title="Retour">
+                <span class="icon text-gray-600" style="background-color:white">
+                    <i class="fas fa-arrow-left"></i>
+                </span>
+            </a>
+            
+          </ul>
+          <!-- End of Sidebar -->
+      
+      
+    <!-- End of navbar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        {% include 'includes/_topbar.html.twig' %}
+        <!-- End of Topbar -->
+                  
+        <div class="container-fluid">
+          {% block body %}{% endblock %}
+        </div>
+
+      </div>
+
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Timer projet 2020</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+      
+    </div>
+
+
+
+  </div>
+    
+
+  <!-- End of Wrapper -->
+
+
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûre de vouloir vous déconnecter</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Non</button>
+          <a class="btn btn-primary" href="{{ path('logout')  }}">Oui</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+          <!-- Bootstrap core JavaScript-->
+        <script src="{{ asset('jquery/jquery.min.js')  }}"></script>
+        <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js')  }}"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="{{ asset('jquery-easing/jquery.easing.min.js')  }}"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+
+        <!-- Page level plugins -->
+        <script src="{{ asset('chart.js/Chart.min.js')  }}"></script>
+
+        <!-- Page level plugins -->
+        <script src="{{ asset('datatables/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('datatables/dataTables.bootstrap4.min.js') }}"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="{{ asset('js/demo/datatables-demo.js')  }}"></script>        
+        <!-- Modal -->
+        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+
+{% block javascripts %}{% endblock %}
+
+
+    </body>
+</html>
