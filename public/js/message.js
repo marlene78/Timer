@@ -1,17 +1,17 @@
 /**
  * Ajouté un message
- */
+*/
 $("#form_message").on("submit" , function(e){
     e.preventDefault();
 
-    $data = $(this).serialize(); 
+    let data = $(this).serialize(); 
 
     if($("#message-to-send").val() != ""){
        
         //Envoi du message
         $.post({
             url:"/user/message-new/", 
-            data: $data,
+            data: data,
             success:function(response){
 
                 $("#message-to-send").val(""); 
@@ -29,26 +29,6 @@ $("#form_message").on("submit" , function(e){
             }
         });
 
- 
-       /* //Envoi du Ping
-        let dataPing = {
-            'topic' : "http://localhost/user/message-new/",
-            'data' : $("#message-to-send").val()
-        }
-
-        $.post({
-            url:"http://localhost:3000/.well-known/mercure", 
-            headers: {"Bearer token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdfX0.UuEnjvUrC4ONtWrJUwGgrYrlKM_enZX2oqTNFX1GoGg"},
-            data: dataPing,
-            success:function(response){
-                //Affichage du nouveau message
-                console.log(response)
-                //Notification nouveau message si connecté
-            },
-            error:function(){
-            }
-        });*/
-       
 
     }else{
     
@@ -58,39 +38,52 @@ $("#form_message").on("submit" , function(e){
         }, 2000);
     }
 
-}); 
+});  
 
 
-/***Connexion au hub de Mercure**/
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Souscription à un hub
 const u = new URL('http://localhost:3000/.well-known/mercure'); //url mercure
-u.searchParams.append('topic', 'http://localhost/user/message-new/'); //topic url à écouter
+u.searchParams.append('topic', 'http://localhost/user/ping'); //topic url à écouter
 const evtSource = new EventSource(u);
 evtSource .onmessage = e =>{
-    /*
-    Message envoyé 
-    `<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;" class="topic">
-        <div class="toast" style="position: absolute; top: 0; right: 0;">
-            <div class="toast-header">
-                <img src="..." class="rounded mr-2" alt="...">
-                <strong class="mr-auto">Message</strong>
-                <small>11 mins ago</small>
-                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="toast-body">${e.data}</div>
-        </div>
-    </div>`
-      let html =`<li class="clearfix"><div class="message-data align-right"><span class="message-data-time" ></span> &nbsp; &nbsp;<span class="message-data-name"></span> <i class="fa fa-circle" style="color:"></i></div><div class="message float-right" style="background-color:">${e.data}<span id="delete" class="delete_message" data-id="">X</span></div></li>`;
+    
+    //Message envoyé 
+      /*let html =`<li class="clearfix"><div class="message-data align-right"><span class="message-data-time" ></span> &nbsp; &nbsp;<span class="message-data-name"></span> <i class="fa fa-circle" style="color:"></i></div><div class="message float-right" style="background-color:">${e.data}<span id="delete" class="delete_message" data-id="">X</span></div></li>`;
     $(".chat-history ul").append(html);
-      $(".topic").toast('show');
-     */
-  
-    console.log(e.data);
-  
+    <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;" class="topic">
+    <div class="toast" style="position: absolute; top: 0; right: 0;">
+        <div class="toast-header">
+            <img src="..." class="rounded mr-2" alt="...">
+            <strong class="mr-auto">Message</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body"></div>
+    </div>
+    </div>
+    $("#topic .toast-body").text(e.data);
+    $(".toast").toast('show');
+   
 }
 window.addEventListener('beforeunload' , () =>{
     if(evtSource == null){
         evtSource.close
     }
 })
+*/

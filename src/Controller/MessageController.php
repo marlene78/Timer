@@ -7,11 +7,14 @@ use App\Entity\Project;
 use App\Repository\MessageRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Component\Mercure\Update;
+use Symfony\Component\Mercure\Publisher;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 class MessageController extends AbstractController
 {
@@ -45,18 +48,21 @@ class MessageController extends AbstractController
     public function new(Request $request , ProjectRepository $repo )
     {
 
-        //$project = $repo->find($request->request->get('projet_id')); 
-        //if($project){
+        $project = $repo->find($request->request->get('projet_id')); 
+        if($project){
            
-
-           //Envoi ping*/
+            /*//Distribution asynchrone du message
            function ping(MessageBusInterface $bus){
-                $data = \json_encode($request->request->get('message-to-send'));
-                $update = new Update('http://localhost/user/message/1' , "[]" );
+
+                $update = new Update(
+                    'http://localhost/user/message/1' , 
+                    json_encode(['data' => 'OutOfStock']),
+                    true  
+                );
                 $bus->dispatch($update);
             }
-
-            /*
+            */
+           
             $message = new Message();
 
             $message->setContent($request->request->get('message-to-send')); 
@@ -65,13 +71,13 @@ class MessageController extends AbstractController
     
             $em = $this->getDoctrine()->getManager(); 
             $em->persist($message);
-            $em->flush(); */
+            $em->flush(); 
 
-            return new Response("ok"); 
+            return new Response('ok');
 
-       /* }else{
+        }else{
             return new Response("Impossible d'envoyer votre message." , 500); 
-        }*/
+        }
 
 
 
@@ -83,12 +89,20 @@ class MessageController extends AbstractController
     /**
      * @Route("/user/ping" , name="ping" ,  methods={"POST"})
      */
-    public function ping(MessageBusInterface $bus)
+    public function ping(MessageBusInterface $bus , Request $request):Response
     {
-
-        $update = new Update("/user/message-new/" , ["message" => "ok"] );
+        
+        $update = new Update(
+            'http://localhost/user/ping' , 
+            json_encode(['data' => 'OutOfStock']),
+            true  
+        );
         $bus->dispatch($update);
-        return new Response("ok"); 
+   
+        return $this->redirectToRoute("message_project" , [
+            'id' => 1
+        ]);
+      
     }
 
 

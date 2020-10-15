@@ -73,6 +73,7 @@ class ProjectController extends AbstractController
         $dateDeDebut = strtotime($project->getDateDeDebut()->format('Y-m-d'));
         $dateDeFin = strtotime($project->getDateDeFin()->format('Y-m-d'));
         $etat = $e->EtatDuProjet($dateDeDebut, $dateDeFin);
+
         $project->setEtat($etat);
         
         
