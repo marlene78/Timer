@@ -31,11 +31,13 @@ class Task
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("get:info")
      */
     private $demarre;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("get:info")
      */
     private $cloture;
 
