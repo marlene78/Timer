@@ -5,16 +5,7 @@ services:
     volumes:
       - .:/app
     working_dir: /app
-
-  nginx:
-    image: nginx:latest
-    ports:
-      - "80:80"
-    volumes:
-       - ./nginx/conf.d/:/etc/nginx/conf.d/
-       - ./public:/app/public:ro
-       - ".:/var/www/timer:ro"
-
+    env_file: .env
   data:
     container_name: mysql
     image: mysql:5.7
@@ -71,35 +62,8 @@ services:
       - NET_ADMIN
       - SYS_PTRACE
     restart: always
-
-  mercure:
-    image: dunglas/mercure
-    ports:
-      - 3000:3000
-    environment:
-      - JWT_KEY=notre-projet-timer-anta-marlene
-      - DEMO=1
-      - ALLOW_ANONYMOUS=1
-      - CORS_ALLOWED_ORIGINS=*
-      - PUBLISH_ALLOWED_ORIGINS=http://localhost
-      - ADDR=localhost:3000
-
-###> symfony/messenger ###
-  rabbitmq:
-    image: rabbitmq:management-alpine
-    environment:
-      # You should definitely change the password in production
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
-    volumes:
-      - rabbitmq-data:/var/lib/rabbitmq
-    ports:
-      - "5672"
-###< symfony/messenger ###
+    
 volumes:
   maildata:
   mailstate:
   maillogs:
-###> symfony/messenger ###
-  rabbitmq-data: {}
-###< symfony/messenger ###

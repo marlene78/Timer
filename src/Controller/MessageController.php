@@ -7,32 +7,42 @@ use App\Entity\Project;
 use App\Repository\MessageRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Component\Mercure\Update;
-
 use Symfony\Component\Mercure\Publisher;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 class MessageController extends AbstractController
 {
 
     /**
-     * Page d'accueil du chatt
+     * Page d'accueil tchat d'un projet
      * @Route("/user/message/{id}", name="message_project")
      */
     public function index(Project $project)
     {
+        //vérification si l'utilisateur connecté est autorisé accéder au tchat
+        $erreur = "Accès non autorisé" ;  
+       foreach($project->getGroups() as $groupe){
+           foreach($groupe->getUsers() as $user){
+                $user->getNom() === $this->getUser()->getNom() ? $erreur = null :"" ; 
+            }     
+        }
 
         return $this->render('message/index.html.twig' , [
-            'project' => $project
+            'project' => $project, 
+            "erreur" => $erreur != null
         ]);
     }
 
 
 
     /**
-     * Création d'un message
+     * Ajout d'un message dans le tchat
      * @Route("/user/message-new/" , name="message_new" , methods={"POST"})
      */
     public function new(Request $request , ProjectRepository $repo )
@@ -40,6 +50,18 @@ class MessageController extends AbstractController
 
         $project = $repo->find($request->request->get('projet_id')); 
         if($project){
+           
+            /*//Distribution asynchrone du message
+           function ping(MessageBusInterface $bus){
+
+                $update = new Update(
+                    'http://localhost/user/message/1' , 
+                    json_encode(['data' => 'OutOfStock']),
+                    true  
+                );
+                $bus->dispatch($update);
+            }
+            */
            
             $message = new Message();
 
@@ -51,16 +73,36 @@ class MessageController extends AbstractController
             $em->persist($message);
             $em->flush(); 
 
-            /* //Envoi ping
-            $update = new Update("http://localhost/user/message/1" , "[]");
-            $publisher($update);*/
-            return new Response("ok"); 
+            return new Response('ok');
+
         }else{
             return new Response("Impossible d'envoyer votre message." , 500); 
         }
 
 
 
+    }
+
+
+
+
+    /**
+     * @Route("/user/ping" , name="ping" ,  methods={"POST"})
+     */
+    public function ping(MessageBusInterface $bus , Request $request):Response
+    {
+        
+        $update = new Update(
+            'http://localhost/user/ping' , 
+            json_encode(['data' => 'OutOfStock']),
+            true  
+        );
+        $bus->dispatch($update);
+   
+        return $this->redirectToRoute("message_project" , [
+            'id' => 1
+        ]);
+      
     }
 
 
@@ -74,8 +116,6 @@ class MessageController extends AbstractController
 
         return $this->json($repo->findBy(["project" => $request->get('id') ]) , 200 , [] , ['groups' => 'get:info']); 
     }
-
-
 
 
 
