@@ -321,6 +321,8 @@ class Project
 
         return $start;
     }
+
+    
     /**
      * Calcule de la durée du projet entre sa date de début et la date de fin,
      * indique aussi si le projet est fini ou pas 

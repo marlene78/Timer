@@ -57,7 +57,7 @@ class StatistiqueController extends AbstractController
     {
         return $this->json($repo->find($request->request->get('id')), 200 , [] , ['groups' => 'get:user']); 
 
-    }
+    } 
 
 
 

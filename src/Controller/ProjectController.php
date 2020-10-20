@@ -93,8 +93,16 @@ class ProjectController extends AbstractController
         $dateDeDebut = strtotime($project->getDateDeDebut()->format('Y-m-d'));
         $dateDeFin = strtotime($project->getDateDeFin()->format('Y-m-d'));
         $etat = $e->EtatDuProjet($dateDeDebut, $dateDeFin);
+
         $project->setEtat($etat); 
+
         
+         if($etat == "Terminé"){
+            foreach($project->getTasks() as $task){
+            $task->setCloture(1); 
+            $this->getDoctrine()->getManager()->flush(); 
+            }
+        } 
         
         return $this->render('project/show.html.twig', [
             'project' => $project,
