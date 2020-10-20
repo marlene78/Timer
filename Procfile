@@ -1,1 +1,2 @@
-echo 'web: heroku-php-apache2 public/' > Procfile
+web: heroku-php-apache2 public/
+release: php bin/console doctrine:migrations:migrate
