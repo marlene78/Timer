@@ -18,6 +18,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -31,10 +32,9 @@ class UserController extends AbstractController
      * Inscription d'un utilisateur
      * @Route("/inscription", name="user_new", methods={"GET","POST"})
      */
-    public function new(Request $request ,  UserPasswordEncoderInterface $passwordEncoder, GroupRepository $repoGroupe ,  MailerInterface $mailer , Uri $url , Color $color): Response
+    public function new(Request $request ,  UserPasswordEncoderInterface $passwordEncoder, GroupRepository $repoGroupe ,  MailerInterface $mailer , Uri $url , Color $color ,SessionInterface $session ): Response
     {
-        $session = new Session();   
-
+    
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
