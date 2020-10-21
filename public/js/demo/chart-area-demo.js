@@ -1,6 +1,4 @@
-
-
-    // Set new default font family and font color to mimic Bootstrap's default styling
+  // Set new default font family and font color to mimic Bootstrap's default styling
   Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
   Chart.defaults.global.defaultFontColor = '#858796';
 
@@ -10,21 +8,7 @@
   let id = pathArray[4]; 
 
 
-  let mois = []; 
-  let tabMois = {
-    "01" :  'Janvier' , 
-    "02" : "Février" , 
-    "03" : "Mars" , 
-    "04" : "Avril" , 
-    "05" : "Mai" ,
-    "06" : "Juin" , 
-    "07" : "Juillet" , 
-    "08" : "Août" , 
-    "09" : "Septembre" , 
-    "10" : "Octobre" ,
-    "11" : "Novembre" , 
-    "12" : "Décembre"
-  }; 
+
 
 
   //récupère les informations du projet
