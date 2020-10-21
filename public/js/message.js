@@ -54,7 +54,7 @@ $("#form_message").on("submit" , function(e){
 /**
  * Souscription à un hub
 */
-const u = new URL('/.well-known/mercure'); //url mercure
+const u = new URL('/.well-known/mercure'); //url hub mercure
 u.searchParams.append('topic', '/user/ping'); //topic url à écouter
 const evtSource = new EventSource(u);
 evtSource .onmessage = e =>{
