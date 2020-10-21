@@ -14,7 +14,6 @@ RUN composer install \
         --no-ansi \
         --no-interaction \
         --prefer-dist \
-        --no-dev \
         --no-progress \
         --no-suggest \
         --optimize-autoloader \
