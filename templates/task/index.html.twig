@@ -7,6 +7,9 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Liste des tâches - {{ projet.nom }}</h6>
+            {% if projet.etat != "Terminé" %}
+            <a href="{{ path('task_new', {'id': projet.id}) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm float-right"><i class="fas fa-plus"></i> Ajouter une tâche</a>
+            {% endif %}
         </div>
         <div class="card-body">
             <table class="table table-bordered" id="dataTable"  width="100%" cellspacing="0">
@@ -18,7 +21,7 @@
                         <th>Temps estimé</th>
                         <th>Actions</th>
                     </tr>
-                </thead>
+                </thead> 
                 <tbody>
                 {% for task in tasks %}
                     <tr>
@@ -42,7 +45,7 @@
                         <td>{{task.tempsEstime}}{% if  task.tempsEstime == 1 %} heure {% else %} heures{% endif %}</td>
                         <td>
                             <a href="{{ path('task_show', {'id': task.id}) }}" class="btn btn-warning"><i class="fas fa-search"></i> Voir</a>
-                            {% if task.projet.createur == app.user %}
+                            {% if task.projet.createur == app.user and  projet.etat != "Terminé" %}
                             <a href="{{ path('task_edit', { 'projet' : task.projet.id  , 'id': task.id }) }}"  class="btn btn-info"><i class="fas fa-edit"></i> Éditer</a>
                             {% endif %}
                         </td>
