@@ -10,7 +10,7 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
         <!-- Custom styles for this template-->
-        <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
         <link href="{{ asset('css/loader.css') }}" rel="stylesheet">
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -30,9 +30,9 @@
             list-style: none !important;
         }
         .nav-doc:hover{
-            background-color:#555;
+            background-color:rgba(75, 72, 72, 0.925);
         }
-
+ 
     </style>
 
   <!-- Page Wrapper -->
@@ -62,6 +62,8 @@
             </li>
       
  
+            <!-- Divider -->
+            <hr class="sidebar-divider">
       
             <!-- Actions -->
             <li class="nav-item">
@@ -72,16 +74,18 @@
 
             </li>
       
+            <!-- Divider -->
+            <hr class="sidebar-divider">
       
-  
-      
-      
+            <!-- Heading -->
+            <div class="sidebar-heading">
+              <i class="fas fa-fw fa-wrench"></i>
+              <span>Mon compte</span>
+            </div>
+          
+          <br>
             <!--Mon compte -->
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="#">
-                <i class="fas fa-fw fa-wrench"></i>
-                <span>Mon compte</span>
-              </a>
+            <li class="nav-link">
                 <ul >
                     <li class="nav-item" ><a class="nav-doc" href="">Mes informations</a></li>
                     <li class="nav-item"><a class="nav-doc" href="">Changer mon mot de passe</a></li>
@@ -89,83 +93,105 @@
                 </ul>
             </li>
       
+            
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
-            <!-- Actions -->
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="#" >
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Projet</span>
-              </a>
+            <div class="sidebar-heading">
+              <i class="fas fa-fw fa-folder"></i>
+              <span>Projet</span>
+            </div>
+
+            <!-- Projet -->
+            <li class="nav-link">
                 <ul>
                     <li class="nav-item" ><a class="nav-doc" href="">Liste des projets</a></li>
                     <li class="nav-item" ><a class="nav-doc" href="">Créer un projet</a></li>
+                    <li class="nav-item" ><a class="nav-doc" href="">Supprimer, Modifier et voir les statitiques du projet</a></li>
                     <li class="nav-item" ><a class="nav-doc" href="">Gestion des droits d'accès</a></li>
                 </ul>
                 
               
             </li>
 
+            
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
-            <!-- Actions -->
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="#">
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Tâche</span>
-              </a>
-              
+
+            <!-- Tâche -->
+
+            <div class="sidebar-heading">
+              <i class="fas fa-tasks"></i>
+              <span>Tâche</span>
+            </div>
+
+            <li class="nav-link">
               <ul>
-                <li class="nav-item" ><a class="nav-doc" href="">Créer ou Modifier une Tâche</a></li>
-                <li class="nav-item" ><a class="nav-doc" href="">Supprimer une täche </a></li>
-                <li class="nav-item" ><a class="nav-doc" href="">Démarrer une tâche</a></li>
+                <li class="nav-item" ><a class="nav-doc" href="">Liste des tâches</a></li>
+                <li class="nav-item" ><a class="nav-doc" href="">Créer une Tâche</a></li>
+                <li class="nav-item" ><a class="nav-doc" href="">Supprimer, Modifier ou Démarrer une tâche </a></li>
               </ul>
                 
               
             </li>
-      
 
             
-            <!-- Nav Item - Dashboard -->
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+      
+            <div class="sidebar-heading">
+              <i class="fas fa-users"></i>
+              <span>Gestion des droits d'accès ou Rôle</span>
+            </div>
+            <br>
+            
+            <!-- groupe -->
             <li class="nav-item">
-              <a class="nav-link" href="">
-                <i class="fas fa-question-circle"></i>
-                <span>groupe</span></a>
                 <ul>
-                    <li class="nav-item" ><a class="nav-doc" href="">Liste des groupes</a></li>
-                    <li class="nav-item" ><a class="nav-doc" href="">Créer des groupes</a></li>
+                    <li class="nav-item" ><a class="nav-doc" href="">Liste des rôles</a></li>
+                    <li class="nav-item" ><a class="nav-doc" href="">Créer des rôles</a></li>
+                    <li class="nav-item" ><a class="nav-doc" href="">Supprimer, Editer un rôle </a></li>
                 </ul>
             </li>
             
             
-
+            
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
             
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
               <a class="nav-link" href="">
-                <i class="fas fa-question-circle"></i>
+                <i class="fas fa-user-plus"></i>
                 <span>Invitation</span></a>
                 
             </li>
             
   
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
               <a class="nav-link" href="">
-                <i class="fas fa-question-circle"></i>
+                <i class="fas fa-comments"></i>
                 <span>Chat</span></a>
                 
             </li>
 
-            <a href="{{ path('home') }}" class="btn  btn-icon-split" title="Retour">
-                <span class="icon text-gray-600" style="background-color:white">
-                    <i class="fas fa-arrow-left"></i>
-                </span>
-            </a>
+            
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <div class="text-center d-none d-md-inline">
+              <a href="{{ path('home') }}"><button class="rounded-circle border-0"><i class="fas fa-undo-alt"></i></button></a>
+            </div>
             
           </ul>
           <!-- End of Sidebar -->
-      
+  
       
     <!-- End of navbar -->
 

@@ -3,11 +3,10 @@
 {% block title %}Mes informations{% endblock %}
 
 {% block body %}
-    <h1>Mon compte</h1>
-
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Mes informations</h6>
+            <span class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm float-right">{{ include('user/_delete_form.html.twig') }}</span>
         </div>
         <div class="card-body">
             <table class="table">
@@ -25,8 +24,12 @@
                         <td>{{ user.email }}</td>
                     </tr>
                     <tr>
-                        <td><a href="{{ path('user_edit', {'id': user.id}) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Mettre à jour mes informations</a></td>
-                         <td>{{ include('user/_delete_form.html.twig') }}</td>
+                        <td><a href="{{ path('user_edit', {'id': user.id}) }}" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"><i class="fas fa-edit"></i> Mettre à jour</a></td>
+                         
+                         <td><a href="{{ path('change_password' , {'id': app.user.id }) }}" class="btn btn-warning btn-icon-split">
+                            <span class="icon text-white-50"><i class="fas fa-exclamation-triangle"></i></span>
+                            <span class="text">Modifier mon mot de passe</span> 
+                        </a></td>
                     </tr>
 
 
