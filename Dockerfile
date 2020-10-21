@@ -19,7 +19,6 @@ RUN composer install \
         --no-suggest \
         --optimize-autoloader \
         --classmap-authoritative \
-        --no-scripts \
         --quiet
 
 
