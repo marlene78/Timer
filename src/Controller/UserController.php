@@ -46,72 +46,134 @@ class UserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             // On vérifie si le mail de l'invitation est le même que celui renseingné par l'utilisateur
-            if ($tabInvite != NULL and $user->getEmail() != $tabInvite['mail']){
+            if ($tabInvite != NULL){
+
+                if ( $user->getEmail() != $tabInvite['mail']){
                 $erreur = true;
                  return $this->render('token/invitation.html.twig', [
                      'erreur' => $erreur,
                  ]);
-                 
-            }
+
+                }else{
+
+                    //Inscription du l'utilisateur
+                    if($user->getConfirmPassword() == $user->getPassword()){
+                    
+                        $hash = $passwordEncoder->encodePassword($user , $user->getPassword());
+                        $user->setPassword($hash); 
+
+                        $confirmHash = $passwordEncoder->encodePassword($user , $user->getConfirmPassword()); 
+                        $user->setConfirmPassword($confirmHash); 
+                        $user->setColor($color->generateRandomColor()); 
+
+                        //on affecte l'invité dans son groupe
+                        foreach (array_slice($tabInvite,3) as $idGroup){
+                            $groupe = $repoGroupe->find($idGroup);
+                            $groupe->addUser($user);
+                        }
+                    
 
 
-            //Encodage du mot de passe
-            if($user->getConfirmPassword() == $user->getPassword()){
+                        $entityManager->persist($user);
+
+
+
+                        $entityManager->flush();
+
+                        //ENVOIS EMAIL
             
-                $hash = $passwordEncoder->encodePassword($user , $user->getPassword());
-                $user->setPassword($hash); 
+                        $mail = (new TemplatedEmail())
+                        ->from('ne-pas-repondre@timer.com')
+                        ->to($user->getEmail())
+                        ->subject("Votre compte a été créé")
+                        ->htmlTemplate("mail/index.html.twig")
+                        ->context([
+                            'prenom' => $user->getPrenom(),
+                            'message' => "votre compte vient d'être créé.<br>Connectez-vous pour y accéder ! ",
+                            'url' => $url->getUrl() //url du site
+                        ]);
+                        $mailer->send($mail);
+                    
+                        //connexion de l'utilisateur , activation de la session
+                        $token = new UsernamePasswordToken(
+                            $user,
+                            $hash,
+                            'main',
+                            $user->getRoles()
+                        );
 
-                $confirmHash = $passwordEncoder->encodePassword($user , $user->getConfirmPassword()); 
-                $user->setConfirmPassword($confirmHash); 
-                $user->setColor($color->generateRandomColor()); 
+                        $this->get('security.token_storage')->setToken($token);
+                        $this->get('session')->set('_security_main', serialize($token));
 
-                //on affecte l'invité dans son groupe
-                foreach (array_slice($tabInvite,3) as $idGroup){
-                    $groupe = $repoGroupe->find($idGroup);
-                    $groupe->addUser($user);
+                        $this->addFlash("success" , "Félicitation ". $user->getPrenom() ." votre compte a été créé");
+
+
+                        return $this->redirectToRoute('home');
+            
+                    }else{
+                        $erreur = "Les deux mots de passe ne sont pas identiques"; 
+                    }
+
                 }
-              
-
-
-                $entityManager->persist($user);
-
-
-
-                $entityManager->flush();
-
-                //ENVOIS EMAIL
-    
-                $mail = (new TemplatedEmail())
-                ->from('ne-pas-repondre@timer.com')
-                ->to($user->getEmail())
-                ->subject("Votre compte a été créé")
-                ->htmlTemplate("mail/index.html.twig")
-                ->context([
-                    'prenom' => $user->getPrenom(),
-                    'message' => "votre compte vient d'être créé.<br>Connectez-vous pour y accéder ! ",
-                    'url' => $url->getUrl() //url du site
-                ]);
-                $mailer->send($mail);
-               
-                //connexion de l'utilisateur , activation de la session
-                $token = new UsernamePasswordToken(
-                    $user,
-                    $hash,
-                    'main',
-                    $user->getRoles()
-                );
-
-                $this->get('security.token_storage')->setToken($token);
-                $this->get('session')->set('_security_main', serialize($token));
-
-                $this->addFlash("success" , "Félicitation ". $user->getPrenom() ." votre compte a été créé");
-
-
-                return $this->redirectToRoute('home');
-    
+                 
             }else{
-                $erreur = "Les deux mots de passe ne sont pas identiques"; 
+
+
+                //Inscription de l'utilisateur
+                if($user->getConfirmPassword() == $user->getPassword()){
+                
+                    $hash = $passwordEncoder->encodePassword($user , $user->getPassword());
+                    $user->setPassword($hash); 
+
+                    $confirmHash = $passwordEncoder->encodePassword($user , $user->getConfirmPassword()); 
+                    $user->setConfirmPassword($confirmHash); 
+                    $user->setColor($color->generateRandomColor()); 
+
+
+                    $entityManager->persist($user);
+
+
+
+                    $entityManager->flush();
+
+                    //ENVOIS EMAIL
+        
+                    $mail = (new TemplatedEmail())
+                    ->from('ne-pas-repondre@timer.com')
+                    ->to($user->getEmail())
+                    ->subject("Votre compte a été créé")
+                    ->htmlTemplate("mail/index.html.twig")
+                    ->context([
+                        'prenom' => $user->getPrenom(),
+                        'message' => "votre compte vient d'être créé.<br>Connectez-vous pour y accéder ! ",
+                        'url' => $url->getUrl() //url du site
+                    ]);
+                    $mailer->send($mail);
+                
+                    //connexion de l'utilisateur , activation de la session
+                    $token = new UsernamePasswordToken(
+                        $user,
+                        $hash,
+                        'main',
+                        $user->getRoles()
+                    );
+
+                    $this->get('security.token_storage')->setToken($token);
+                    $this->get('session')->set('_security_main', serialize($token));
+
+                    $this->addFlash("success" , "Félicitation ". $user->getPrenom() ." votre compte a été créé");
+
+
+                    return $this->redirectToRoute('home');
+        
+                }else{
+                    $erreur = "Les deux mots de passe ne sont pas identiques"; 
+                }
+
             }
+
+
+       
 
         }
 
