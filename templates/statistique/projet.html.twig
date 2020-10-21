@@ -8,10 +8,43 @@
     <!-- Page Heading -->
     <h1 class="h2 mb-2 text-gray-800 text-center">Statistique</h1>
     <h2 class="h3 mb-2 text-gray-800 text-center">{{ project.nom }}</h2>
+
+
+
+    <!-- table Chart -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary" id="nbTasks"></h6>
+        </div>
+        <div class="card-body">
+            <div class="card-deck">
+                <div class="card">
+                    <div class="card-header bg-transparent py-3">À faire</div>
+                    <div class="card-body" id="myAreaTab">   
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header bg-transparent py-3">En traitement</div>
+                    <div class="card-body" id="myAreaTabEnCours">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header bg-transparent py-3">Terminée</div>
+                    <div class="card-body" id="myAreaTabEnCloture">
+                     
+                    </div>
+                </div>
+              </div>
+            <hr>
+                 
+        </div>
+
+
+    </div>
      
 
     <!-- Area Chart -->
-    <div class="card shadow mb-4">
+   <!-- <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Nombre de tâches crées</h6>
         </div>
@@ -23,7 +56,7 @@
             <hr>
                  
         </div>
-    </div>
+    </div>-->
        
 
     <!-- Donut Chart -->
