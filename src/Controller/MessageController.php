@@ -93,7 +93,7 @@ class MessageController extends AbstractController
     {
         
         $update = new Update(
-            'http://localhost/user/ping' , 
+            '/user/ping' , 
             json_encode(['data' => 'OutOfStock']),
             true  
         );
