@@ -6,12 +6,12 @@ class Uri
 {
 
     public function getUrl(){
-        $URL = "http://localhost/login";
+        $URL = "http://timer-ipssi.herokuapp.com/";
         return $URL; 
 
     }
     public function getUrlInvite($jeton){
-        $URL = "http://localhost/token/control/".$jeton;
+        $URL = "http://timer-ipssi.herokuapp.com/token/control/".$jeton;
         return $URL; 
 
     }
