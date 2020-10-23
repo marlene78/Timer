@@ -28,7 +28,7 @@ FROM php:7.4.2-apache-buster
 
 ENV PROJECT_DIR /var/www/project
 ENV DOCUMENT_ROOT ${PROJECT_DIR}/public
-ENV APP_ENV dev
+ENV APP_ENV prod
 ENV PORT 8082
 
 WORKDIR $PROJECT_DIR
