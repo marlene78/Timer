@@ -114,9 +114,12 @@ class UserController extends AbstractController
                         $erreur = "Les deux mots de passe ne sont pas identiques"; 
                     }
 
+
                 }
                  
             }else{
+
+
 
 
                 //Inscription de l'utilisateur

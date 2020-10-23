@@ -20,16 +20,19 @@
             <div class="card-deck">
                 <div class="card">
                     <div class="card-header bg-transparent py-3">À faire</div>
-                    <div class="card-body" id="myAreaTab">   
-                    </div>
+                    <div id='loader' class="loader_user"></div>
+                    <div class="card-body" id="myAreaTab"></div>   
+                    
                 </div>
                 <div class="card">
                     <div class="card-header bg-transparent py-3">En traitement</div>
+                    <div id='loader' class="loader_user"></div>
                     <div class="card-body" id="myAreaTabEnCours">
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-header bg-transparent py-3">Terminée</div>
+                    <div id='loader' class="loader_user"></div>
                     <div class="card-body" id="myAreaTabEnCloture">
                      
                     </div>
@@ -42,23 +45,6 @@
 
     </div>
      
-
-    <!-- Area Chart -->
-   <!-- <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Nombre de tâches crées</h6>
-        </div>
-        <div class="card-body">
-            <div class="chart-area">
-                <div id='loader' class="loader_tache_create"></div>
-                <canvas id="myAreaChart" class="cacher"></canvas>
-            </div>
-            <hr>
-                 
-        </div>
-    </div>-->
-       
-
     <!-- Donut Chart -->
     <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
@@ -92,7 +78,12 @@
     </div>
 
 
-       
+    <a href="{{ path('project_show', {'id': project.id}) }}" class="btn btn-secondary btn-icon-split float-left">
+        <span class="icon text-gray-600">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span class="text">Retour au projet</span>
+    </a>
 
 </div>
 {% endblock %}
