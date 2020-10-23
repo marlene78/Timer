@@ -51,11 +51,14 @@ $("#form_message").on("submit" , function(e){
 
 
 
+
+
+
 /**
  * Souscription à un hub
-*/
-const u = new URL('/.well-known/mercure'); //url hub mercure
-u.searchParams.append('topic', '/user/ping'); //topic url à écouter
+ */
+const u = new URL('http://timer-ipssi.herokuapp.com/:3000/.well-known/mercure'); //url mercure
+u.searchParams.append('topic', 'http://timer-ipssi.herokuapp.com/user/ping'); //topic url à écouter
 const evtSource = new EventSource(u);
 evtSource .onmessage = e =>{
     
@@ -80,7 +83,6 @@ evtSource .onmessage = e =>{
     console.log(e);
    
 }
-
 window.addEventListener('beforeunload' , () =>{
     if(evtSource == null){
         evtSource.close
