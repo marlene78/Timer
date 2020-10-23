@@ -159,13 +159,13 @@ sup {
 }
 
 a {
-  color: #4e73df;
+  color: #057FE5;
   text-decoration: none;
   background-color: transparent;
 }
 
 a:hover {
-  color: #224abe;
+  color: #3198EF;
   text-decoration: underline;
 }
 
@@ -2255,14 +2255,24 @@ fieldset:disabled a.btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #4e73df;
-  border-color: #4e73df;
+  background-color: #057FE5;
+  border-color: #057FE5;
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #161040 ;
-  border-color: #161040 ;
+  background-color: #3198EF ;
+  border-color: #3198EF ;
+}
+
+.btn-primary-default {
+  color: #057FE5;
+  border-color: #057FE5;
+}
+
+.btn-primary-default:hover {
+  color: #3198EF;
+  border-color: #3198EF ;
 }
 
 .btn-primary:focus, .btn-primary.focus {
@@ -2271,15 +2281,15 @@ fieldset:disabled a.btn {
 
 .btn-primary.disabled, .btn-primary:disabled {
   color: #fff;
-  background-color: #4e73df;
-  border-color: #4e73df;
+  background-color: #60A8E4;
+  border-color: #60A8E4;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #2653d4;
-  border-color: #244ec9;
+  background-color: #60A8E4;
+  border-color: #60A8E4;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
@@ -10615,6 +10625,11 @@ form.user .form-control-user {
 }
 
 form.user .btn-user {
+  font-size: 0.8rem;
+  border-radius: 10rem;
+  padding: 0.75rem 1rem;
+}
+.btn-user {
   font-size: 0.8rem;
   border-radius: 10rem;
   padding: 0.75rem 1rem;
