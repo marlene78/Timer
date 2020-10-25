@@ -20,7 +20,7 @@ git clone git@github.com:marlene78/Timer.git
 
 Executez la commande docker-compose up pour commencer 
 ensuite : 
-- composer install (*Permet de mettre à jour les dépendances*)
+- **composer install** (*Permet de mettre à jour les dépendances*)
 - Créer un fichier .env contenant :
 
   APP_ENV="Renseignez l'environnement de travail , dev ou prod"
@@ -37,13 +37,14 @@ ensuite :
   DATABASE_URL=mysql://root:root@127.0.0.1:3306/Projet_timer
  
 
-- php bin/console doctrine:migrations:migrate (*migration des data dans la base de donnée*) 
+- **php bin/console doctrine:migrations:migrate** (*migration des data dans la base de donnée*)
 
-  Puis 
-  *Commenter la ligne suivante
+- Puis
+
+Commenter la ligne suivante
   #DATABASE_URL=mysql://root:root@127.0.0.1:3306/Projet_timer
  
-  *Décommenter la ligne suivante
+Décommenter la ligne suivante
   DATABASE_URL=mysql://root:root@data/Projet_timer
  
 
