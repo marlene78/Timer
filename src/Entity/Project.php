@@ -27,6 +27,7 @@ class Project
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      * @Groups("get:info")
      * @Groups("get:user")
      */
@@ -41,6 +42,7 @@ class Project
     /**
      * @ORM\Column(type="date")
      * @Groups("get:info")
+     * @Assert\NotBlank
      */
     private $dateDeDebut;
 
@@ -48,6 +50,7 @@ class Project
      * @ORM\Column(type="date")
      * @Assert\GreaterThan(propertyPath="dateDeDebut" , message="La date de fin doit être supérieur à la date de début")
      * @Groups("get:info")
+     * @Assert\NotBlank
      * 
      */
     private $DateDeFin;
