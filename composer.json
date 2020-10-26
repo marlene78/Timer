@@ -30,7 +30,10 @@
     "twig/intl-extra": "^3.0"
   },
   "require-dev": {
+    "symfony/browser-kit": "5.0.*",
+    "symfony/css-selector": "5.0.*",
     "symfony/maker-bundle": "^1.18",
+    "symfony/phpunit-bridge": "^5.1",
     "symfony/profiler-pack": "^1.0"
   },
   "config": {

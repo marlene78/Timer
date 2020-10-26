@@ -14,9 +14,13 @@ class UserType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('prenom')
+            ->add('prenom' , null , [
+                'label' => 'Prénom'
+            ])
             ->add('email')
-            ->add('password' , PasswordType::class)
+            ->add('password' , PasswordType::class , [
+                'label' => "Mot de passe"
+            ])
             ->add('confirmPassword' , PasswordType::class, [
                 'label' => "Confirmez votre mot de passe"
             ])
