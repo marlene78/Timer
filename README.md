@@ -57,12 +57,11 @@ Décommenter la ligne suivante
   utilisateur : root 
   mot de passe: root
 
-## Test Unitaire
+## Tests
 
-- Effectué avec phpUnit:
-  *Test unitaire*
-  *Test fonctionnel*
-  *Test web*
+- Effectué avec PHPUnit:
+  *Tests unitaires*
+  *Tests fonctionnels*
 
 - Tapez la commande **./bin/phpunit** pour tester l'ensemble des tests
 - Tapes la commande **./bin/phpunit --filter nonDeLeFonctionTest** pour tester une fonction
