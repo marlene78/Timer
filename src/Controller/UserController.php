@@ -41,7 +41,6 @@ class UserController extends AbstractController
         $tabInvite = $session->get('invite');
         $erreur = null; 
 
- 
         if ($form->isSubmitted() && $form->isValid()) {
             
             $entityManager = $this->getDoctrine()->getManager();
@@ -115,9 +114,12 @@ class UserController extends AbstractController
                         $erreur = "Les deux mots de passe ne sont pas identiques"; 
                     }
 
+
                 }
                  
             }else{
+
+
 
 
                 //Inscription de l'utilisateur
