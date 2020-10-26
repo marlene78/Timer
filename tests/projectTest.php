@@ -6,7 +6,10 @@ namespace App\Tests;
 use App\Entity\Project;
 
 use App\Tests\ProjectTest;
+use App\DataFixtures\UserFixture;
 use App\Repository\UserRepository;
+use Doctrine\Persistence\ObjectManager;
+use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 
@@ -16,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 class ProjectTest extends KernelTestCase
 {
 
+    use FixturesTrait;
 
     /**
      * Récupération d'un user 
@@ -23,21 +27,28 @@ class ProjectTest extends KernelTestCase
    private function getUser(){
 
         self::bootKernel(); 
+        $this->loadFixtures([UserFixture::class]);//exécute la fixture
         $userRepository = self::$container->get(UserRepository::class);
-        $testUser = $userRepository->findOneByEmail('marlene.lingisi@yahoo.fr');
+        $testUser = $userRepository->findOneByEmail('user-1@user.fr');
         return $testUser;
    }
+
+
+
+
 
     /**
     * Création d'un projet
     */
     private function createProject()
     {
+    
         return  (new Project())
-         ->setNom("Projet 1")
-         ->setDateDeDebut(new \DateTime("2020-11-1"))
-         ->setDateDeFin(new \DateTime("2020-11-5"))
+         ->setNom("Projet test")
+         ->setDateDeDebut(new \DateTime("2020-11-05"))
+         ->setDateDeFin(new \DateTime("2020-12-05"))
          ->setCreateur($this->getUser());
+      
     }
  
  
@@ -52,7 +63,7 @@ class ProjectTest extends KernelTestCase
         $messages = [];
         /** @var ConstrainteViolation $error */
         foreach ($errors as $error) {
-           $messages[] = $error->getPropertyPath() . '=>' . $error->getMessage(); 
+           $messages[] = $error->getPropertyPath() . ' => ' . $error->getMessage(); 
         }
         $this->assertCount($number , $errors , \implode( ',' , $messages)); 
    }
@@ -62,7 +73,7 @@ class ProjectTest extends KernelTestCase
 
 
    /**
-    * Test validation de l'entity
+    * Test Création d'un projet
     */
     public function testValidEntity(){
     
@@ -71,7 +82,7 @@ class ProjectTest extends KernelTestCase
 
 
     /**
-     * Test controle Nom
+     * Test Création d'un projet : Champ "Nom" vide
      */
     public function testNotBlankNom(){
     
@@ -82,7 +93,7 @@ class ProjectTest extends KernelTestCase
 
 
     /**
-     * Test compare dates date debut > date fin 
+     * Test Création d'un projet : Champ date fin > date debut 
      */
     public function testCompareDates(){
     

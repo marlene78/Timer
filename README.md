@@ -63,6 +63,12 @@ Décommenter la ligne suivante
   *Tests unitaires*
   *Tests fonctionnels*
 
+- Créer un fichier .env.test et y renseigner les informations de la base de donnée de test  *DATABASE_URL=*
+
+- Tapez la commande **php bin/console doctrine:database:create --env=test** pour créer la base de donnée de test
+
+- Tapez la commande **php bin/console doctrine:schema:update --force --env=test** pour générer les tables.
+
 - Tapez la commande **./bin/phpunit** pour tester l'ensemble des tests
 - Tapes la commande **./bin/phpunit --filter nonDeLeFonctionTest** pour tester une fonction
 
@@ -72,10 +78,13 @@ Décommenter la ligne suivante
 * [Docker](https://www.docker.com/) - logiciel libre permettant de lancer des applications dans des conteneurs logiciels
 * [Symfony](https://symfony.com/) - Framework back-end PHP
 
+
 ## Mise en production
 
 * [Heroku](https://www.heroku.com/)
 * Voir l'application : https://timer-ipssi.herokuapp.com/
+
+
 
 ## Auteurs
 Liste de(s) auteur(s) du projet!

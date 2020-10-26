@@ -9,7 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 class PageTest extends WebTestCase
 {
 
-    public function testLogin()
+    /**
+     * Test accéssibilité page login
+     */
+    public function testLoginPage()
     {
         $client = static::createClient();
         $client->request('GET', '/login');
@@ -17,7 +20,10 @@ class PageTest extends WebTestCase
     }
 
 
-    public function testLogout()
+     /**
+     * Test accéssibilité page logout
+     */
+    public function testLogoutPage()
     {
         $client = static::createClient();
         $client->request('GET', '/logout');
@@ -26,6 +32,9 @@ class PageTest extends WebTestCase
 
 
 
+     /**
+     * Test page home non accéssible aux users non connecté (redirection vers /login)
+     */
     public function testHomePageRedirectToLogin()
     {
         $client = static::createClient();
