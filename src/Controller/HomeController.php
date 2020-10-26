@@ -35,6 +35,7 @@ class HomeController extends AbstractController
     
     /**
      * @Route("/documentation", name="aide")
+     * @IsGranted("ROLE_USER")
      * 
      */
     public function documentation()
