@@ -5,13 +5,15 @@ namespace App\Tests;
 
 use App\Entity\Project;
 
-use App\Tests\projectTest;
+use App\Tests\ProjectTest;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 
-
-class projectTest extends KernelTestCase
+/**
+ * Tests unitaires entity Project
+ */
+class ProjectTest extends KernelTestCase
 {
 
 
@@ -24,7 +26,6 @@ class projectTest extends KernelTestCase
         $userRepository = self::$container->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('marlene.lingisi@yahoo.fr');
         return $testUser;
-
    }
 
     /**
