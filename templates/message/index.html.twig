@@ -28,6 +28,32 @@
         <div class="people-list contain" id="people-list">
 
           <ul class="list row">
+
+        
+
+      </div> <!-- end chat-history -->
+      
+      <div class="chat-message clearfix">
+        <small class="val_message text-success"></small>
+        <small class="erreur_message text-danger"></small>
+        <form id="form_message">
+          {% if project.etat != "Terminé" %}
+            <textarea name="message-to-send" id="message-to-send" placeholder ="Votre message" rows="5"></textarea>
+            <input type="hidden" name="projet_id" value="{{ project.id }}">
+            <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
+            <i class="fa fa-file-image-o"></i>
+          
+            <button class="send btn btn-primary" id="send_message">Envoyer</button>
+          {% endif %}
+        </form>
+
+      </div> <!-- end chat-message -->
+      
+    </div> <!-- end chat -->
+
+    
+</div> <!-- end container -->
+
               {% set  newArray = [] %}
               {% set color = [] %}
               
@@ -84,10 +110,20 @@
               <button class="send btn btn-primary" id="send_message">Envoyer</button>
             </form>
 
+            <a href="{{ path('project_show', {'id': project.id}) }}" class="btn btn-secondary btn-icon-split float-left">
+              <span class="icon text-gray-600">
+                  <i class="fas fa-arrow-left"></i>
+              </span>
+              <span class="text">Retour</span>
+          </a>
+
           </div> <!-- end chat-message -->
           
         </div> <!-- end chat -->
+      </div> <!-- end container -->
+
         
+
     </div> <!-- end container -->
 
    
