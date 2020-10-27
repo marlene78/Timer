@@ -7,8 +7,6 @@ use App\Entity\Project;
 use App\Repository\MessageRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Component\Mercure\Update;
-use Symfony\Component\Mercure\Publisher;
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -87,15 +85,15 @@ class MessageController extends AbstractController
 
 
     /**
-     * @Route("/user/ping" , name="ping" ,  methods={"POST"})
+     * @Route("/user/new_ping" , name="new_ping" ,  methods={"POST"})
      */
     public function ping(MessageBusInterface $bus , Request $request):Response
     {
         
+        
         $update = new Update(
             'http://localhost/user/ping' , 
-            json_encode(['data' => 'OutOfStock']),
-            true  
+            json_encode(['data' => 'OutOfStock']) 
         );
         $bus->dispatch($update);
    

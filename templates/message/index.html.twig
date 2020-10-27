@@ -75,7 +75,7 @@
             <small class="val_message text-success"></small>
             <small class="erreur_message text-danger"></small>
             
-            <form id="form_message" action="{{ path('ping') }}" method="POST">
+            <form action="{{ path('new_ping') }}" method="POST">
               <textarea name="message-to-send" id="message-to-send" placeholder ="Votre message" rows="5"></textarea>
               <input type="hidden" name="projet_id" value="{{ project.id }}" id="projet_id">
               <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
