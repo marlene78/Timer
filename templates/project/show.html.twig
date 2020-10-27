@@ -5,23 +5,6 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">{{ project.nom }}</h6>
-        
-            {% set  newArray = [] %}
-                {% for groupe in project.groups %}
-                    {% for user in groupe.users %}
-                        {% if user not in  newArray %}
-                        {% set newArray = newArray|merge([ user]) %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}  
-
-            {% for user in newArray %}
-                {% if app.user == user %}
-                    <a href="{{ path('message_project' , {'id' : project.id }) }}" class="float-right btn btn-success btn-circle btn-lg" title="Accédez au Chatte">  
-                        <i class="far fa-comments"></i>
-                    </a>
-                {% endif %}
-            {% endfor %}
         </div>
     <div class="card-body">
             
@@ -75,11 +58,7 @@
                  </td>
                 <td>  
                     {% if project.createur == app.user and project.etat != "Terminé" %}
-                        <a href="{{ path('token_new', {'id': project.id}) }}" class="btn" title="Inviter des membres">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-user-plus prefix green-text" style="color: #03A61C;"></i>
-                                </span>
-                        </a>
+                        <a href="{{ path('token_new', {'id': project.id}) }}"  title="Inviter des membres" class="green"><i class="fas fa-user-plus"></i></a>
                     {% endif %}
                 </td>
                  

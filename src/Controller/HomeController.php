@@ -14,12 +14,15 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
+/**
+ * @IsGranted("ROLE_USER")
+ */
 class HomeController extends AbstractController
 {
+
+    
     /**
      * @Route("/", name="home")
-     * @IsGranted("ROLE_USER")
      */
     public function index(TaskRepository $repoTask)
     {
@@ -32,9 +35,12 @@ class HomeController extends AbstractController
      
         ]);
     }
+
+
     
     /**
      * @Route("/documentation", name="aide")
+     * @IsGranted("ROLE_USER")
      * 
      */
     public function documentation()

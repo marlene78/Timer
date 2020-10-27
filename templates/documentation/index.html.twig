@@ -20,29 +20,29 @@
             Pour y accèder rendez-vous sur la zone de navigation et cliquer sur le lien "<b>Mes statistiques</b>"
         </div>
         <div class="card-header py-3">
-            <h3 class="m-0 font-weight-bold text-primary" id = "compte">Mon compte</h3>
+            <h3 class="m-0 font-weight-bold text-primary">Mon compte</h3>
         </div>
         <div class="card-body">
-        <h5 class="card-title">Mes informations</h5>
+        <h5 class="card-title" id="information">Mes informations</h5>
         <p>Pour visualiser vos informations personnelles, sur la zone de navigation, cliquer sur le lien "<b>Mon compte</b>", puis sur la liste choisir l'option "<b><i>Mes informations</i></b>".</p>
             
-        <h5 class="card-title">Changer mon mot de passe </h5>
+        <h5 class="card-title" id="mdp">Changer mon mot de passe </h5>
         <p>Pour changer votre mot de passe, suivez les mêmes étapes ci-dessus, puis choisir l'option "<b><i>Changer mon mot de passe</i></b>".</p>
 
-        <h5 class="card-title">Déconnexion </h5>
+        <h5 class="card-title" id="deconnexion">Déconnexion </h5>
         <p> Pour vous deconnecter, sur la même liste choisir l'option "<b><i>Déconnexion</i></b>", puis confirmer votre action.</p>
         </div>
         <div class="card-header py-3">
             <h3 class="m-0 font-weight-bold text-primary" id = "compte">Projet</h3>
         </div>
         <div class="card-body">
-            <h5 class="card-title">Liste des projets</h5>
+            <h5 class="card-title" id="pListe">Liste des projets</h5>
             <p>Pour visualiser la liste des projets, sur la zone de navigation, cliquer sur le lien "<b>Projets</b>", puis sur la liste choisir l'option "<b><i>Liste des projets</i></b>".</p>
                 
-            <h5 class="card-title">Créer un projet </h5>
+            <h5 class="card-title" id="pCreate">Créer un projet </h5>
             <p>Pour créer un projet, suivez les mêmes étapes ci-dessus, puis choisir l'option "<b><i>Créer un projet</i></b>".</p>
 
-            <h5 class="card-title">Supprimer, Modifier et voir les statitiques du projet </h5>
+            <h5 class="card-title" id="pdelete">Supprimer, Modifier et voir les statitiques du projet </h5>
             <p>Arriver sur la liste des projets cliquer sur "<b><i>Voir</i></b>", une fois sur la page détail vous pouvez supprimer , modifier et voir les statitiques du projet.</p>
 
 
@@ -52,13 +52,13 @@
             <h3 class="m-0 font-weight-bold text-primary" id = "compte">Tâche</h3>
         </div>
         <div class="card-body">
-            <p><i>Une tâche est liée à un projet.</i></p>
-            <h5 class="card-title">Liste des tâches</h5>
+            <p><i>Une tâche est liée à un projet</i></p>
+            <h5 class="card-title" id="tListe">Liste des tâches</h5>
             <p>Pour visualiser la liste des tâches d'un projet, sur la zone de navigation, cliquer sur le lien "<b>Projets</b>", puis sur la liste, choisir l'option "<b><i>Liste des projets</i></b>".
             Une fois sur la liste des projets, cliquer sur le bouton "<b><i>Voir</i></b>" du projet choisi, arriver sur la page de détail cliquer sur "<b><i>Voir la liste des tâches</i></b>".</p>
-            <h5 class="card-title">Créer une tâche</h5>
+            <h5 class="card-title" id="tCreate">Créer une tâche</h5>
             <p>Pour créer une tâche, suivez les mêmes étapes ci-dessus. Arriver sur la liste des tâches cliquer sur "<b><i>Ajouter une tâche</i></b>".  
-            <h5 class="card-title">Supprimer, Modifier ou Démarrer une tâche </h5>
+            <h5 class="card-title" id="tdelete">Supprimer, Modifier ou Démarrer une tâche </h5>
             <p>Arriver sur la liste des tâches cliquer sur "<b><i>Voir</i></b>", une fois sur la page détail vous pouvez supprimer , modifier ou Démarrer une tâche.</p>
 
         </div>
@@ -68,14 +68,24 @@
             <h3 class="m-0 font-weight-bold text-primary" id = "compte">Gestion des droits d'accès ou Rôle</h3>
         </div>
         <div class="card-body">
-            <h5 class="card-title">Liste des rôles</h5>
+            <h5 class="card-title" id="rListe">Liste des rôles</h5>
             <p>Pour visualiser la liste des rôles, sur la zone de navigation, cliquer sur le lien "<b>Gestion des droits d'accès</b>".</p>
-            <h5 class="card-title">Créer un rôle</h5>
+            <h5 class="card-title" id="rCreate">Créer un rôle</h5>
             <p>Pour créer un rôle, suivez les mêmes étapes ci-dessus. Arriver sur la liste des rôles cliquer sur "<b><i>Ajouter un rôle</i></b>".  
-            <h5 class="card-title">Supprimer, Modifier un rôle </h5>
+            <h5 class="card-title" id="rDelete">Supprimer, Modifier un rôle </h5>
             <p>Arriver sur la liste cliquer sur "<b><i>Editer</i></b>", une fois sur la page vous pouvez supprimer , modifier un rôle.</p>
 
         </div>
+        <div class="card-header py-3">
+            <h3 class="m-0 font-weight-bold text-primary" id="statistique">Invitation</h3>
+            <img class="card-img-bottom" src="{{ asset('images/invitation.JPG') }}" alt="Card image cap">
+        </div>
+        <div class="card-header py-3">
+            <h3 class="m-0 font-weight-bold text-primary" id="statistique">Chat</h3>
+            <img class="card-img-bottom" src="{{ asset('images/Chat2.JPG') }}" alt="Card image cap">
+        </div>
+
+
     </div>
 
 

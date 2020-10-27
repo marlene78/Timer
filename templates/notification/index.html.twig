@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos notifications{% endblock %}
+
+{% block body %}
+    <h1>Vos notifications</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Message</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for notification in notifications %}
+            <tr>
+                <td>{{ notification.message }}</td>
+                <td>
+                    <a href="{{ path('notification_show', {'id': notification.id}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
