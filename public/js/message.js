@@ -56,6 +56,7 @@ $("#form_message").on("submit" , function(e){
 
 /**
  * Souscription à un hub
+ */
 const u = new URL('http://localhost:3000/.well-known/mercure'); //url mercure
 u.searchParams.append('topic', 'http://localhost/user/ping'); //topic url à écouter
 const evtSource = new EventSource(u);
@@ -76,7 +77,7 @@ evtSource .onmessage = e =>{
         </div>
         <div class="toast-body"></div>
     </div>
-    </div>
+    </div>*/
     $("#topic .toast-body").text(e.data);
     $(".toast").toast('show');
    
@@ -86,4 +87,4 @@ window.addEventListener('beforeunload' , () =>{
         evtSource.close
     }
 })
-*/
+
