@@ -13,7 +13,6 @@ git clone git@github.com:marlene78/Timer.git
 ### Pré-requis
 
 - PHP 7.4.1 maximun 
-- Composer
 - Docker
 
 ### Installation

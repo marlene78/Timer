@@ -26,11 +26,7 @@ class Message
      */
     private $content;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="messages")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $project;
+
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
@@ -44,6 +40,12 @@ class Message
      *  @Groups("get:info")
      */
     private $createAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Task::class, inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $task;
 
 
     public function getId(): ?int
@@ -63,17 +65,6 @@ class Message
         return $this;
     }
 
-    public function getProject(): ?Project
-    {
-        return $this->project;
-    }
-
-    public function setProject(?Project $project): self
-    {
-        $this->project = $project;
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
@@ -101,6 +92,20 @@ class Message
 
 
 
+    public function getTask(): ?Task
+    {
+        return $this->task;
+    }
+
+    public function setTask(?Task $task): self
+    {
+        $this->task = $task;
+
+        return $this;
+    }
+
+
+
     /**
     * Initalisation de la date 
     * @ORM\PrePersist
@@ -109,6 +114,7 @@ class Message
     {
         $this->createAt = new \DateTime('now');  
     }
+
 
 
    
