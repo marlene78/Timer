@@ -1,7 +1,24 @@
  {{ form_start(form) }}
 
-    {{ form_widget(form) }}
-     <button class="btn btn-primary btn-user">
+
+    
+    <div class="row">
+        <div class="col-sm">
+            {{ form_row(form.nom) }}
+        </div>
+
+        <div class="col-sm">
+            {{ form_row(form.prenom) }}
+        </div>
+    </div>
+
+      {{ form_row(form.email) }}
+
+    {{ form_row(form.password) }}
+
+    {{ form_row(form.confirmPassword) }}
+
+     <button class="btn btn-primary btn-user btn-block">
         {{ button_label|default('Valider') }}
     </button>
     

@@ -19,6 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class ProjectController extends AbstractController
 {
+
+
     /**
      * Liste des projets
      * @Route("/", name="project_index", methods={"GET"})
@@ -52,6 +54,9 @@ class ProjectController extends AbstractController
         ]);
     }
  
+
+
+    
     /**
      * Création d'un projet
      * @Route("/new", name="project_new", methods={"GET","POST"})
@@ -81,6 +86,8 @@ class ProjectController extends AbstractController
             'token' => $t->generateToken()
         ]);
     }
+
+
 
     /**
      * Affichage d'un projet

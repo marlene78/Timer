@@ -30,7 +30,12 @@
     "twig/intl-extra": "^3.0"
   },
   "require-dev": {
+    "doctrine/doctrine-fixtures-bundle": "^3.3",
+    "liip/test-fixtures-bundle": "^1.0.0",
+    "symfony/browser-kit": "5.0.*",
+    "symfony/css-selector": "5.0.*",
     "symfony/maker-bundle": "^1.18",
+    "symfony/phpunit-bridge": "^5.1",
     "symfony/profiler-pack": "^1.0"
   },
   "config": {
