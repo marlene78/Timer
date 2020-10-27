@@ -78,7 +78,14 @@
                         {% else %}
                         <td>{{task.description}}</td>
                         {% endif %}
-                    </tr> 
+                    </tr>
+                    <td>
+        
+                        <button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#sendMessage" title="Une question ?">
+                            <i class="fas fa-question"></i>
+                        </button>
+
+                    </td>
               
                     {% if task.projet.createur == app.user and task.cloture != 1 %}           
                         <td colspan="3">
@@ -134,6 +141,37 @@
       </div>
     </div>
   </div>
+
+
+
+
+<!-- Modal send message -->
+<div class="modal fade" id="sendMessage" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Posez votre question</h5>
+      </div>
+      <div class="modal-body">
+        <div class="val_message"></div>
+       
+        <form id="form-to-send-message">
+            <div id="loader" class="cacher"></div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Votre message<sup>*</sup></label>
+                <textarea class="form-control" id="message" rows="10" name="message"></textarea>
+                 <input type="hidden" name="id-task" value="{{  task.id }}">
+                <input type="hidden" name="id-projet" value="{{  task.projet.id }}">
+                <input type="hidden" name="createur" value="{{ task.projet.createur }}">
+                <input type="hidden" name="user" value="{{ app.user.id }}">
+            </div>
+            <button id="send" type="submit" class="btn btn-primary btn-user btn-block">Valider</button>
+            <button id="send-message-annule"  type="button" class="btn btn-primary-default btn-user btn-block" data-dismiss="modal">Annuler</button>  
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 {% endblock %}

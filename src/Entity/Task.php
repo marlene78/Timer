@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TaskRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -84,6 +86,16 @@ class Task
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="task", orphanRemoval=true)
+     */
+    private $messages;
+
+    public function __construct()
+    {
+        $this->messages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -228,6 +240,37 @@ class Task
         $this->demarre = 0; 
         $this->cloture = 0;
         $this->createdAt = new \DateTime();
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setTask($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getTask() === $this) {
+                $message->setTask(null);
+            }
+        }
+
+        return $this;
     }
 
 
