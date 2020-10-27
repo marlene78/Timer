@@ -5939,8 +5939,6 @@
     ],
     "packages-dev": [
         {
-<<<<<<< HEAD
-=======
             "name": "doctrine/data-fixtures",
             "version": "1.4.4",
             "source": {
@@ -6504,7 +6502,6 @@
             "time": "2020-10-02T12:57:56+00:00"
         },
         {
->>>>>>> develop
             "name": "symfony/profiler-pack",
             "version": "v1.0.5",
             "source": {

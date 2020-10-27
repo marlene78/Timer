@@ -93,21 +93,8 @@ class MessageController extends AbstractController
      */
     public function show(Message $message): Response
     {
-<<<<<<< HEAD
-        
-        $update = new Update(
-            'http://timer-ipssi.herokuapp.com/user/ping' , 
-            json_encode(['data' => 'OutOfStock']),
-            true  
-        );
-        $bus->dispatch($update);
-   
-        return $this->redirectToRoute("message_project" , [
-            'id' => 1
-=======
         return $this->render('message/show.html.twig', [
             'message' => $message,
->>>>>>> develop
         ]);
     }
 
