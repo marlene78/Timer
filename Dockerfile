@@ -9,6 +9,7 @@ COPY ./composer.json $CODE_DIR/composer.json
 COPY ./composer.lock $CODE_DIR/composer.lock
 COPY ./src/ /code/src
 
+
 RUN composer install \
         --ignore-platform-reqs \
         --no-ansi \
