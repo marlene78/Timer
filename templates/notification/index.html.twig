@@ -17,14 +17,21 @@
             <tr>
                 <td>{{ notification.message }}</td>
                 <td>
-                    <a href="{{ path('notification_show', {'id': notification.id}) }}">show</a>
+                    <a href="{{ path('notification_show', {'id': notification.id}) }}" class="btn btn-warning"><i class="fas fa-search"></i>Voir</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">Aucune notification</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    <a href="{{ path('home')}}" class="btn btn-secondary btn-icon-split float-left">
+        <span class="icon text-gray-600">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span class="text">Retour</span>
+    </a>
 {% endblock %}

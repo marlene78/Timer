@@ -3,30 +3,54 @@
 {% block title %}Notification{% endblock %}
 
 {% block body %}
-    <h1>Notification</h1>
+    <h3>Notification</h3>
 
     <table class="table">
         <tbody>
             <tr>
                 <th>Message</th>
+                <td>{{ notification.message }}</td>
                 <td>
-                    {{ notification.message }}<br>
-                    <a href="{{ path('task_show' , {'id' : message.task.id }) }}">Voir la tâche</a>
-                
+                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#sendMessage" title="Répondre">
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
                 </td>
-                <td>
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#sendMessage" title="Répondre">
-                        Répondre
-                    </button>
-                </td>
+
             </tr>
+            <tr>
+              <th>
+                  <a href="{{ path('task_index', {'id': message.task.id}) }}" class="btn btn-warning btn-icon-split" title="Voir la tâche">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <span class="text mobile">Voir la tâche</span>
+                </a>
+              
+              </th>
+              
+              <td></td>
+ 
+            </tr>
+    
+          
+         
         </tbody>
     </table>
 
-    <a href="{{ path('notification_index') }}">back to list</a>
+    <a href="{{ path('notification_index') }}" class="btn btn-secondary btn-icon-split float-left" title="Retour">
+      <span class="icon text-gray-600">
+          <i class="fas fa-arrow-left"></i>
+      </span>
+      <span class="text mobile">Retour</span>
+    </a>
 
+    
+      
+    <div class="text-right">
+      {{ include('notification/_delete_form.html.twig') }}
+    </div>
 
-    {{ include('notification/_delete_form.html.twig') }}
+    
 
 
 
