@@ -23,7 +23,7 @@
                         <td>
                             <a href="{{ path('group_show', {'id': group.id}) }}" class="btn btn-warning"><i class="fas fa-search"></i>Voir</a>
                         </td>
-                        {% if group.project.createur == app.user %}
+                        {% if group.project.createur == app.user or  (is_granted("IS_AUTHENTICATED_REMEMBERED") and is_granted("ROLE_ADMIN")) %}
                         <td>    
                             <a href="{{ path('group_edit', {'id': group.id}) }}" class="btn btn-info"><i class="fas fa-edit"></i>Éditer</a>
                         </td>

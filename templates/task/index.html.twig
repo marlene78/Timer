@@ -31,7 +31,7 @@
                             {{ task.demarre ? 'En cours' : 'Non commencée' }}
                         </td>
                         {% else %}
-                         <td>{{ task.cloture ? 'Termiée' : 'En cours' }}</td>
+                         <td>{{ task.cloture ? 'Terminée' : 'En cours' }}</td>
                         {% endif %}
                         <td>
                             {% if task.priorite == "Maximale" %}
