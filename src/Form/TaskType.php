@@ -48,7 +48,8 @@ class TaskType extends AbstractType
                     ->setParameter('val', $tab_url[4])
                     ;
                 }, 
-                'label' => "Attribuer à"
+                'label' => "Attribuer à", 
+                'required' => true
             ])
             ->add('description')
         ;

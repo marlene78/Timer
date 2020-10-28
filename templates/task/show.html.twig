@@ -79,15 +79,14 @@
                         <td>{{task.description}}</td>
                         {% endif %}
                     </tr>
-                    <td>
-        
-                        <button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#sendMessage" title="Une question ?">
-                            <i class="fas fa-question"></i>
-                        </button>
-
-                    </td>
-              
-                    {% if task.projet.createur == app.user and task.cloture != 1 %}           
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#sendMessage" title="Posez une question">
+                                <i class="fas fa-question"></i>
+                            </button>
+                        </td>
+                
+                        {% if task.projet.createur == app.user and task.cloture != 1 %}           
                         <td colspan="3">
                             <a href="{{ path('task_edit', {'projet' : task.projet.id  , 'id': task.id }) }}" class="btn btn-info btn-icon-split">
                                 <span class="icon text-white-50">
@@ -95,10 +94,26 @@
                                 </span>
                                 <span class="text">Mettre à jour</span>
                             </a>
-                        </td>                         
-                    {% endif %}
-               
+                        </td>
+                        {% else %}
+                        <td></td>                        
+                        {% endif %}
+                    </tr>
+
+                    {% if task.messages %}
                     <tr>
+                        <th>Commentaires</th>
+                        <td>
+                        {% for message in task.messages %}  
+                                <ul>{% if message.user == app.user %}<span style="color:{{ app.user.color }}"><i class="fas fa-user"></i> vous</span>{% else %}<span style="color:{{ message.user.color }}"><i class="fas fa-user"></i> {{ message.user.prenom }}</span>{% endif %}
+                                    <li>{{ message.createAt|date("d-m-y")}} : {{ message.content }}</li>
+                                </ul>
+                        {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                  
+                  
                 </tbody>
             </table>
         </div>
