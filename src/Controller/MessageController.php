@@ -8,6 +8,7 @@ use App\Form\MessageType;
 use App\Entity\Notification;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
+use App\Repository\RolesRepository;
 use App\Repository\MessageRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -36,7 +37,7 @@ class MessageController extends AbstractController
     /**
      * @Route("/new", name="message_new", methods={"POST"})
      */
-    public function new(Request $request , ProjectRepository $repoProject , UserRepository $repoUser , TaskRepository $repoTask , Uri $url , MailerInterface $mailer ): Response
+    public function new(Request $request , ProjectRepository $repoProject , UserRepository $repoUser , TaskRepository $repoTask , Uri $url , MailerInterface $mailer , RolesRepository $repoRole ): Response
     {
         //vérification si projet existe
         $projet = $repoProject->find($request->request->get('id-projet'));
@@ -55,15 +56,37 @@ class MessageController extends AbstractController
 
             $manager->persist($message);
 
-            if($request->request->get('createur') !=""){
+            if($request->request->get('createur') !=""){ //notification pour manager
 
-                //Création de la notification 
+                //Création de la notification pour le créateur du projet
                 $notif = new Notification();
                 $notif->setMessage($message->getContent()); 
                 $notif->setEmetteur($this->getUser()); 
                 $notif->setDestinataire($projet->getCreateur()); 
 
                 $manager->persist($notif);
+
+
+                //Création de la notif pour tous les manager
+                $managers = $repoRole->find([
+                    'nom' => "ROLE_ADMIN"
+                ]); 
+
+                foreach( $managers as $manager ) {
+        
+                    foreach( $manager->getUser() as $user){
+                        if($user->getId() !== $project->getCreateur()->getId()){
+
+                            $notif = new Notification();
+                            $notif->setMessage($message->getContent()); 
+                            $notif->setEmetteur($this->getUser()); 
+                            $notif->setDestinataire($user); 
+                            $manager->persist($notif);
+                        }
+                    }
+                }
+
+
                 $manager->flush(); 
 
                 //ENVOIS EMAIL
@@ -81,9 +104,9 @@ class MessageController extends AbstractController
                 
                 return new JsonResponse( "Votre message a été transmis" , 200); 
 
-            }else{
+            }else{//notification pour l'user 
 
-                //Réponse au message
+           
 
                 //Création de la notification 
                 $destinataire = $repoUser->find($request->request->get('destinataire'));
