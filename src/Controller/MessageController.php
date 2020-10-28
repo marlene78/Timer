@@ -55,31 +55,65 @@ class MessageController extends AbstractController
 
             $manager->persist($message);
 
-            //Création de la notification 
-            $notif = new Notification();
-            $notif->setMessage($message->getContent()); 
-            $notif->setEmetteur($this->getUser()); 
-            $notif->setDestinataire($projet->getCreateur()); 
+            if($request->request->get('createur') !=""){
 
-            $manager->persist($notif);
+                //Création de la notification 
+                $notif = new Notification();
+                $notif->setMessage($message->getContent()); 
+                $notif->setEmetteur($this->getUser()); 
+                $notif->setDestinataire($projet->getCreateur()); 
 
-            $manager->flush(); 
+                $manager->persist($notif);
+                $manager->flush(); 
 
-
-            //ENVOIS EMAIL
+                //ENVOIS EMAIL
         
-            $mail = (new TemplatedEmail())
-              ->from('ne-pas-repondre@timer.com')
-              ->to($projet->getCreateur()->getEmail())
-              ->subject("Une nouvelle question")
-              ->htmlTemplate("mail/question.html.twig")
-              ->context([
-                  'message' => "Une demande d'information concernant le projet ". $projet->getNom() ." vous a été transmise.<br>Connectez-vous pour la consulter ! ",
-                  'url' => $url->getUrl()
-              ]);
-              $mailer->send($mail);
+                $mail = (new TemplatedEmail())
+                ->from('ne-pas-repondre@timer.com')
+                ->to($projet->getCreateur()->getEmail())
+                ->subject("Une nouvelle question")
+                ->htmlTemplate("mail/question.html.twig")
+                ->context([
+                    'message' => "Une demande d'information concernant la tâche ". $task->getNom() ." vous a été transmise.<br>Connectez-vous pour la consulter ! ",
+                    'url' => $url->getUrl()
+                ]);
+                $mailer->send($mail);
+                
+                return new JsonResponse( "Votre message a été transmis" , 200); 
 
-              return new JsonResponse( "Votre message a été transmis" , 200); 
+            }else{
+
+                //Réponse au message
+
+                //Création de la notification 
+                $destinataire = $repoUser->find($request->request->get('destinataire'));
+
+                $notif = new Notification();
+                $notif->setMessage($message->getContent()); 
+                $notif->setEmetteur($this->getUser()); 
+                $notif->setDestinataire( $destinataire); 
+       
+                $manager->persist($notif);
+                $manager->flush(); 
+       
+                //ENVOIS EMAIL    
+                $mail = (new TemplatedEmail())
+                ->from('ne-pas-repondre@timer.com')
+                ->to($destinataire->getEmail())
+                ->subject("Une nouvelle réponse")
+                ->htmlTemplate("mail/question.html.twig")
+                ->context([
+                    'message' => $this->getUser()->getPrenom(). " a répondu à votre demande concernant la tâche ". $task->getNom() .".<br>Connectez-vous pour la consulter ! ",
+                    'url' => $url->getUrl()
+                ]);
+                $mailer->send($mail);
+                       
+                return new JsonResponse( "Votre message a été transmis" , 200); 
+
+            }
+    
+
+        
     
         }else{
             return new JsonResponse( "Une erreur s'est produite veuillez essayer ultérieurement" , 500); 

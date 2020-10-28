@@ -9,7 +9,11 @@
         <tbody>
             <tr>
                 <th>Message</th>
-                <td>{{ notification.message }}</td>
+                <td>
+                    {{ notification.message }}<br>
+                    <a href="{{ path('task_show' , {'id' : message.task.id }) }}">Voir la tâche</a>
+                
+                </td>
                 <td>
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#sendMessage" title="Répondre">
                         Répondre
@@ -41,10 +45,10 @@
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Votre message<sup>*</sup></label>
                 <textarea class="form-control" id="message" rows="10" name="message"></textarea>
-                 <input type="hidden" name="id-task" value="">
-                <input type="hidden" name="id-projet" value="">
+                 <input type="hidden" name="id-task" value="{{ message.task.id }}">
+                <input type="hidden" name="id-projet" value="{{ message.task.projet.id }}">
                 <input type="hidden" name="createur" value="">
-                <input type="hidden" name="user" value="{{ app.user.id }}">
+                <input type="hidden" name="destinataire" value="{{ message.task.user.id }}">
             </div>
             <button id="send" type="submit" class="btn btn-primary btn-user btn-block">Valider</button>
             <button id="send-message-annule"  type="button" class="btn btn-primary-default btn-user btn-block" data-dismiss="modal">Annuler</button>  
