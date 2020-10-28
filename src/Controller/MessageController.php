@@ -68,14 +68,14 @@ class MessageController extends AbstractController
 
 
                 //Création de la notif pour tous les manager
-                $managers = $repoRole->find([
+                $roles = $repoRole->findBy([
                     'nom' => "ROLE_ADMIN"
                 ]); 
 
-                foreach( $managers as $manager ) {
+                foreach( $roles as $role ) {
         
-                    foreach( $manager->getUser() as $user){
-                        if($user->getId() !== $project->getCreateur()->getId()){
+                    foreach( $role->getUser() as $user){
+                        if($user->getId() !== $projet->getCreateur()->getId()){
 
                             $notif = new Notification();
                             $notif->setMessage($message->getContent()); 
