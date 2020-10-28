@@ -16,7 +16,8 @@ class RolesType extends AbstractType
             ->add('nom' , ChoiceType::class, [
                 'choices'  => [
                     'Manager' => 'ROLE_ADMIN',
-                ],
+                    'Administrateur' => 'ROLE_SUPER_ADMIN',
+                ]
             ])
             ->add('user')
         ;

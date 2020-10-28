@@ -23,12 +23,14 @@
                         <th>Email</th>
                         <td>{{ user.email }}</td>
                     </tr>
+                    {% if user.userRoles is not empty %}
                     <tr>
                         <th>Rôle</th>
                         {% for role in user.userRoles  %}
-                        <td>{{ role.nom }}</td>
+                            <td>{% if role.nom == "ROLE_ADMIN" %}Manageur {% elseif role.nom == "ROLE_SUPER_ADMIN" %} Administrateur  {% endif %}</td>
                         {% endfor %}
                     </tr>
+                    {% endif %}
                     <tr>
                         <td><a href="{{ path('user_edit', {'id': user.id}) }}" class="d-none d-sm-inline-block btn btn-info shadow-sm"><i class="fas fa-edit"></i> Mettre à jour</a></td>
                          
