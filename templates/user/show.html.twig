@@ -24,6 +24,12 @@
                         <td>{{ user.email }}</td>
                     </tr>
                     <tr>
+                        <th>Rôle</th>
+                        {% for role in user.userRoles  %}
+                        <td>{{ role.nom }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
                         <td><a href="{{ path('user_edit', {'id': user.id}) }}" class="d-none d-sm-inline-block btn btn-info shadow-sm"><i class="fas fa-edit"></i> Mettre à jour</a></td>
                          
                          <td><a href="{{ path('change_password' , {'id': app.user.id }) }}" class="btn btn-warning btn-icon-split">
