@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Notification;
 use App\Form\NotificationType;
+use App\Repository\MessageRepository;
 use App\Repository\NotificationRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/notification")
@@ -36,15 +37,18 @@ class NotificationController extends AbstractController
      * Visualisation d'une notification
      * @Route("/{id}", name="notification_show", methods={"GET"})
      */
-    public function show(Notification $notification): Response
+    public function show(Notification $notification , MessageRepository $repoMessage): Response
     {
         if($notification->getLu() == 0){
             $notification->setLu(1); 
             $this->getDoctrine()->getManager()->flush(); 
         }
 
+        
+
         return $this->render('notification/show.html.twig', [
             'notification' => $notification,
+            'message' => $repoMessage->findOneBy(['content' => $notification->getMessage()])
         ]);
     }
 
