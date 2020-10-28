@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notification{% endblock %}
+
+{% block body %}
+    <h1>Notification</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Message</th>
+                <td>
+                    {{ notification.message }}<br>
+                    <a href="{{ path('task_show' , {'id' : message.task.id }) }}">Voir la tâche</a>
+                
+                </td>
+                <td>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#sendMessage" title="Répondre">
+                        Répondre
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('notification_index') }}">back to list</a>
+
+
+    {{ include('notification/_delete_form.html.twig') }}
+
+
+
+<!-- Modal send message -->
+<div class="modal fade" id="sendMessage" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Votre réponse</h5>
+      </div>
+      <div class="modal-body">
+        <div class="val_message"></div>
+       
+        <form id="form-to-send-message">
+            <div id="loader" class="cacher"></div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Votre message<sup>*</sup></label>
+                <textarea class="form-control" id="message" rows="10" name="message"></textarea>
+                 <input type="hidden" name="id-task" value="{{ message.task.id }}">
+                <input type="hidden" name="id-projet" value="{{ message.task.projet.id }}">
+                <input type="hidden" name="createur" value="">
+                <input type="hidden" name="destinataire" value="{{ message.task.user.id }}">
+            </div>
+            <button id="send" type="submit" class="btn btn-primary btn-user btn-block">Valider</button>
+            <button id="send-message-annule"  type="button" class="btn btn-primary-default btn-user btn-block" data-dismiss="modal">Annuler</button>  
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

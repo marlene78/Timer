@@ -2,25 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\Roles;
+use App\Entity\Notification;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RolesType extends AbstractType
+class NotificationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom' , ChoiceType::class)
-            ->add('user')
+            ->add('message')
+            ->add('emetteur')
+            ->add('destinataire')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Roles::class,
+            'data_class' => Notification::class,
         ]);
     }
 }

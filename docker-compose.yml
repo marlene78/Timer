@@ -72,6 +72,7 @@ services:
       - SYS_PTRACE
     restart: always
 
+<<<<<<< HEAD
   mercure:
     image: dunglas/mercure
     ports:
@@ -96,10 +97,16 @@ services:
     ports:
       - "5672"
 ###< symfony/messenger ###
+=======
+  composer:
+      image: composer:latest
+      command: install
+      volumes:
+        - .:/app
+    
+>>>>>>> e4c50c7a1f656237350368280e4aa0ed5acb21f2
 volumes:
   maildata:
   mailstate:
   maillogs:
-###> symfony/messenger ###
-  rabbitmq-data: {}
-###< symfony/messenger ###
+

@@ -1,47 +1,62 @@
 /**
- * Ajouté un message
+ * Send message
 */
-$("#form_message").on("submit" , function(e){
+$("#form-to-send-message").on("submit" , function(e){
     e.preventDefault();
 
     let data = $(this).serialize(); 
 
-    if($("#message-to-send").val() != ""){
+    if($("#message").val() != ""){
+
+        $("#loader").removeClass("cacher");
+        $("#send").prop("disabled" , true);
+        $("#send-message-annule").prop("disabled" , true);
+        $("#message").prop("disabled" , true);
        
         //Envoi du message
         $.post({
-            url:"/user/message-new/", 
+            url:"/user/message/new", 
             data: data,
             success:function(response){
-
-                $("#message-to-send").val(""); 
-                $(".val_message").html('<i class="fas fa-thumbs-up"></i> '+response+''); 
+                $("#loader").addClass("cacher");
+                $(".val_message").html('<span class="text-success"><i class="fas fa-thumbs-up"></i> '+response+'</span>'); 
+                
                 setTimeout(() => {
-                    $(".val_message").html(""); 
-                }, 2000);
+                    $("#sendMessage").modal("hide"); 
+                    $(".val_message").html("");
+                    $("#message").val(""); 
+                    $("#send").prop("disabled" , false);
+                    $("#send-message-annule").prop("disabled" , false);
+                }, 4000);
             },
-            error:function(erreur){
-               
-                $(".erreur_message").html('<i class="far fa-frown"></i>'+erreur+''); 
-                setTimeout(() => {
-                    $(".erreur_message").html(""); 
-                }, 2000);
+            error:function(erreur){ 
+                $("#loader").addClass("cacher");   
+                $(".val_message").html('<span class="text-danger"><i class="far fa-frown"></i>'+ erreur+'</span>'); 
+                $("#send").prop("disabled" , false);
+                $("#send-message-annule").prop("disabled" , false);
+                $("#message").prop("disabled" , false); 
+
             }
         });
 
 
     }else{
-    
-        $(".erreur_message").html('<i class="far fa-frown"></i> Veuillez rempli ce champ'); 
-        setTimeout(() => {
-            $(".erreur_message").html(""); 
-        }, 2000);
+        $("#loader").addClass("cacher");
+        $(".val_message").html('<span class="text-danger"><i class="far fa-frown"></i> Veuillez remplir ce champ</span>');
+        $("#message").prop("disabled" , false); 
     }
 
 });  
 
 
- 
+//Reset form
+ $("#send-message-annule").on("click" , () =>{
+    $(".val_message").html("");
+    $("#message").val(""); 
+    $("#send").prop("disabled" , false);
+    $("#send-message-annule").prop("disabled" , false);
+    $("#message").prop("disabled" , false); 
+ })
 
 
 
@@ -54,6 +69,8 @@ $("#form_message").on("submit" , function(e){
 
 
 
+
+<<<<<<< HEAD
 
  //Souscription à un hub
 const u = new URL('http://localhost:3000/.well-known/mercure'); //url mercure
@@ -87,3 +104,5 @@ window.addEventListener('beforeunload' , () =>{
     }
 })
 
+=======
+>>>>>>> e4c50c7a1f656237350368280e4aa0ed5acb21f2

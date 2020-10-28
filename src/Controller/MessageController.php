@@ -2,146 +2,167 @@
 
 namespace App\Controller;
 
+use App\Service\Uri;
 use App\Entity\Message;
-use App\Entity\Project;
+use App\Form\MessageType;
+use App\Entity\Notification;
+use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use App\Repository\MessageRepository;
 use App\Repository\ProjectRepository;
-use Symfony\Component\Mercure\Update;
-use Symfony\Component\Mercure\Publisher;
-use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
+/**
+ * @Route("/user/message")
+ */
 class MessageController extends AbstractController
 {
-
     /**
-     * Page d'accueil tchat d'un projet
-     * @Route("/user/message/{id}", name="message_project")
+     * @Route("/", name="message_index", methods={"GET"})
      */
-    public function index(Project $project)
+    public function index(MessageRepository $messageRepository): Response
     {
-        //vérification si l'utilisateur connecté est autorisé accéder au tchat
-        $erreur = "Accès non autorisé" ;  
-       foreach($project->getGroups() as $groupe){
-           foreach($groupe->getUsers() as $user){
-                $user->getNom() === $this->getUser()->getNom() ? $erreur = null :"" ; 
-            }     
-        }
-
-        return $this->render('message/index.html.twig' , [
-            'project' => $project, 
-            "erreur" => $erreur != null
+        return $this->render('message/index.html.twig', [
+            'messages' => $messageRepository->findAll(),
         ]);
     }
 
-
-
     /**
-     * Ajout d'un message dans le tchat
-     * @Route("/user/message-new/" , name="message_new" , methods={"POST"})
+     * @Route("/new", name="message_new", methods={"POST"})
      */
-    public function new(Request $request , ProjectRepository $repo )
+    public function new(Request $request , ProjectRepository $repoProject , UserRepository $repoUser , TaskRepository $repoTask , Uri $url , MailerInterface $mailer ): Response
     {
+        //vérification si projet existe
+        $projet = $repoProject->find($request->request->get('id-projet'));
+        if(!empty($projet)){
 
-        $project = $repo->find($request->request->get('projet_id')); 
-        if($project){
-           
-            /*//Distribution asynchrone du message
-           function ping(MessageBusInterface $bus){
+            $manager = $this->getDoctrine()->getManager();
 
-                $update = new Update(
-                    'http://localhost/user/message/1' , 
-                    json_encode(['data' => 'OutOfStock']),
-                    true  
-                );
-                $bus->dispatch($update);
-            }
-            */
-           
+            //récupération de la tâches
+            $task = $repoTask->find($request->request->get('id-task')); 
+
+            //création du message
             $message = new Message();
-
-            $message->setContent($request->request->get('message-to-send')); 
-            $message->setProject($project); 
+            $message->setContent($request->request->get('message'));
             $message->setUser($this->getUser()); 
-    
-            $em = $this->getDoctrine()->getManager(); 
-            $em->persist($message);
-            $em->flush(); 
+            $message->setTask($task);
 
-            return new Response('ok');
+            $manager->persist($message);
 
-        }else{
-            return new Response("Impossible d'envoyer votre message." , 500); 
-        }
+            if($request->request->get('createur') !=""){
 
+                //Création de la notification 
+                $notif = new Notification();
+                $notif->setMessage($message->getContent()); 
+                $notif->setEmetteur($this->getUser()); 
+                $notif->setDestinataire($projet->getCreateur()); 
 
+                $manager->persist($notif);
+                $manager->flush(); 
 
-    }
-
-
-
-
-    /**
-     * @Route("/user/ping" , name="ping" ,  methods={"POST"})
-     */
-    public function ping(MessageBusInterface $bus , Request $request):Response
-    {
+                //ENVOIS EMAIL
         
-        $update = new Update(
-            'http://localhost/user/ping' , 
-            json_encode(['data' => 'OutOfStock']),
-            true  
-        );
-        $bus->dispatch($update);
-   
-        return $this->redirectToRoute("message_project" , [
-            'id' => 1
-        ]);
+                $mail = (new TemplatedEmail())
+                ->from('ne-pas-repondre@timer.com')
+                ->to($projet->getCreateur()->getEmail())
+                ->subject("Une nouvelle question")
+                ->htmlTemplate("mail/question.html.twig")
+                ->context([
+                    'message' => "Une demande d'information concernant la tâche ". $task->getNom() ." vous a été transmise.<br>Connectez-vous pour la consulter ! ",
+                    'url' => $url->getUrl()
+                ]);
+                $mailer->send($mail);
+                
+                return new JsonResponse( "Votre message a été transmis" , 200); 
+
+            }else{
+
+                //Réponse au message
+
+                //Création de la notification 
+                $destinataire = $repoUser->find($request->request->get('destinataire'));
+
+                $notif = new Notification();
+                $notif->setMessage($message->getContent()); 
+                $notif->setEmetteur($this->getUser()); 
+                $notif->setDestinataire( $destinataire); 
+       
+                $manager->persist($notif);
+                $manager->flush(); 
+       
+                //ENVOIS EMAIL    
+                $mail = (new TemplatedEmail())
+                ->from('ne-pas-repondre@timer.com')
+                ->to($destinataire->getEmail())
+                ->subject("Une nouvelle réponse")
+                ->htmlTemplate("mail/question.html.twig")
+                ->context([
+                    'message' => $this->getUser()->getPrenom(). " a répondu à votre demande concernant la tâche ". $task->getNom() .".<br>Connectez-vous pour la consulter ! ",
+                    'url' => $url->getUrl()
+                ]);
+                $mailer->send($mail);
+                       
+                return new JsonResponse( "Votre message a été transmis" , 200); 
+
+            }
+    
+
+        
+    
+        }else{
+            return new JsonResponse( "Une erreur s'est produite veuillez essayer ultérieurement" , 500); 
+        }
+  
       
     }
 
-
-
-
     /**
-     * Affiche les messages du projet
-     * @Route("/user/project/get/message" , name="project_get_messages" , methods={"GET"})
+     * @Route("/{id}", name="message_show", methods={"GET"})
      */
-    public function getMessages(MessageRepository $repo , Request $request){
-
-        return $this->json($repo->findBy(["project" => $request->get('id') ]) , 200 , [] , ['groups' => 'get:info']); 
+    public function show(Message $message): Response
+    {
+        return $this->render('message/show.html.twig', [
+            'message' => $message,
+        ]);
     }
 
-
-
-
-    
-
     /**
-     * Supprimer un message
-     * @Route("/user/message/delete/{id}" , name="message_delete" , methods={"DELETE"} )
+     * @Route("/{id}/edit", name="message_edit", methods={"GET","POST"})
      */
-    public function delete(Message $message)
+    public function edit(Request $request, Message $message): Response
     {
-        //vérification de l'user 
-        $user = $message->getUser(); 
-        if($user == $this->getUser()){
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($message); 
-            $em->flush(); 
-            return new Response("Message supprimé" , 200); 
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
 
-        }else{
-            return new Response("Une erreur s'est produite" , 500); 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('message_index');
         }
 
+        return $this->render('message/edit.html.twig', [
+            'message' => $message,
+            'form' => $form->createView(),
+        ]);
     }
 
+    /**
+     * @Route("/{id}", name="message_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, Message $message): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$message->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($message);
+            $entityManager->flush();
+        }
 
-
+        return $this->redirectToRoute('message_index');
+    }
 }

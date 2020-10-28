@@ -2,25 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Roles;
+use App\Entity\Message;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RolesType extends AbstractType
+class MessageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom' , ChoiceType::class)
-            ->add('user')
+            ->add('content')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Roles::class,
+            'data_class' => Message::class,
         ]);
     }
 }
