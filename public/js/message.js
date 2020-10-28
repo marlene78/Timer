@@ -59,14 +59,3 @@ $("#form-to-send-message").on("submit" , function(e){
  })
 
 
-
-
-
-
-
-
-
-
-
-
-
