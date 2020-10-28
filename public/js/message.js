@@ -70,39 +70,3 @@ $("#form-to-send-message").on("submit" , function(e){
 
 
 
-<<<<<<< HEAD
-
- //Souscription à un hub
-const u = new URL('http://localhost:3000/.well-known/mercure'); //url mercure
-u.searchParams.append('topic', 'http://localhost/user/ping'); //topic url à écouter
-const evtSource = new EventSource(u);
-evtSource .onmessage = e =>{
-    
-    //Message envoyé 
-      /*let html =`<li class="clearfix"><div class="message-data align-right"><span class="message-data-time" ></span> &nbsp; &nbsp;<span class="message-data-name"></span> <i class="fa fa-circle" style="color:"></i></div><div class="message float-right" style="background-color:">${e.data}<span id="delete" class="delete_message" data-id="">X</span></div></li>`;
-    $(".chat-history ul").append(html);
-    <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;" class="topic">
-    <div class="toast" style="position: absolute; top: 0; right: 0;">
-        <div class="toast-header">
-            <img src="..." class="rounded mr-2" alt="...">
-            <strong class="mr-auto">Message</strong>
-            <small>11 mins ago</small>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="toast-body"></div>
-    </div>
-    </div>*/
-    $("#topic .toast-body").text(e.data);
-    $(".toast").toast('show');
-   
-}
-window.addEventListener('beforeunload' , () =>{
-    if(evtSource == null){
-        evtSource.close
-    }
-})
-
-=======
->>>>>>> e4c50c7a1f656237350368280e4aa0ed5acb21f2
