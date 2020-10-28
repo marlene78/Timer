@@ -37,8 +37,7 @@ class TaskController extends AbstractController
             'projet' => $projet
         ]);
     }
-
-
+ 
 
     /**
      * Création d'une tâche pour un projet 
