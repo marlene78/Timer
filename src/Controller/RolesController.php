@@ -5,13 +5,15 @@ namespace App\Controller;
 use App\Entity\Roles;
 use App\Form\RolesType;
 use App\Repository\RolesRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/user/roles")
+ * @Route("/super_admin/roles")
+ * @IsGranted("ROLE_SUPER_ADMIN")
  */
 class RolesController extends AbstractController
 {

@@ -80,24 +80,13 @@
                         {% endif %}
                     </tr>
                     <tr>
+                        <th>Posez une question</th>
                         <td>
                             <button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#sendMessage" title="Posez une question">
                                 <i class="fas fa-question"></i>
                             </button>
                         </td>
-                
-                        {% if task.projet.createur == app.user and task.cloture != 1 %}           
-                        <td colspan="3">
-                            <a href="{{ path('task_edit', {'projet' : task.projet.id  , 'id': task.id }) }}" class="btn btn-info btn-icon-split">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-edit"></i>
-                                </span>
-                                <span class="text">Mettre à jour</span>
-                            </a>
-                        </td>
-                        {% else %}
-                        <td></td>                        
-                        {% endif %}
+
                     </tr>
 
                     {% if task.messages %}
@@ -112,7 +101,28 @@
                         </td>
                     </tr>
                     {% endif %}
-                  
+                    <tr>
+                        {% if task.projet.createur == app.user and task.cloture != 1 or  (is_granted("IS_AUTHENTICATED_REMEMBERED") and is_granted("ROLE_ADMIN")) %}     
+                        <td>
+                            <a href="{{ path('task_edit', {'projet' : task.projet.id  , 'id': task.id }) }}" class="btn btn-info btn-icon-split">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                                <span class="text">Mettre à jour</span>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ path('project_show' , {'id' : task.projet.id }) }}" class="btn btn-warning btn-icon-split float-right">
+                                <span class="icon">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <span class="text">Voir le projet</span>
+                            </a>
+                        </td>
+                                           
+                        {% endif %}
+                    
+                    </tr>
                   
                 </tbody>
             </table>
@@ -127,16 +137,10 @@
     </a>
 
 
-    <a href="{{ path('project_show' , {'id' : task.projet.id }) }}" class="btn btn-warning btn-icon-split float-right">
-        <span class="icon">
-            <i class="fas fa-search"></i>
-        </span>
-        <span class="text">Voir le projet</span>
-    </a>
 
 
     <br><br><br>
-    {% if task.projet.createur == app.user and task.cloture != 1 %}
+    {% if task.projet.createur == app.user and task.cloture != 1 or  (is_granted("IS_AUTHENTICATED_REMEMBERED") and is_granted("ROLE_ADMIN")) %}
         {{ include('task/_delete_form.html.twig') }}
     {% endif %}
 

@@ -96,6 +96,9 @@ class User implements UserInterface
      */
     private $notifications;
 
+
+    private $roles = [];
+
     public function __construct()
     {
         $this->groups = new ArrayCollection();
@@ -185,11 +188,15 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
+
+        $roles = $this->userRoles->map(function($role){
+            return $role->getNom(); 
+        })->toArray(); 
+
         $roles[] = 'ROLE_USER';
 
         return $roles; 
 
-   
     }
 
     /**
