@@ -97,7 +97,7 @@ class MessageController extends AbstractController
                 ->subject("Une nouvelle question")
                 ->htmlTemplate("mail/question.html.twig")
                 ->context([
-                    'message' => "Une demande d'information concernant la tâche ". $task->getNom() ." vous a été transmise.<br>Connectez-vous pour la consulter ! ",
+                    'message' => "Une demande d'information concernant la tâche : ". $task->getNom() ." vous a été transmise.<br>Connectez-vous pour la consulter ! ",
                     'url' => $url->getUrl()
                 ]);
                 $mailer->send($mail);

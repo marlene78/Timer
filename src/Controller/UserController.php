@@ -232,7 +232,7 @@ class UserController extends AbstractController
      * Suppression de son compte
      * @Route("/user/{id}", name="user_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, User $user , TokenRepository $repoToken): Response
+    public function delete(Request $request, User $user , TokenRepository $repoToken , UserRepository $repoUser): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             
@@ -241,6 +241,10 @@ class UserController extends AbstractController
             //détacher l'user à tous les projets 
             foreach ($user->getProjetCree() as $projet) {
                 $user->removeProjetCree($projet); 
+                $admin = $repoUser->find(1); 
+         
+                $projet->setCreateur($admin); 
+                $entityManager->persist($projet); 
             }
 
             //Supprime les tâches associéés
@@ -249,7 +253,7 @@ class UserController extends AbstractController
             }
 
             //suppression du token d'invitation
-            $token = $repoToken->findBy(['emailInvite' => $user->getEmail()]); 
+            $token = $repoToken->findOneBy(['emailInvite' => $user->getEmail()]); 
             $token !="" ?  $entityManager->remove($token) : "";
 
             $entityManager->remove($user);

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Roles;
 use App\Form\RolesType;
+use App\Form\EditRoleType;
 use App\Repository\RolesRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,7 +60,7 @@ class RolesController extends AbstractController
      */
     public function edit(Request $request, Roles $role): Response
     {
-        $form = $this->createForm(RolesType::class, $role);
+        $form = $this->createForm(EditRoleType::class, $role);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

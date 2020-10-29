@@ -63,11 +63,7 @@ class User implements UserInterface
      */
     private $groups;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Project::class, mappedBy="createur" , cascade={"persist", "remove"})
-     * @Groups("get:user")
-     */
-    private $projetCree;
+
 
     /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="user")
@@ -99,14 +95,19 @@ class User implements UserInterface
 
     private $roles = [];
 
+    /**
+     * @ORM\OneToMany(targetEntity=Project::class, mappedBy="createur")
+     */
+    private $projetCree;
+
     public function __construct()
     {
         $this->groups = new ArrayCollection();
-        $this->projetCree = new ArrayCollection();
         $this->tasks = new ArrayCollection();
         $this->userRoles = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->projetCree = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -232,36 +233,7 @@ class User implements UserInterface
         return $this->nom.' '.$this->prenom; 
     }
 
-    /**
-     * @return Collection|Project[]
-     */
-    public function getProjetCree(): Collection
-    {
-        return $this->projetCree;
-    }
 
-    public function addProjetCree(Project $projetCree): self
-    {
-        if (!$this->projetCree->contains($projetCree)) {
-            $this->projetCree[] = $projetCree;
-            $projetCree->setCreateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProjetCree(Project $projetCree): self
-    {
-        if ($this->projetCree->contains($projetCree)) {
-            $this->projetCree->removeElement($projetCree);
-            // set the owning side to null (unless already changed)
-            if ($projetCree->getCreateur() === $this) {
-                $projetCree->setCreateur(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Task[]
@@ -390,6 +362,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($notification->getEmetteur() === $this) {
                 $notification->setEmetteur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getProjetCree(): Collection
+    {
+        return $this->projetCree;
+    }
+
+    public function addProjetCree(Project $projetCree): self
+    {
+        if (!$this->projetCree->contains($projetCree)) {
+            $this->projetCree[] = $projetCree;
+            $projetCree->setCreateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjetCree(Project $projetCree): self
+    {
+        if ($this->projetCree->contains($projetCree)) {
+            $this->projetCree->removeElement($projetCree);
+            // set the owning side to null (unless already changed)
+            if ($projetCree->getCreateur() === $this) {
+                $projetCree->setCreateur(null);
             }
         }
 
