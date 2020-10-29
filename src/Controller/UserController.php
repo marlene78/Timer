@@ -10,8 +10,10 @@ use App\Service\Color;
 use App\Form\EditionUserType;
 use App\Entity\ChangePassword;
 use App\Form\ChangePasswordType;
+use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Repository\GroupRepository;
+use App\Repository\ProjectRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
@@ -234,6 +236,17 @@ class UserController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
+
+            //détacher l'user à tous les projets et taches associéés
+            foreach ($user->getProjetCree() as $projet) {
+                $user->removeProjetCree($projet); 
+            }
+
+            foreach ($user->getTasks() as $task) {
+                $entityManager->remove($task);
+            }
+
+
             $entityManager->flush();
 
             //suppression de la session
