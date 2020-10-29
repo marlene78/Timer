@@ -10,8 +10,11 @@ use App\Service\Color;
 use App\Form\EditionUserType;
 use App\Entity\ChangePassword;
 use App\Form\ChangePasswordType;
+use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Repository\GroupRepository;
+use App\Repository\TokenRepository;
+use App\Repository\ProjectRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
@@ -229,11 +232,32 @@ class UserController extends AbstractController
      * Suppression de son compte
      * @Route("/user/{id}", name="user_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, User $user): Response
+    public function delete(Request $request, User $user , TokenRepository $repoToken , UserRepository $repoUser): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            
             $entityManager = $this->getDoctrine()->getManager();
+            
+            //détacher l'user à tous les projets 
+            foreach ($user->getProjetCree() as $projet) {
+                $user->removeProjetCree($projet); 
+                $admin = $repoUser->find(1); 
+         
+                $projet->setCreateur($admin); 
+                $entityManager->persist($projet); 
+            }
+
+            //Supprime les tâches associéés
+            foreach ($user->getTasks() as $task) {
+                $entityManager->remove($task);
+            }
+
+            //suppression du token d'invitation
+            $token = $repoToken->findOneBy(['emailInvite' => $user->getEmail()]); 
+            $token !="" ?  $entityManager->remove($token) : "";
+
             $entityManager->remove($user);
+
             $entityManager->flush();
 
             //suppression de la session

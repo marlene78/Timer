@@ -1,0 +1,85 @@
+version: "3.5"
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+    working_dir: /app
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+       - ./nginx/conf.d/:/etc/nginx/conf.d/
+       - ./public:/app/public:ro
+       - ".:/var/www/timer:ro"
+
+  data:
+    container_name: mysql
+    image: mysql:5.7
+    restart: always 
+    ports:
+        - "3306:3306" 
+    volumes:
+        - ./src:/var/www/html
+        - ./data:/var/lib/mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: Projet_timer
+        MYSQL_USER: dbuser
+        MYSQL_PASSWORD: root
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    restart: always
+    depends_on:
+      - data 
+    environment:
+      PMA_HOST: data
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+
+
+  mail:
+    image: tvial/docker-mailserver:latest
+    hostname: contact@marlenelingisi.fr   # ${HOSTNAME}
+    domainname: smtp.ionos.fr # ${DOMAINNAME}
+    container_name: mail    # ${CONTAINER_NAME}
+    ports:
+      - "25:25"
+      - "143:143"
+      - "587:587"
+      - "993:993"
+    volumes:
+      - maildata:/var/mail
+      - mailstate:/var/mail-state
+      - maillogs:/var/log/mail
+      - ./config/:/tmp/docker-mailserver/
+    environment:
+      - ENABLE_SPAMASSASSIN=1 #anti-spam
+      - SPAMASSASSIN_SPAM_TO_INBOX=1 
+      - ENABLE_CLAMAV=1 #anti-virus
+      - ENABLE_FAIL2BAN=1
+      - ENABLE_POSTGREY=1 #anti-spam
+      - ONE_DIR=1
+      - DMS_DEBUG=0
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+    restart: always
+
+  composer:
+    image: composer:latest
+    command: install
+    volumes:
+      - .:/app
+
+volumes:
+  maildata:
+  mailstate:
+  maillogs:
+

@@ -58,12 +58,6 @@ class Project
 
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="projetCree")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $createur;
-
-    /**
      * @ORM\OneToMany(targetEntity=Group::class, mappedBy="project", orphanRemoval=true , cascade={"persist", "remove"})
      */
     private $groups;
@@ -89,6 +83,11 @@ class Project
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="project", orphanRemoval=true)
      */
     private $messages;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="projetCree")
+     */
+    private $createur;
 
 
 
@@ -157,19 +156,6 @@ class Project
     }
 
 
-
-
-    public function getCreateur(): ?User
-    {
-        return $this->createur;
-    }
-
-    public function setCreateur(?User $createur): self
-    {
-        $this->createur = $createur;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Group[]
@@ -383,6 +369,18 @@ class Project
                 $message->setProject(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreateur(): ?User
+    {
+        return $this->createur;
+    }
+
+    public function setCreateur(?User $createur): self
+    {
+        $this->createur = $createur;
 
         return $this;
     }

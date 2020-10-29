@@ -7,7 +7,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Timer projet</div>
+        <div class="sidebar-brand-text mx-3">Timer Project</div>
       </a>
 
       <!-- Divider -->
@@ -51,16 +51,19 @@
         </a>
       </li>
 
-       <!-- Divider -->
-       <hr class="sidebar-divider">
+ 
 
       <!-- Groupes -->
+      {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and is_granted("ROLE_SUPER_ADMIN") %}
+      <!-- Divider -->
+       <hr class="sidebar-divider">
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ path('roles_index')  }}" >
           <i class="fas fa-users-cog"></i>
           <span>Gestion des droits d'accès</span>
         </a>
       </li>
+      {% endif %}
 
       <!-- Divider -->
       <hr class="sidebar-divider">

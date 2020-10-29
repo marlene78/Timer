@@ -11,6 +11,7 @@ $("#form-to-send-message").on("submit" , function(e){
         $("#loader").removeClass("cacher");
         $("#send").prop("disabled" , true);
         $("#send-message-annule").prop("disabled" , true);
+        $("#message").prop("disabled" , true);
        
         //Envoi du message
         $.post({
@@ -33,13 +34,16 @@ $("#form-to-send-message").on("submit" , function(e){
                 $(".val_message").html('<span class="text-danger"><i class="far fa-frown"></i>'+ erreur+'</span>'); 
                 $("#send").prop("disabled" , false);
                 $("#send-message-annule").prop("disabled" , false);
+                $("#message").prop("disabled" , false); 
+
             }
         });
 
 
     }else{
         $("#loader").addClass("cacher");
-        $(".val_message").html('<span class="text-danger"><i class="far fa-frown"></i> Veuillez remplir ce champ</span>'); 
+        $(".val_message").html('<span class="text-danger"><i class="far fa-frown"></i> Veuillez remplir ce champ</span>');
+        $("#message").prop("disabled" , false); 
     }
 
 });  
@@ -51,9 +55,12 @@ $("#form-to-send-message").on("submit" , function(e){
     $("#message").val(""); 
     $("#send").prop("disabled" , false);
     $("#send-message-annule").prop("disabled" , false);
+    $("#message").prop("disabled" , false); 
  })
 
 
+<<<<<<< HEAD
+=======
 
 
 
@@ -103,3 +110,4 @@ window.addEventListener('beforeunload' , () =>{
 
 =======
 >>>>>>> develop
+>>>>>>> master

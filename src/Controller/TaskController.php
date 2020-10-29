@@ -37,6 +37,7 @@ class TaskController extends AbstractController
             'projet' => $projet
         ]);
     }
+ 
 
     /**
      * Création d'une tâche pour un projet 
@@ -72,7 +73,7 @@ class TaskController extends AbstractController
             ->context([
                 'prenom' => $task->getUser()->getPrenom(),
                 'message' => "Une nouvelle tâche vient de vous être attribué(e).<br> Connectez-vous pour la consulter ! ",
-                'url' => $url->getUrl() //url du site
+                'url' => $url->getUrl() 
             ]);
             $mailer->send($mail);
 

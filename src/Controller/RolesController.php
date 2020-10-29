@@ -4,14 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Roles;
 use App\Form\RolesType;
+use App\Form\EditRoleType;
 use App\Repository\RolesRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/user/roles")
+ * @Route("/super_admin/roles")
+ * @IsGranted("ROLE_SUPER_ADMIN")
  */
 class RolesController extends AbstractController
 {
@@ -57,7 +60,7 @@ class RolesController extends AbstractController
      */
     public function edit(Request $request, Roles $role): Response
     {
-        $form = $this->createForm(RolesType::class, $role);
+        $form = $this->createForm(EditRoleType::class, $role);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
