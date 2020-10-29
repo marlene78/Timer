@@ -72,6 +72,12 @@ services:
       - SYS_PTRACE
     restart: always
 
+  composer:
+    image: composer:latest
+    command: install
+    volumes:
+      - .:/app
+
 volumes:
   maildata:
   mailstate:

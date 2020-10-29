@@ -7,9 +7,13 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Liste des tâches - {{ projet.nom }}</h6>
+            
             {% if  projet.etat != "Terminé" and projet.groups is not empty %}
-            <a href="{{ path('task_new', {'id': projet.id}) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm float-right"><i class="fas fa-plus"></i> Ajouter une tâche</a>
+                {% if is_granted("ROLE_ADMIN") or  projet.createur == app.user %}
+                    <a href="{{ path('task_new', {'id': projet.id}) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm float-right"><i class="fas fa-plus"></i> Ajouter une tâche</a>
+                {% endif %}
             {% endif %}
+
         </div>
         <div class="card-body">
             <table class="table table-bordered" id="dataTable"  width="100%" cellspacing="0">

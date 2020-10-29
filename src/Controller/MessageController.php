@@ -126,7 +126,7 @@ class MessageController extends AbstractController
                 ->subject("Une nouvelle réponse")
                 ->htmlTemplate("mail/question.html.twig")
                 ->context([
-                    'message' => $this->getUser()->getPrenom(). " a répondu à votre demande concernant la tâche ". $task->getNom() .".<br>Connectez-vous pour la consulter ! ",
+                    'message' => $this->getUser()->getPrenom(). " a répondu à votre demande concernant la tâche : ". $task->getNom() .".<br>Connectez-vous pour la consulter ! ",
                     'url' => $url->getUrl()
                 ]);
                 $mailer->send($mail);

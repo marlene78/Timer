@@ -32,7 +32,9 @@ class ProjectType extends AbstractType
                 'format' => 'dd/MM/yyyy',
                 'input_format' => 'Y-m-d'
             ])
-            ->add('description')
+            ->add('description' , null , [
+                'required' => true,
+            ])
             ->add('groups' , CollectionType::class , [
                 'entry_type' => GroupType::class, 
                 'allow_add' => true,

@@ -3,31 +3,37 @@
 {% block title %}Vos notifications{% endblock %}
 
 {% block body %}
-    <h1>Vos notifications</h1>
+   
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Vos notifications</h6>
+        </div>
+        <div class="card-body">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Message</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for notification in notifications %}
-            <tr>
-                <td>{{ notification.message }}</td>
-                <td>
-                    <a href="{{ path('notification_show', {'id': notification.id}) }}" class="btn btn-warning"><i class="fas fa-search"></i>Voir</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">Aucune notification</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Message</th>
+                        <th>Voir</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for notification in notifications %}
+                    <tr>
+                        <td>{{ notification.message }}</td>
+                        <td>
+                            <a href="{{ path('notification_show', {'id': notification.id}) }}" class="btn btn-warning"><i class="fas fa-search"></i></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Aucune notification</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
     <a href="{{ path('home')}}" class="btn btn-secondary btn-icon-split float-left">
         <span class="icon text-gray-600">
             <i class="fas fa-arrow-left"></i>

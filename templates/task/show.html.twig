@@ -79,6 +79,8 @@
                         <td>{{task.description}}</td>
                         {% endif %}
                     </tr>
+
+                    {% if task.user == app.user %}
                     <tr>
                         <th>Posez une question</th>
                         <td>
@@ -88,8 +90,9 @@
                         </td>
 
                     </tr>
+                    {% endif %}
 
-                    {% if task.messages %}
+                    {% if task.messages and task.user == app.user or is_granted("ROLE_ADMIN") or task.projet.createur == app.user %}
                     <tr>
                         <th>Commentaires</th>
                         <td>
@@ -101,6 +104,8 @@
                         </td>
                     </tr>
                     {% endif %}
+
+
                     <tr>
                         {% if task.projet.createur == app.user and task.cloture != 1 or  (is_granted("IS_AUTHENTICATED_REMEMBERED") and is_granted("ROLE_ADMIN")) %}     
                         <td>
