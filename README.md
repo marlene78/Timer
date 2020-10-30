@@ -55,6 +55,11 @@ Décommenter la ligne suivante
 - phpMyAdmin : http://localhost:8081/
   utilisateur : root 
   mot de passe: root
+  
+## Envoi des emails
+
+- Définir dans le fichier .env MAILER_DSN=
+- Modifier l'url du site dans le fichier src/Service/Uri.php 
 
 ## Tests
 
